@@ -1,0 +1,8 @@
+
+1. remove the graphical needs?
+2. include the jlabce build in here?
+3. remove root, jana, all things unnecessary, including the system packages
+
+
+
+
