@@ -33,17 +33,17 @@
 # Remember to find/replace the <tag> and JLAB_VERSION with the newest one
 # Remember to match clas12tags and JLAB_VERSION in environment.csh
 #
-#   docker build -f Dockerfile -t clas12SimProduction
+#   docker build -f Dockerfile -t clas12simproduction
 #
-#   docker tag clas12tags:4a.2.4 jeffersonlab/clas12tags:4a.2.4
+#   docker tag clas12simproduction:latest maureeungaro/clas12simproduction:latest
 #
-#   docker push jeffersonlab/clas12tags:4a.2.4
+#   docker push maureeungaro/clas12simproduction:latest
 #
 #--------------------------------------------------------------------------
 #
 # To run in batch mode:
 #
-#  docker run -it --rm jeffersonlab/clas12tags:4a.2.4 bash
+#  docker run -it --rm maureeungaro/clas12simproduction:latest bash
 #
 #--------------------------------------------------------------------------
 
