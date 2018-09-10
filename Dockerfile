@@ -1,37 +1,24 @@
 #--------------------------------------------------------------------------
-# docker image for clas12tags. Production is: 4a.2.4
+# docker image for CLAS12 Production Simulation.
 #
 # This Dockerfile describes the clas12tags gemc containers for
 # - JLAB_VERSION 2.2
-# - clas12tags: 4a.2.4
+# - clas12tags: 4a.2.4 (current production)
 #
 # It relies on the jlabce base image for CLHEP, GEANT4, and ROOT as well as several system
-# packages. This is based on David Lawrence docker builds in 	https://gitlab.com/ESC/containers.git
+# packages. This is based on David Lawrence docker builds in https://gitlab.com/ESC/containers.git
 #
 # This will create a docker image that includes both a noVNC-webserver
 # and VNC-server that can be used to view graphics on the host using
 # either a native webrowser (HTML5 enabled) or a native VNC viewer. This
 # includes the ability to view OpenGL graphics.
 #
-# The graphics support was originally inspired by the Docker-opengl project
-# here:
-#
-#  https://github.com/thewtex/docker-opengl
-#
-# In the end, the only thing used from that was the idea to use
-# noVNC. Thus, we do not include their license. However, I do want to give
-# them credit for inspiring this work.
-#
-#  The container should be run with the "-p 6080:6080" option to allow
-# outside connections to see the webserver. To connect to the VNC
-# server directly, you should add the "-p 5900:5900" option. (Both
-# can be included if you like.) Once inside the container, run "xstart"
-# to fire up the servers. Then follow the directions for connecting.
-#
-#--------------------------------------------------------------------------
-#
 # Remember to find/replace the <tag> and JLAB_VERSION with the newest one
+#
 # Remember to match clas12tags and JLAB_VERSION in environment.csh
+#
+# The docker image is automatically built on hub.docker for every new commit (push) of the Dockerfile.
+# To build manually:
 #
 #   docker build -f Dockerfile -t clas12simproduction
 #

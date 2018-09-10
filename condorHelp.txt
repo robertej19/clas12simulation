@@ -1,0 +1,8 @@
+To submit a job:
+
+condor_submit condorTemplate.submit
+
+
+
+
+

@@ -1,9 +1,9 @@
 # clas12 Simulations:  Production
 
 
-This repo contains the dockerfile used to build the production version of the gemc [clas12tag](https://github.com/gemc/clas12Tags)
+This repo contains the dockerfile used to build the production version of the [gemc clas12tag](https://github.com/gemc/clas12Tags)
 
-This repo is linked to the gitub hub: [maureeungaro/clas12SimProduction](https://hub.docker.com/u/maureeungaro/)
+This repo is linked to the gitub hub: [maureeungaro/clas12simulations](https://hub.docker.com/u/maureeungaro/)
 Any changes to this file will trigger a new docker image creation.
 
 ## Open Source Grid
