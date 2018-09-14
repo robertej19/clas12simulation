@@ -1,8 +1,31 @@
+Quickstart: https://support.opensciencegrid.org/support/solutions/articles/5000633410-osg-connect-quickstart
+
+
 To submit a job:
+----------------
 
 condor_submit condorTemplate.submit
 
 
 
+History:
+--------
+
+condor_history mauri
+
+for details:
+
+condor_history -long mauri
+
+condor_q - Lists the jobs in the queue. Can be invoked with your username:
+
+condor_q mauri
+
+
+Dashboard: http://osgconnect.net/metrics/user
+
+
+
+https://support.opensciencegrid.org/support/solutions/articles/5000623439-osg-xsede-user-guide
 
 
