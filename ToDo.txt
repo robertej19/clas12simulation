@@ -1,6 +1,10 @@
 
-1. remove the graphical needs?
-2. include the jlabce build in here?
+
+
+
+Done on 10/2/18:
+1. remove the graphical needs
+2. include the jlabce build in here - not needed, based on gemcbatch
 3. remove root, jana, all things unnecessary, including the system packages
 
 

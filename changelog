@@ -1,0 +1,12 @@
+10/2/2018
+- basing dockerfile on gemcbatch docker
+- improved environment
+- removed unnecessary directives and jlab.sh file
+
+9/10/18
+- linked to docker
+- added condor documentation and template submit file
+
+9/2/18
+- initial commit
+
