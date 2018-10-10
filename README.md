@@ -10,4 +10,8 @@ Any changes to Dockerfile will trigger a new docker image creation.
 
 Any changes to the docker image in the hub.docker.com repository will trigger the creation of the singularity image within about one hour.
 
+The image is loaded in:
+
+```/cvmfs/singularity.opensciencegrid.org/maureeungaro/```
+
 
