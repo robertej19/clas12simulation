@@ -10,6 +10,16 @@ export GEMC_VERSION=$CLAS12TAG
 source $JLAB_ROOT/$JLAB_VERSION/ce/jlab.sh keepmine
 export GEMC_DATA_DIR=/jlab/clas12Tags/$CLAS12TAG
 
+# CLAS12 Reconstruction
+export CLAS12_LIB=$JLAB_SOFTWARE/clas12/lib
+export CLAS12_INC=$JLAB_SOFTWARE/clas12/inc
+export CLAS12_BIN=$JLAB_SOFTWARE/clas12/bin
+
+export CLARA_HOME=$JLAB_ROOT/$JLAB_VERSION/claraHome
+export COATJAVA=$CLARA_HOME/plugins/clas12
+
+export PATH=${PATH}:${CLAS12_BIN}:${COATJAVA}/bin:${CLARA_HOME}/bin
+
 set autolist
 alias l='ls -l'
 alias lt='ls -lt'
