@@ -1,3 +1,6 @@
+10/18/18
+- removed java installation, using $CLARA_HOME jre distribution instead
+
 10/17/18
 - added java installation
 - fixed docker image name

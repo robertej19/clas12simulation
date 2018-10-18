@@ -40,11 +40,6 @@
 FROM jeffersonlab/gemcbatch:2.7
 LABEL maintainer "Maurizio Ungaro <ungaro@jlab.org>"
 
-
-# Add java support
-RUN yum install -y \
-	java-1.8.0-openjdk
-
 ENV JLAB_ROOT /jlab
 ENV JLAB_VERSION 2.3
 ENV CLAS12TAG 4a.2.5
@@ -88,7 +83,8 @@ RUN git clone https://github.com/gemc/clas12Tags.git \
 
 
 WORKDIR $JLAB_ROOT/work
-ADD environment.csh /etc/profile.d
-ADD environment.sh /etc/profile.d
+ADD environment.csh     /etc/profile.d
+ADD environment.sh      /etc/profile.d
+ADD createCookClara.csh $CLARA_HOME/bin
 
 WORKDIR $JLAB_ROOT/work

@@ -3,6 +3,7 @@
 export JLAB_ROOT=/jlab
 export JLAB_VERSION=2.3
 export CLAS12TAG=4a.2.5
+export JRE=jre1.8.0_172
 
 export GEMC=/jlab/clas12Tags/$CLAS12TAG/source
 export GEMC_VERSION=$CLAS12TAG
@@ -17,8 +18,9 @@ export CLAS12_BIN=$JLAB_SOFTWARE/clas12/bin
 
 export CLARA_HOME=$JLAB_ROOT/$JLAB_VERSION/claraHome
 export COATJAVA=$CLARA_HOME/plugins/clas12
+export JAVA_HOME=$CLARA_HOME/jre/$JRE
 
-export PATH=${PATH}:${CLAS12_BIN}:${COATJAVA}/bin:${CLARA_HOME}/bin
+export PATH=${JAVA_HOME}/bin:${PATH}:${CLAS12_BIN}:${COATJAVA}/bin:${CLARA_HOME}/bin
 
 set autolist
 alias l='ls -l'

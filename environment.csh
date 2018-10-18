@@ -1,8 +1,9 @@
 #!/bin/csh
 
-setenv JLAB_ROOT /jlab
+setenv JLAB_ROOT    /jlab
 setenv JLAB_VERSION 2.3
-setenv CLAS12TAG 4a.2.5
+setenv CLAS12TAG    4a.2.5
+setenv JRE          jre1.8.0_172
 
 setenv GEMC /jlab/clas12Tags/$CLAS12TAG/source
 setenv GEMC_VERSION $CLAS12TAG
@@ -17,8 +18,9 @@ setenv CLAS12_BIN $JLAB_SOFTWARE/clas12/bin
 
 setenv CLARA_HOME $JLAB_ROOT/$JLAB_VERSION/claraHome
 setenv COATJAVA   $CLARA_HOME/plugins/clas12
+setenv JAVA_HOME  $CLARA_HOME/jre/$JRE
 
-setenv PATH ${PATH}:${CLAS12_BIN}:${COATJAVA}/bin:${CLARA_HOME}/bin
+setenv PATH ${JAVA_HOME}/bin:${PATH}:${CLAS12_BIN}:${COATJAVA}/bin:${CLARA_HOME}/bin
 
 set autolist
 alias l ls -l
