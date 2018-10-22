@@ -1,0 +1,7 @@
+{
+	"gcards": "clas12.gcard",
+	"numberOfEvents": 20,
+	"numberOfJobs": 10,
+	"experimentFolder": "/group/clas12/gemc/4a.2.5",
+	"outputDirectory": "/volatile/clas12/ungaro/clas12"
+}
