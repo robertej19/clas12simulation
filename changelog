@@ -1,3 +1,7 @@
+10/22/18
+- added dst directory and copying relevant files to make a dst
+- added services.yaml pointing at the dst for clara output
+
 10/18/18
 - removed java installation, using $CLARA_HOME jre distribution instead
 

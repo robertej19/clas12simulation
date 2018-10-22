@@ -78,7 +78,14 @@ RUN git clone https://github.com/gemc/clas12Tags.git \
 	&& chmod u+x install-claracre-clas.sh \
 	&& ./install-claracre-clas.sh -v $COATJTAG \
 	&& cd /jlab \
-	&& rm -rf tmp
+	&& rm -rf tmp \
+	# the following comands create a dst directory (which must be pointed to in the yaml file)
+	# with a subset of the banks, thus effectively creating a dst schema
+	&& cd /jlab/2.3/claraHome/plugins/clas12/etc/bankdefs \
+	&& mkdir dst \
+	&& cd hipo \
+	&& cp  HEADER.json MC.json EVENT.json ../dst/ \
+	&& rm /jlab/2.3/claraHome/plugins/clas12/config/services.yaml
 
 
 
@@ -86,5 +93,6 @@ WORKDIR $JLAB_ROOT/work
 ADD environment.csh     /etc/profile.d
 ADD environment.sh      /etc/profile.d
 ADD createCookClara.csh $CLARA_HOME/bin
+ADD services.yaml       /jlab/2.3/claraHome/plugins/clas12/config
 
 WORKDIR $JLAB_ROOT/work
