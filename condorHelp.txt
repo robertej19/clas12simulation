@@ -7,6 +7,10 @@ To submit a job:
 condor_submit condorTemplate.submit
 
 
+Troubleshooting:
+
+ condor_q -better-analyze JOBID
+
 
 History:
 --------

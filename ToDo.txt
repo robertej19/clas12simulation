@@ -1,5 +1,9 @@
 - add generator support
 
+- try job with directory as file list
+
+
+
 Done on 10/2/18:
 1. remove the graphical needs
 2. include the jlabce build in here - not needed, based on gemcbatch

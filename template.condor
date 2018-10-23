@@ -29,12 +29,12 @@ Log    = log/job.$(Cluster).$(Process).log
 +ProjectName = "osg.clas12MC"
 
 
-# Input
-transfer_input_files = clas12.gcard # list of input files needs to be transferred to the worker machine before.
+# Input files. Do not add comments after the file list
+transfer_input_files = clas12.gcard
 
 # output
-#should_transfer_files = IF_NEEDED
-#when_to_transfer_output = ON_EXIT
+should_transfer_files = YES
+when_to_transfer_output = ON_EXIT
 
 # QUEUE is the "start button" - it launches any jobs that have been
 # specified thus far. 1 means launch only 1 job
