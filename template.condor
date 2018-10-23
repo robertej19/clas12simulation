@@ -3,14 +3,14 @@ Universe = vanilla
 
 # These are good base requirements for your jobs on OSG. It is specific on OS and
 # OS version, core cound and memory, and wants to use the software modules.
-Requirements = OSGVO_OS_STRING == "RHEL 8" && Arch == "X86_64" &&  HAS_MODULES == True
+Requirements = HAS_SINGULARITY == TRUE
+
 request_cpus = 1
 request_memory = 1 GB
 
 # EXECUTABLE is the program your job will run It's often useful
 # to create a shell script to "wrap" your actual work.
-Executable = short.sh
-Arguments =
+Executable = run.sh
 
 
 # Error and Output are the error and output channels from your job
@@ -20,12 +20,22 @@ Output = log/job.$(Cluster).$(Process).out
 Log    = log/job.$(Cluster).$(Process).log
 
 # Send the job to Held state on failure.
-on_exit_hold = (ExitBySignal == True) || (ExitCode != 0)
+# on_exit_hold = (ExitBySignal == True) || (ExitCode != 0)
 
 # Periodically retry the jobs every 1 hour, up to a maximum of 5 retries.
-periodic_release =  (NumJobStarts < 5) && ((CurrentTime - EnteredCurrentStatus) > 60*60)
+# periodic_release =  (NumJobStarts < 5) && ((CurrentTime - EnteredCurrentStatus) > 60*60)
 
 +ProjectName = "osg.clas12MC"
+
++SingularityImage = "/cvmfs/singularity.opensciencegrid.org/opensciencegrid/osgvo-el7"
++SingularityBindCVMFS = True
+
+# Input
+transfer_input_files = clas12.gcard # list of input files needs to be transferred to the worker machine before.
+
+# output
+should_transfer_files = IF_NEEDED
+when_to_transfer_output = ON_EXIT
 
 # QUEUE is the "start button" - it launches any jobs that have been
 # specified thus far. 1 means launch only 1 job

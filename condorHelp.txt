@@ -22,9 +22,6 @@ condor_q - Lists the jobs in the queue. Can be invoked with your username:
 condor_q mauri
 
 
-Dashboard: http://osgconnect.net/metrics/user
-
-
 
 https://support.opensciencegrid.org/support/solutions/articles/5000623439-osg-xsede-user-guide
 
