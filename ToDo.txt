@@ -2,6 +2,7 @@
 
 - try job with directory as file list
 
+- install python scripts on docker image?
 
 
 Done on 10/2/18:
