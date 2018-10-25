@@ -3,7 +3,8 @@
 import os
 import sys
 
-# command line call example: python -c 'import parser ; parser.commonFilenameRoot("/Users/ungaro/list.txt")'
+# command line call example:
+# python -c 'import parser ; parser.commonFilenameRoot("/Users/ungaro/list.txt")'
 def commonFilenameRoot(filename = ''):
 	print "Importing list of files from: ", filename
 	f = open(filename, 'r')
