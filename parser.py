@@ -4,23 +4,12 @@ import os
 import sys
 
 # command line call example:
-# python -c 'import commonRoot ; commonRoot.commonFilenameRoot("list.txt")'
+# python -c 'import parser ; parser.commonFilenameRoot("/Users/ungaro/list.txt")'
 def commonFilenameRoot(filename = ''):
-	print filename
+	print "Importing list of files from: ", filename
+	f = open(filename, 'r')
+	files = f.readlines()
+	f.close()
+	common = os.path.commonprefix(files)
+	print "Common path: ", common
 
-
-#a = sys.argv[1]
-
-#print a
-
-#f = open('list.txt', 'r')
-#x = f.readlines()
-#f.close()
-
-
-#for file in x:
-#print file
-
-#c = os.path.commonprefix(x)
-
-#print c
