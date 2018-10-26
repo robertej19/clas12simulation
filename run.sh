@@ -26,7 +26,7 @@ createCookClara.csh out.hipo . 1
 echo after createCookClara
 ls -l
 
-clara-shell clara.cook
+clara-shell cook.clara
 
 echo after cooking
 ls -l
