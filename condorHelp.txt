@@ -35,3 +35,8 @@ OSG Helpdesk: https://support.opensciencegrid.org/support/home
 HTCondor: https://research.cs.wisc.edu/htcondor/index.html
 
 
+To run the singularity container:
+
+singularity shell --home ${PWD}:/srv --pwd /srv --bind /cvmfs --contain --ipc --pid /cvmfs/singularity.opensciencegrid.org/maureeungaro/clas12simulations:production
+
+
