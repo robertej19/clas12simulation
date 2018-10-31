@@ -45,10 +45,13 @@ ENV JLAB_VERSION 2.3
 ENV CLAS12TAG 4a.2.5
 ENV COATJTAG 5c.6.9
 
+# gfortran for clasdis generator
+RUN yum install -y gcc-gfortran
+
 WORKDIR $JLAB_ROOT
 
 # Removing un-used tags and .git stuff
-# Removing default version of temc
+# Removing default version of gemc
 # Replacing the scripts in /etc and with the environment scripts
 # Checking out clas12Tags and compiling CLAS12TAG
 # Putting clas12 gcard in $JLAB_ROOT/work
@@ -56,10 +59,11 @@ WORKDIR $JLAB_ROOT
 # $JLAB_ROOT/work is an existing directory
 RUN git clone https://github.com/gemc/clas12Tags.git \
 	&& cd $JLAB_ROOT/clas12Tags \
-	&& rm -rf .git* `ls | grep -v goIns | grep -v $CLAS12TAG | grep -v env | grep -v REA` \
 	&& source $JLAB_ROOT/$JLAB_VERSION/ce/jlab.sh \
 	&& rm -rf $JLAB_ROOT/$JLAB_VERSION/$OSRELEASE/gemc \
 	&& ./goInstall $CLAS12TAG \
+	# delete .git after goInstall as it does a pull
+	&& rm -rf .git* `ls | grep -v goIns | grep -v $CLAS12TAG | grep -v env | grep -v REA` \
 	&& cp $JLAB_ROOT/clas12Tags/$CLAS12TAG/clas12.gcard $JLAB_ROOT/work \
 	&& mkdir -p /jlab/noarch/data \
 	&& cd /jlab/noarch/data \
@@ -85,14 +89,19 @@ RUN git clone https://github.com/gemc/clas12Tags.git \
 	&& mkdir dst \
 	&& cd hipo \
 	&& cp  HEADER.json MC.json EVENT.json ../dst/ \
-	&& rm /jlab/2.3/claraHome/plugins/clas12/config/services.yaml
-
+	&& rm /jlab/2.3/claraHome/plugins/clas12/config/services.yaml \
+	# clasdis generator
+	&& cd /jlab/work \
+	&& git clone https://github.com/JeffersonLab/clasdis-nocernlib \
+	&& cd clasdis-nocernlib \
+	&& make \
+	&& cp clasdis $JLAB_SOFTWARE/clas12/bin
 
 
 WORKDIR $JLAB_ROOT/work
 ADD environment.csh     /etc/profile.d
 ADD environment.sh      /etc/profile.d
-ADD createCookClara.csh $CLARA_HOME/bin
+ADD cook.csh            $JLAB_SOFTWARE/clas12/bin
 ADD services.yaml       /jlab/2.3/claraHome/plugins/clas12/config
 
 WORKDIR $JLAB_ROOT/work

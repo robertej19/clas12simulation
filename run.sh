@@ -16,17 +16,14 @@ gemc -USE_GUI=0 -N=1000 -BEAM_P="e-, 4*GeV, 20*deg, 5*deg" clas12.gcard
 echo after gemc
 ls -l
 
-evio2hipo -r 11 -t -1.0 -s -1.0 -i out.ev -o out.hipo
+evio2hipo -r 11 -t -1.0 -s -1.0 -i out.ev -o gemc.hipo
 
 echo after evio2hipo
 ls -l
 
-createCookClara.csh out.hipo . 1
+cook.csh
 
-echo after createCookClara
-ls -l
-
-clara-shell cook.clara
+cat cook.clara
 
 echo after cooking
 ls -l

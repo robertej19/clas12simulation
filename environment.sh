@@ -5,6 +5,9 @@ export JLAB_VERSION=2.3
 export CLAS12TAG=4a.2.5
 export JRE=jre1.8.0_172
 
+# SIDIS
+export CLASDIS_PDF=/jlab/work/clasdis-nocernlib/pdf
+
 export GEMC=/jlab/clas12Tags/$CLAS12TAG/source
 export GEMC_VERSION=$CLAS12TAG
 

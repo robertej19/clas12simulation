@@ -5,6 +5,9 @@ setenv JLAB_VERSION 2.3
 setenv CLAS12TAG    4a.2.5
 setenv JRE          jre1.8.0_172
 
+# SIDIS
+setenv CLASDIS_PDF /jlab/work/clasdis-nocernlib/pdf
+
 setenv GEMC /jlab/clas12Tags/$CLAS12TAG/source
 setenv GEMC_VERSION $CLAS12TAG
 

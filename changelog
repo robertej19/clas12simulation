@@ -1,3 +1,7 @@
+10/30/18
+- added clasdis
+- removing .git after goInstall
+
 10/22/18
 - added dst directory and copying relevant files to make a dst
 - added services.yaml pointing at the dst for clara output
