@@ -30,7 +30,7 @@ Log    = log/job.$(Cluster).$(Process).log
 
 
 # Input files. Do not add comments after the file list
-transfer_input_files = clas12.gcard
+transfer_input_files = clas12.gcard, cook.csh
 
 # output
 should_transfer_files = YES
