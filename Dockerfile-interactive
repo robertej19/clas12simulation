@@ -1,12 +1,14 @@
 #--------------------------------------------------------------------------
-# docker image for CLAS12 Production Simulation - to be run in batch mode.
+# docker image for CLAS12 Production Simulation to use interactively.
 #
 # This Dockerfile includes the clas12tags gemc container for
 # the CLAS12TAG below (current production)
 #
-# It relies on the gemcbatch:2.7 base image that has the necessary
-# libraries to run gemc in batch mode.
+# It relies on the gemcinteractive:2.7 base image that has the necessary
+# libraries to run gemc in interactive mode.
 # gemcbatch:2.7 has JLAB_VERSION set to 2.3
+#
+# The tag of this version is iprod
 #
 # Remember to find/replace gemcBatch with the newest one
 #
@@ -15,17 +17,17 @@
 # The docker image is automatically built on hub.docker for every new commit (push) of the Dockerfile.
 # To build manually:
 #
-#   docker build -f Dockerfile -t clas12simulations:production .
+#   docker build -f Dockerfile-interactive -t clas12simulations:iprod .
 #
-#   docker tag clas12simulations:production maureeungaro/clas12simulations:production
+#   docker tag clas12simulations:iprod maureeungaro/clas12simulations:iprod
 #
-#   docker push maureeungaro/clas12simulations:production
+#   docker push maureeungaro/clas12simulations:iprod
 #
 #--------------------------------------------------------------------------
 #
 # To run in batch mode:
 #
-#  docker run -it --rm maureeungaro/clas12simulations:production bash
+#  docker run -it --rm maureeungaro/clas12simulations:iprod bash
 #
 # On a mac, if you allow access from localhost with:
 #
@@ -34,10 +36,10 @@
 #
 # Then you can run docker and use the local X server with:
 #
-#  docker run -it --rm -e DISPLAY=docker.for.mac.localhost:0 maureeungaro/clas12simulations:production bash
+#  docker run -it --rm -e DISPLAY=docker.for.mac.localhost:0 maureeungaro/clas12simulations:iprod bash
 #--------------------------------------------------------------------------
 
-FROM jeffersonlab/gemcbatch:2.7
+FROM jeffersonlab/gemcinteractive:2.7
 LABEL maintainer "Maurizio Ungaro <ungaro@jlab.org>"
 
 ENV JLAB_ROOT /jlab

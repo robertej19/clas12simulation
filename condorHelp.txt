@@ -32,7 +32,10 @@ https://support.opensciencegrid.org/support/solutions/articles/5000623439-osg-xs
 
 Guidelines for data management: https://support.opensciencegrid.org/support/solutions/articles/12000006512-guidelines-for-data-managment-in-osg-storage-and-transfer
 OSG Helpdesk: https://support.opensciencegrid.org/support/home
+
 HTCondor: https://research.cs.wisc.edu/htcondor/index.html
+
+Condor Documentation: https://research.cs.wisc.edu/htcondor/manual/
 
 
 To run the singularity container:
@@ -40,3 +43,13 @@ To run the singularity container:
 singularity shell --home ${PWD}:/srv --pwd /srv --bind /cvmfs --contain --ipc --pid /cvmfs/singularity.opensciencegrid.org/maureeungaro/clas12simulations:production
 
 
+Managing Jobs:
+-------------
+
+On hold:
+
+condor_q  -hold
+
+Removing a job (by ID)
+
+condor_rm ID
