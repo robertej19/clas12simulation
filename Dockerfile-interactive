@@ -94,6 +94,7 @@ RUN git clone https://github.com/gemc/clas12Tags.git \
 	&& cd /jlab/2.3/claraHome/plugins/clas12/etc/bankdefs \
 	&& mkdir dst \
 	&& cd hipo \
+	&& cp *.json \
 	&& cp  HEADER.json MC.json EVENT.json ../dst/ \
 	&& rm /jlab/2.3/claraHome/plugins/clas12/config/services.yaml \
 	# clasdis generator

@@ -19,10 +19,11 @@ setenv CLAS12_LIB $JLAB_SOFTWARE/clas12/lib
 setenv CLAS12_INC $JLAB_SOFTWARE/clas12/inc
 setenv CLAS12_BIN $JLAB_SOFTWARE/clas12/bin
 
+
 setenv COATJAVA  $JLAB_SOFTWARE/clas12/coatjava
 setenv JAVA_HOME $JLAB_SOFTWARE/$JRE
 
-setenv PATH ${PATH}:${CLAS12_BIN}:${COATJAVA}/bin${JAVA_HOME}/bin
+setenv PATH ${PATH}:${JAVA_HOME}/bin:${CLAS12_BIN}:${COATJAVA}/bin
 
 set autolist
 alias l ls -l

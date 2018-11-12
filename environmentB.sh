@@ -19,10 +19,11 @@ export CLAS12_LIB=$JLAB_SOFTWARE/clas12/lib
 export CLAS12_INC=$JLAB_SOFTWARE/clas12/inc
 export CLAS12_BIN=$JLAB_SOFTWARE/clas12/bin
 
+
 export COATJAVA=$JLAB_SOFTWARE/clas12/coatjava
 export JAVA_HOME=$JLAB_SOFTWARE/$JRE
 
-export PATH=${PATH}:${CLAS12_BIN}:${COATJAVA}/bin:${JAVA_HOME}/bin
+export PATH=${JAVA_HOME}/bin:${PATH}:${CLAS12_BIN}:${COATJAVA}/bin
 
 set autolist
 alias l='ls -l'

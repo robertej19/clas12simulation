@@ -23,7 +23,7 @@ setenv CLARA_HOME $JLAB_ROOT/$JLAB_VERSION/claraHome
 setenv COATJAVA   $CLARA_HOME/plugins/clas12
 setenv JAVA_HOME  $CLARA_HOME/jre/$JRE
 
-setenv PATH ${JAVA_HOME}/bin:${PATH}:${CLAS12_BIN}:${COATJAVA}/bin:${CLARA_HOME}/bin
+setenv PATH ${PATH}:${JAVA_HOME}/bin:${CLAS12_BIN}:${COATJAVA}/bin:${CLARA_HOME}/bin
 
 set autolist
 alias l ls -l
