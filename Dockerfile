@@ -1,16 +1,19 @@
-#--------------------------------------------------------------------------
-# docker image for CLAS12 Production Simulation - to be run in batch mode.
+#-------------------------------------------------------------------------------
+# docker image for CLAS12 Production Simulation - to be run in batch mode on OSG
 #
-# This Dockerfile includes the clas12tags gemc container for
-# the CLAS12TAG below (current production)
+# It is based on gemcbatch:2.7 image and includes:
 #
-# It relies on the gemcbatch:2.7 base image that has the necessary
-# libraries to run gemc in batch mode.
-# gemcbatch:2.7 has JLAB_VERSION set to 2.3
+# - JLAB_VERSION 2.3
+# - clas12 tag 4a.2.5
 #
-# Remember to find/replace gemcBatch with the newest one
+# - coatjava 5b.7.1
+# - clasdis generator
 #
-# Remember to match clas12tags and JLAB_VERSION in environment.csh
+# The tag of this version is iprod
+#
+# 1. Remember to find/replace gemcinteractive with the newest one
+# 2. Remember to match clas12tags and JLAB_VERSION in environment.csh
+# 3. Remember to find/replace COATJTAG with the newest one
 #
 # The docker image is automatically built on hub.docker for every new commit (push) of the Dockerfile.
 # To build manually:
@@ -43,7 +46,7 @@ LABEL maintainer "Maurizio Ungaro <ungaro@jlab.org>"
 ENV JLAB_ROOT /jlab
 ENV JLAB_VERSION 2.3
 ENV CLAS12TAG 4a.2.5
-ENV COATJTAG 5c.6.9
+ENV COATJTAG 5b.7.1
 
 # gfortran for clasdis generator
 RUN yum install -y gcc-gfortran
@@ -71,25 +74,19 @@ RUN git clone https://github.com/gemc/clas12Tags.git \
 	&& wget -q http://clasweb.jlab.org/12gev/field_maps/clas12NewSolenoidFieldMap.dat \
 	&& rm /etc/profile.d/jlab.csh \
 	&& rm /etc/profile.d/jlab.sh \
-	# reconstruction, clara and coatjava
 	&& mkdir -p $JLAB_SOFTWARE/clas12/lib \
 	&& mkdir -p $JLAB_SOFTWARE/clas12/bin \
 	&& mkdir -p $JLAB_SOFTWARE/clas12/inc \
-	&& export CLARA_HOME=$JLAB_ROOT/$JLAB_VERSION/claraHome \
-	&& mkdir -p $CLARA_HOME /jlab/tmp \
-	&& cd /jlab/tmp \
-	&& wget  --no-check-certificate https://claraweb.jlab.org/clara/_downloads/install-claracre-clas.sh \
-	&& chmod u+x install-claracre-clas.sh \
-	&& ./install-claracre-clas.sh -v $COATJTAG \
-	&& cd /jlab \
-	&& rm -rf tmp \
-	# the following comands create a dst directory (which must be pointed to in the yaml file)
-	# with a subset of the banks, thus effectively creating a dst schema
-	&& cd /jlab/2.3/claraHome/plugins/clas12/etc/bankdefs \
-	&& mkdir dst \
-	&& cd hipo \
-	&& cp  HEADER.json MC.json EVENT.json ../dst/ \
-	&& rm /jlab/2.3/claraHome/plugins/clas12/config/services.yaml \
+	&& cd $JLAB_SOFTWARE \
+	# JAVA from Oracle
+	# Get JRE tar.gz from https://www.oracle.com/technetwork/java/javase/downloads/index.html
+	# The .tar.gz is then put at JLAB on
+	&& wget --no-check-certificate https://www.jlab.org/12gev_phys/packages/sources/java/jre-8u191-linux-x64.tar.gz \
+	&& tar -zxpvf jre-8u191-linux-x64.tar.gz \
+	# reconstruction: coatjava
+	&& cd $JLAB_SOFTWARE/clas12 \
+	&& wget --no-check-certificate https://github.com/JeffersonLab/clas12-offline-software/releases/download/$COATJTAG/coatjava-$COATJTAG.tar.gz \
+	&& tar -zxpvf coatjava-$COATJTAG.tar.gz \
 	# clasdis generator
 	&& cd /jlab/work \
 	&& git clone https://github.com/JeffersonLab/clasdis-nocernlib \
@@ -97,10 +94,7 @@ RUN git clone https://github.com/gemc/clas12Tags.git \
 	&& make \
 	&& cp clasdis $JLAB_SOFTWARE/clas12/bin
 
-
-WORKDIR $JLAB_ROOT/work
-ADD environment.csh     /etc/profile.d
-ADD environment.sh      /etc/profile.d
-ADD services.yaml       /jlab/2.3/claraHome/plugins/clas12/config
+ADD environmentB.csh     /etc/profile.d
+ADD environmentB.sh      /etc/profile.d
 
 WORKDIR $JLAB_ROOT/work

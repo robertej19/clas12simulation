@@ -1,20 +1,21 @@
 #--------------------------------------------------------------------------
 # docker image for CLAS12 Production Simulation to use interactively.
 #
-# This Dockerfile includes the clas12tags gemc container for
-# the CLAS12TAG below (current production)
+# It is based on gemcinteractive:2.7 image and includes:
 #
-# It relies on the gemcinteractive:2.7 base image that has the necessary
-# libraries to run gemc in interactive mode.
-# gemcbatch:2.7 has JLAB_VERSION set to 2.3
+# - JLAB_VERSION 2.3
+# - clas12 tag 4a.2.5
+# - clara 4.3.3
+# - coatjava 5b.7.1
+# - clasdis generator
 #
 # The tag of this version is iprod
 #
-# Remember to find/replace gemcBatch with the newest one
+# 1. Remember to find/replace gemcinteractive with the newest one
+# 2. Remember to match clas12tags and JLAB_VERSION in environment.csh
+# 3. Remember to find/replace COATJTAG with the newest one
 #
-# Remember to match clas12tags and JLAB_VERSION in environment.csh
 #
-# The docker image is automatically built on hub.docker for every new commit (push) of the Dockerfile.
 # To build manually:
 #
 #   docker build -f Dockerfile-interactive -t clas12simulations:iprod .
@@ -45,10 +46,13 @@ LABEL maintainer "Maurizio Ungaro <ungaro@jlab.org>"
 ENV JLAB_ROOT /jlab
 ENV JLAB_VERSION 2.3
 ENV CLAS12TAG 4a.2.5
-ENV COATJTAG 5c.6.9
+ENV COATJTAG 5b.7.1
 
-# gfortran for clasdis generator, xemacs to help users
-RUN yum install -y gcc-gfortran xemacs
+# gfortran for clasdis generator
+# xemacs to help users
+# libXtst for kpp-plots
+# libfonts for kpp-plots fonts
+RUN yum install -y gcc-gfortran xemacs libXtst libfonts
 
 WORKDIR $JLAB_ROOT
 
@@ -99,8 +103,6 @@ RUN git clone https://github.com/gemc/clas12Tags.git \
 	&& make \
 	&& cp clasdis $JLAB_SOFTWARE/clas12/bin
 
-
-WORKDIR $JLAB_ROOT/work
 ADD environment.csh     /etc/profile.d
 ADD environment.sh      /etc/profile.d
 ADD services.yaml       /jlab/2.3/claraHome/plugins/clas12/config

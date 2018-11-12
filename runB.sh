@@ -18,8 +18,6 @@ echo after gemc
 ls -l
 echo
 
-
-
 rm -f e2h.log
 evio2hipo -r 11 -t -1.0 -s -1.0 -i out.ev -o gemc.hipo > e2h.log
 
@@ -27,27 +25,7 @@ echo after evio2hipo
 ls -l
 echo
 
-
-# re-establish the runClara.sh with the stuff below
-# argument is n threads
-
-# file is stored in a files.txt
-rm -f files.txt ; echo gemc.hipo > files.txt
-
-rm -f cook.clara
-echo "set fileList files.txt"   > cook.clara
-echo "set inputDir ."          >> cook.clara
-echo "set outputDir ."         >> cook.clara
-echo "set threads 1"           >> cook.clara
-echo "set logDir log"          >> cook.clara
-echo "run local"               >> cook.clara
-echo "exit"                    >> cook.clara
-cat cook.clara
-
-mkdir -p log
-rm -f reco.log
-clara-shell cook.clara > reco.log
-
+notsouseful-util -i gemc.hipo -o out_gemc.hipo -c 2
 
 echo after cooking
 ls -l
