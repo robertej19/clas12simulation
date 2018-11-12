@@ -47,8 +47,8 @@ ENV JLAB_VERSION 2.3
 ENV CLAS12TAG 4a.2.5
 ENV COATJTAG 5c.6.9
 
-# gfortran for clasdis generator
-RUN yum install -y gcc-gfortran
+# gfortran for clasdis generator, xemacs to help users
+RUN yum install -y gcc-gfortran xemacs
 
 WORKDIR $JLAB_ROOT
 

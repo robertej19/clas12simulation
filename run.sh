@@ -7,12 +7,12 @@ printf "Job is running on node: "; /bin/hostname
 printf "Job running as user: "; /usr/bin/id
 printf "Job is running in directory: "; /bin/pwd
 
-
 echo starting files
 ls -l
 
+# using official gcard
 rm -f gemc.log
-gemc -USE_GUI=0 -N=100 -BEAM_P="e-, 4*GeV, 20*deg, 5*deg" clas12.gcard > gemc.log
+gemc -USE_GUI=0 -N=100 -BEAM_P="e-, 4*GeV, 20*deg, 5*deg" /jlab/work/clas12.gcard > gemc.log
 
 echo after gemc
 ls -l
@@ -29,14 +29,28 @@ echo
 
 
 
-rm -f reco.log
-csh ./cook.csh > reco.log
+
+# file is stored in a files.txt
+rm -f files.txt ; echo gemc.hipo > files.txt
+
+rm -f cook.clara
+echo "set fileList files.txt"   > cook.clara
+echo "set inputDir ."          >> cook.clara
+echo "set outputDir ."         >> cook.clara
+echo "set threads 1"           >> cook.clara
+echo "set logDir log"          >> cook.clara
+echo "run local"               >> cook.clara
+echo "exit"                    >> cook.clara
 cat cook.clara
+
+mkdir -p log
+rm -f reco.log
+clara-shell cook.clara > reco.log
+
 
 echo after cooking
 ls -l
 echo
-
 
 
 # final job log
