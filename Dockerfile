@@ -11,9 +11,9 @@
 #
 # The tag of this version is iprod
 #
-# 1. Remember to find/replace gemcinteractive with the newest one
-# 2. Remember to match clas12tags and JLAB_VERSION in environment.csh
-# 3. Remember to find/replace COATJTAG with the newest one
+#  1. Remember to find/replace gemcinteractive with the newest one
+#  2. Remember to match clas12tags and JLAB_VERSION in environment.csh
+#  3. Remember to find/replace COATJTAG with the newest one
 #
 # The docker image is automatically built on hub.docker for every new commit (push) of the Dockerfile.
 # To build manually:
@@ -28,12 +28,14 @@
 #
 # To run in batch mode:
 #
-#  docker run -it --rm maureeungaro/clas12simulations:production bash
+#   docker run -it --rm maureeungaro/clas12simulations:production bash
 #
 # On a mac, if you allow access from localhost with:
 #
-#  1. Activate the option ‘Allow connections from network clients’ in XQuartz settings (Restart XQuartz (to activate the setting)
-#  2. xhost +127.0.0.1
+#  1. Activate the option ‘Allow connections from network clients’ in XQuartz settings
+#  2. defaults write org.macosforge.xquartz.X11 enable_iglx -bool true
+#     (Restart XQuartz (to activate the setting)
+#  3. xhost +127.0.0.1
 #
 # Then you can run docker and use the local X server with:
 #
@@ -80,7 +82,7 @@ RUN git clone https://github.com/gemc/clas12Tags.git \
 	&& cd $JLAB_SOFTWARE \
 	# JAVA from Oracle
 	# Get JRE tar.gz from https://www.oracle.com/technetwork/java/javase/downloads/index.html
-	# The .tar.gz is then put at JLAB on
+	# The .tar.gz is then put at JLAB on /site
 	&& wget --no-check-certificate https://www.jlab.org/12gev_phys/packages/sources/java/jre-8u191-linux-x64.tar.gz \
 	&& tar -zxpvf jre-8u191-linux-x64.tar.gz \
 	# reconstruction: coatjava
@@ -92,7 +94,19 @@ RUN git clone https://github.com/gemc/clas12Tags.git \
 	&& git clone https://github.com/JeffersonLab/clasdis-nocernlib \
 	&& cd clasdis-nocernlib \
 	&& make \
-	&& cp clasdis $JLAB_SOFTWARE/clas12/bin
+	&& cp clasdis $JLAB_SOFTWARE/clas12/bin \
+	# inclusive dis with radiative correction
+	&& cd /jlab/work \
+	&& git clone https://github.com/JeffersonLab/inclusive-dis-rad.git \
+	&& cd inclusive-dis-rad \
+	&& make \
+	&& cp generate-dis $JLAB_SOFTWARE/clas12/bin \
+	# clasdvcs
+	&& cd /jlab/work \
+	&& git clone https://github.com/JeffersonLab/dvcsgen.git \
+	&& cd dvcsgen \
+	&& make \
+	&& cp dvcsgen $JLAB_SOFTWARE/clas12/bin
 
 ADD environmentB.csh     /etc/profile.d
 ADD environmentB.sh      /etc/profile.d

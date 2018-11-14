@@ -10,9 +10,24 @@ printf "Job is running in directory: "; /bin/pwd
 echo starting files
 ls -l
 
+# Generators
+# Readmes at:
+#
+# https://github.com/JeffersonLab/clasdis-nocernlib/blob/master/README.md
+# https://github.com/JeffersonLab/inclusive-dis-rad/blob/master/README.md
+# https://github.com/JeffersonLab/dvcsgen/blob/master/README.md
+
+clasdis --trig 10000 --docker      # sidis.dat
+generate-dis --trig 10000 --docker # dis-rad.dat
+dvcsgen --trig 10000 --docker      # dvcs.dat
+
+
 # using official gcard
 rm -f gemc.log
-gemc -USE_GUI=0 -N=100 -BEAM_P="e-, 4*GeV, 20*deg, 5*deg" /jlab/work/clas12.gcard > gemc.log
+gemc -USE_GUI=0 -N=1000 -BEAM_P="e-, 4*GeV, 20*deg, 5*deg"  /jlab/work/clas12.gcard > gemc.log # internal generator
+gemc -USE_GUI=0 -N=1000 -INPUT_GEN_FILE="LUND, sidis.dat"   /jlab/work/clas12.gcard > gemc.log # clasdis
+gemc -USE_GUI=0 -N=1000 -INPUT_GEN_FILE="LUND, dis-rad.dat" /jlab/work/clas12.gcard > gemc.log # dis with radiative correction
+gemc -USE_GUI=0 -N=1000 -INPUT_GEN_FILE="LUND, dvcs.dat"    /jlab/work/clas12.gcard > gemc.log # clasdvcs
 
 echo after gemc
 ls -l

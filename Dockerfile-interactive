@@ -11,9 +11,9 @@
 #
 # The tag of this version is iprod
 #
-# 1. Remember to find/replace gemcinteractive with the newest one
-# 2. Remember to match clas12tags and JLAB_VERSION in environment.csh
-# 3. Remember to find/replace COATJTAG with the newest one
+#  1. Remember to find/replace gemcinteractive with the newest one
+#  2. Remember to match clas12tags and JLAB_VERSION in environment.csh
+#  3. Remember to find/replace COATJTAG with the newest one
 #
 #
 # To build manually:
@@ -28,12 +28,14 @@
 #
 # To run in batch mode:
 #
-#  docker run -it --rm maureeungaro/clas12simulations:iprod bash
+#   docker run -it --rm maureeungaro/clas12simulations:iprod bash
 #
 # On a mac, if you allow access from localhost with:
 #
-#  1. Activate the option ‘Allow connections from network clients’ in XQuartz settings (Restart XQuartz (to activate the setting)
-#  2. xhost +127.0.0.1
+#  1. Activate the option ‘Allow connections from network clients’ in XQuartz settings
+#  2. defaults write org.macosforge.xquartz.X11 enable_iglx -bool true
+#     (Restart XQuartz (to activate the setting)
+#  3. xhost +127.0.0.1
 #
 # Then you can run docker and use the local X server with:
 #
@@ -94,15 +96,32 @@ RUN git clone https://github.com/gemc/clas12Tags.git \
 	&& cd /jlab/2.3/claraHome/plugins/clas12/etc/bankdefs \
 	&& mkdir dst \
 	&& cd hipo \
-	&& cp *.json \
-	&& cp  HEADER.json MC.json EVENT.json ../dst/ \
+	# copying all banks in the interactive reconstruction. New services.yaml points to dst dir for the list of banks
+	&& cp *.json ../dst/ \
+	# && cp  HEADER.json MC.json EVENT.json ../dst/
 	&& rm /jlab/2.3/claraHome/plugins/clas12/config/services.yaml \
+	# temp removal of this jar
+	&& rm /jlab/2.3/claraHome/plugins/clas12/lib/utils/jclara-4.3-SNAPSHOT.jar \
 	# clasdis generator
 	&& cd /jlab/work \
 	&& git clone https://github.com/JeffersonLab/clasdis-nocernlib \
 	&& cd clasdis-nocernlib \
 	&& make \
-	&& cp clasdis $JLAB_SOFTWARE/clas12/bin
+	&& cp clasdis $JLAB_SOFTWARE/clas12/bin \
+	# inclusive dis with radiative correction
+	&& cd /jlab/work \
+	&& git clone https://github.com/JeffersonLab/inclusive-dis-rad.git \
+	&& cd inclusive-dis-rad \
+	&& make \
+	&& cp generate-dis $JLAB_SOFTWARE/clas12/bin \
+	# clasdvcs
+	&& cd /jlab/work \
+	&& git clone https://github.com/JeffersonLab/dvcsgen.git \
+	&& cd dvcsgen \
+	&& make \
+	&& cp dvcsgen $JLAB_SOFTWARE/clas12/bin
+
+
 
 ADD environment.csh     /etc/profile.d
 ADD environment.sh      /etc/profile.d
