@@ -14,8 +14,8 @@ ls -l
 # Readmes at:
 #
 # https://github.com/JeffersonLab/clasdis-nocernlib/blob/master/README.md
-# https://github.com/JeffersonLab/inclusive-dis-rad/blob/master/README.md
 # https://github.com/JeffersonLab/dvcsgen/blob/master/README.md
+# https://github.com/JeffersonLab/inclusive-dis-rad/blob/master/README.md
 
 clasdis --trig 10000 --docker      # sidis.dat
 generate-dis --trig 10000 --docker # dis-rad.dat

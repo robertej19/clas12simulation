@@ -126,5 +126,7 @@ RUN git clone https://github.com/gemc/clas12Tags.git \
 ADD environment.csh     /etc/profile.d
 ADD environment.sh      /etc/profile.d
 ADD services.yaml       /jlab/2.3/claraHome/plugins/clas12/config
+ADD services.yaml       /jlab/2.3/claraHome/plugins/clas12/config
+ADD createClaraCook.csh /jlab/2.3/Linux_CentOS7.5.1804-x86_64-gcc4.8.5/clas12/bin
 
 WORKDIR $JLAB_ROOT/work
