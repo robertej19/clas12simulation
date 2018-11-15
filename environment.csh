@@ -31,3 +31,6 @@ set autolist
 alias l ls -l
 alias lt ls -lt
 
+# CED
+setenv CLAS12DIR ${COATJAVA}
+
