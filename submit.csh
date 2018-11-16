@@ -49,7 +49,7 @@ echo "Reconstruction output: " out_gemc.hipo
 echo
 
 echo                 >> run.sh
-echo "gemc -USE_GUI=0 -N="$nevents -INPUT_GEN_FILE=\"lund, $genOutput\" >> run.sh
+echo "gemc -USE_GUI=0 -N="$nevents -INPUT_GEN_FILE=\"lund, $genOutput\" " "$gcard >> run.sh
 echo                 >> run.sh
 echo echo after gemc >> run.sh
 echo ls -l           >> run.sh
