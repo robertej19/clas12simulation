@@ -1,12 +1,21 @@
 #!/bin/csh -f
 
+if($#argv != 1) then
+	echo " "
+	echo "Usage:   "
+	echo  "  >> csh submit.csh steeringcard.txt"
+	echo " "
+	exit 0
+endif
+
+
 set cdir = `pwd`
 set pdir = /group/clas12/clas12simulations
 
 set file = $cdir/$1
 
-
 rm -f run.sh ; touch run.sh ; chmod u+x run.sh
+mkdir -p log
 
 # start log
 cat $pdir/startLog >> run.sh
@@ -63,3 +72,8 @@ echo                    >> run.sh
 
 # end log
 cat $pdir/endLog >> run.sh
+
+# now submitting job
+condor_submit /group/clas12/clas12simulations/clas12.condor
+
+
