@@ -2,13 +2,6 @@
 
 # initial job log
 
-printf "Start time: "; /bin/date
-printf "Job is running on node: "; /bin/hostname
-printf "Job running as user: "; /usr/bin/id
-printf "Job is running in directory: "; /bin/pwd
-
-echo starting files
-ls -l
 
 # using official gcard
 rm -f gemc.log

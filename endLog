@@ -1,0 +1,3 @@
+
+# final job log
+printf "Job finished time: "; /bin/date
