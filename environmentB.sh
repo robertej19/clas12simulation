@@ -15,6 +15,7 @@ export GEMC_VERSION=$CLAS12TAG
 
 source $JLAB_ROOT/$JLAB_VERSION/ce/jlab.sh keepmine
 export GEMC_DATA_DIR=/jlab/clas12Tags/$CLAS12TAG
+export FIELD_DIR=/jlab/noarch/data
 
 # CLAS12 Reconstruction
 export CLAS12_LIB=$JLAB_SOFTWARE/clas12/lib
