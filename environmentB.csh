@@ -2,7 +2,7 @@
 
 setenv JLAB_ROOT    /jlab
 setenv JLAB_VERSION 2.3
-setenv CLAS12TAG    4a.2.5
+setenv CLAS12TAG    4.3.0
 setenv JRE          jre1.8.0_191
 
 # sidis, inclusive dis with rad correction, dvcs

@@ -2,7 +2,7 @@
 
 export JLAB_ROOT=/jlab
 export JLAB_VERSION=2.3
-export CLAS12TAG=4a.2.5
+export CLAS12TAG=4.3.0
 export JRE=jre1.8.0_172
 
 # sidis, inclusive dis with rad correction, dvcs
