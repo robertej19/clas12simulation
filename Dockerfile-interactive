@@ -10,15 +10,14 @@
 # - clasdis, dvcd, disrad generator
 # - ced version 1.006
 #
-# The tag of this version is iprod
+#--------------------------------------------------------------------------
 #
 #  1. Remember to find/replace gemcinteractive version with the newest one
 #  2. Remember to match clas12tags and JLAB_VERSION in environment.csh
 #  3. Remember to find/replace COATJTAG with the newest one
 #  4. If it's a new production version build both the number and the iprod
 #
-#
-# To build manually. If building the production b
+# To build manually. Remember to tag also a version and "latest"
 #
 #   docker build -f Dockerfile-interactive -t clas12simulations:iprod .
 #   docker tag clas12simulations:iprod jeffersonlab/clas12simulations:iprod

@@ -4,36 +4,32 @@
 # It is based on gemcbatch:2.7 image and includes:
 #
 # - JLAB_VERSION 2.3
-# - clas12 tag 4.3.0
+# - clas12 tag 4a.2.5
 #
-# - coatjava 5.7.41
+# - coatjava 5b.7.1
 # - clasdis, dvcd, disrad generator
-# - ced version 1.006
+# - clasdis generator
 #
-#--------------------------------------------------------------------------
+# The tag of this version is iprod
 #
-#  1. Remember to find/replace gemcinteractive version with the newest one
+#  1. Remember to find/replace gemcinteractive with the newest one
 #  2. Remember to match clas12tags and JLAB_VERSION in environment.csh
 #  3. Remember to find/replace COATJTAG with the newest one
-#  4. If it's a new production version build both the number and the iprod
 #
-# To build manually. Remember to tag also a version and "latest"
+# The docker image is automatically built on hub.docker for every new commit (push) of the Dockerfile.
+# To build manually:
 #
 #   docker build -f Dockerfile -t clas12simulations:production .
-#   docker tag clas12simulations:production jeffersonlab/clas12simulations:production
-#   docker push jeffersonlab/clas12simulations:production
 #
+#   docker tag clas12simulations:production maureeungaro/clas12simulations:production
 #
-#
-#
-#
-#   No additional tags
+#   docker push maureeungaro/clas12simulations:production
 #
 #--------------------------------------------------------------------------
 #
 # To run in batch mode:
 #
-#   docker run -it --rm jeffersonlab/clas12simulations:production bash
+#   docker run -it --rm maureeungaro/clas12simulations:production bash
 #
 # On a mac, if you allow access from localhost with:
 #
@@ -44,7 +40,7 @@
 #
 # Then you can run docker and use the local X server with:
 #
-#  docker run -it --rm -e DISPLAY=docker.for.mac.localhost:0 jeffersonlab/clas12simulations:production bash
+#  docker run -it --rm -e DISPLAY=docker.for.mac.localhost:0 maureeungaro/clas12simulations:production bash
 #--------------------------------------------------------------------------
 
 FROM jeffersonlab/gemcbatch:2.7
@@ -52,12 +48,8 @@ LABEL maintainer "Maurizio Ungaro <ungaro@jlab.org>"
 
 ENV JLAB_ROOT /jlab
 ENV JLAB_VERSION 2.3
-ENV CLAS12TAG 4.3.0
-ENV COATJTAG 5.7.4
-
-
-
-
+ENV CLAS12TAG 4a.2.5
+ENV COATJTAG 5b.7.1
 
 # gfortran for clasdis generator
 RUN yum install -y gcc-gfortran

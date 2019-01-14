@@ -1,39 +1,38 @@
-#-------------------------------------------------------------------------------
-# docker image for CLAS12 Production Simulation - to be run in batch mode on OSG
+#--------------------------------------------------------------------------
+# docker image for CLAS12 Production Simulation to use interactively.
 #
-# It is based on gemcbatch:2.7 image and includes:
+# It is based on gemcinteractive:2.7 image and includes:
 #
 # - JLAB_VERSION 2.3
-# - clas12 tag 4.3.0
-#
-# - coatjava 5.7.41
+# - clas12 tag 4a.2.5
+# - clara 4.3.4
+# - coatjava 5b.7.1
 # - clasdis, dvcd, disrad generator
 # - ced version 1.006
 #
-#--------------------------------------------------------------------------
+# The tag of this version is iprod
 #
 #  1. Remember to find/replace gemcinteractive version with the newest one
 #  2. Remember to match clas12tags and JLAB_VERSION in environment.csh
 #  3. Remember to find/replace COATJTAG with the newest one
 #  4. If it's a new production version build both the number and the iprod
 #
-# To build manually. Remember to tag also a version and "latest"
 #
-#   docker build -f Dockerfile -t clas12simulations:production .
-#   docker tag clas12simulations:production jeffersonlab/clas12simulations:production
-#   docker push jeffersonlab/clas12simulations:production
+# To build manually. If building the production b
 #
+#   docker build -f Dockerfile-interactive -t clas12simulations:iprod .
+#   docker tag clas12simulations:iprod jeffersonlab/clas12simulations:iprod
+#   docker push jeffersonlab/clas12simulations:iprod
 #
-#
-#
-#
-#   No additional tags
+#   docker build -f Dockerfile-interactive -t clas12simulations:1.0 .
+#   docker tag clas12simulations:iprod jeffersonlab/clas12simulations:1.0
+#   docker push jeffersonlab/clas12simulations:1.0
 #
 #--------------------------------------------------------------------------
 #
 # To run in batch mode:
 #
-#   docker run -it --rm jeffersonlab/clas12simulations:production bash
+#   docker run -it --rm maureeungaro/clas12simulations:iprod bash
 #
 # On a mac, if you allow access from localhost with:
 #
@@ -44,23 +43,22 @@
 #
 # Then you can run docker and use the local X server with:
 #
-#  docker run -it --rm -e DISPLAY=docker.for.mac.localhost:0 jeffersonlab/clas12simulations:production bash
+#  docker run -it --rm -e DISPLAY=docker.for.mac.localhost:0 maureeungaro/clas12simulations:iprod bash
 #--------------------------------------------------------------------------
 
-FROM jeffersonlab/gemcbatch:2.7
+FROM jeffersonlab/gemcinteractive:2.7
 LABEL maintainer "Maurizio Ungaro <ungaro@jlab.org>"
 
 ENV JLAB_ROOT /jlab
 ENV JLAB_VERSION 2.3
-ENV CLAS12TAG 4.3.0
-ENV COATJTAG 5.7.4
-
-
-
-
+ENV CLAS12TAG 4a.2.5
+ENV COATJTAG 5b.7.1
 
 # gfortran for clasdis generator
-RUN yum install -y gcc-gfortran
+# xemacs to help users
+# libXtst for kpp-plots
+# libfonts for kpp-plots fonts
+RUN yum install -y gcc-gfortran xemacs libXtst libfonts
 
 WORKDIR $JLAB_ROOT
 
@@ -85,19 +83,29 @@ RUN git clone https://github.com/gemc/clas12Tags.git \
 	&& wget -q http://clasweb.jlab.org/12gev/field_maps/clas12NewSolenoidFieldMap.dat \
 	&& rm /etc/profile.d/jlab.csh \
 	&& rm /etc/profile.d/jlab.sh \
+	# reconstruction, clara and coatjava
 	&& mkdir -p $JLAB_SOFTWARE/clas12/lib \
 	&& mkdir -p $JLAB_SOFTWARE/clas12/bin \
 	&& mkdir -p $JLAB_SOFTWARE/clas12/inc \
-	&& cd $JLAB_SOFTWARE \
-	# JAVA from Oracle
-	# Get JRE tar.gz from https://www.oracle.com/technetwork/java/javase/downloads/index.html
-	# The .tar.gz is then put at JLAB on /site
-	&& wget --no-check-certificate https://www.jlab.org/12gev_phys/packages/sources/java/jre-8u191-linux-x64.tar.gz \
-	&& tar -zxpvf jre-8u191-linux-x64.tar.gz \
-	# reconstruction: coatjava
-	&& cd $JLAB_SOFTWARE/clas12 \
-	&& wget --no-check-certificate https://github.com/JeffersonLab/clas12-offline-software/releases/download/$COATJTAG/coatjava-$COATJTAG.tar.gz \
-	&& tar -zxpvf coatjava-$COATJTAG.tar.gz \
+	&& export CLARA_HOME=$JLAB_ROOT/$JLAB_VERSION/claraHome \
+	&& mkdir -p $CLARA_HOME /jlab/tmp \
+	&& cd /jlab/tmp \
+	&& wget  --no-check-certificate https://claraweb.jlab.org/clara/_downloads/install-claracre-clas.sh \
+	&& chmod u+x install-claracre-clas.sh \
+	&& ./install-claracre-clas.sh -v $COATJTAG -f 4.3.4 \
+	&& cd /jlab \
+	&& rm -rf tmp \
+	# the following comands create a dst directory (which must be pointed to in the yaml file)
+	# with a subset of the banks, thus effectively creating a dst schema
+	&& cd /jlab/2.3/claraHome/plugins/clas12/etc/bankdefs \
+	&& mkdir dst \
+	&& cd hipo \
+	# copying all banks in the interactive reconstruction. New services.yaml points to dst dir for the list of banks
+	&& cp *.json ../dst/ \
+	# && cp  HEADER.json MC.json EVENT.json ../dst/
+	&& rm /jlab/2.3/claraHome/plugins/clas12/config/services.yaml \
+	# temp removal of this jar
+	&& rm /jlab/2.3/claraHome/plugins/clas12/lib/utils/jclara-4.3-SNAPSHOT.jar \
 	# clasdis generator
 	&& cd /jlab/work \
 	&& git clone https://github.com/JeffersonLab/clasdis-nocernlib \
@@ -115,9 +123,17 @@ RUN git clone https://github.com/gemc/clas12Tags.git \
 	&& git clone https://github.com/JeffersonLab/dvcsgen.git \
 	&& cd dvcsgen \
 	&& make \
-	&& cp dvcsgen $JLAB_SOFTWARE/clas12/bin
+	&& cp dvcsgen $JLAB_SOFTWARE/clas12/bin \
+	# ced
+	&& cd /jlab/work \
+	&& wget https://userweb.jlab.org/~heddle/ced/builds/ced.1.006.tar.gz \
+	&& tar -zxpvf ced.1.006.tar.gz 
 
-ADD environmentB.csh     /etc/profile.d
-ADD environmentB.sh      /etc/profile.d
+
+
+ADD environment.csh     /etc/profile.d
+ADD environment.sh      /etc/profile.d
+ADD services.yaml       /jlab/2.3/claraHome/plugins/clas12/config
+ADD createClaraCook.csh /jlab/2.3/Linux_CentOS7.5.1804-x86_64-gcc4.8.5/clas12/bin
 
 WORKDIR $JLAB_ROOT/work
