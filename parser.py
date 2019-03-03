@@ -85,7 +85,7 @@ def write_clas12_condor(project, jobs):
     file.close()
     print "Done.\n"
 
-def write_runscirpt_sh(group, user, genExecutable, nevents, genOptions, genOutput, gcards, tcurrent, pcurrent):
+def write_runscript_sh(group, user, genExecutable, nevents, genOptions, genOutput, gcards, tcurrent, pcurrent):
     file_template = open("runscript.sh.template","r")
     str_template = file_template.read()
     file_template.close()

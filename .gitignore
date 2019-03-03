@@ -2,3 +2,6 @@
 *.log
 *.out
 *.err
+*.pyc
+clas12.condor
+runscript.sh

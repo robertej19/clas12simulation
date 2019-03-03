@@ -37,7 +37,7 @@ genExecutable = scard.genExecutable
 # overwrite clas12.condor
 write_clas12_condor(project,jobs)
 #overwrite runscript.sh
-write_runscirpt_sh(group,user,genExecutable, nevents, genOptions, genOutput, gcards, tcurrent, pcurrent)
+write_runscript_sh(group,user,genExecutable, nevents, genOptions, genOutput, gcards, tcurrent, pcurrent)
 
 #if submit flag turned on, submit
 if args.submit:
