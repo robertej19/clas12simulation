@@ -35,8 +35,8 @@ genOutput = scard.genOutput
 genExecutable = scard.genExecutable
 
 #give executable permission
-subprocess.call(["chmod","+X","run_job.sh"])
-subprocess.call(["chmod","+X","condor_wrapper"])
+os.chmod("run_job.sh", 0775)
+os.chmod("condor_wrapper", 0775)
 # overwrite clas12.condor
 write_clas12_condor(project,jobs)
 #overwrite runscript.sh
