@@ -80,3 +80,111 @@ Size = 1
 JOB_GLIDEIN_SiteWMS_JobId = "Unknown"
 MemoryUsage = 2
 ...
+006 (7298643.000.000) 03/02 21:25:43 Image size of job updated: 3159644
+	1143  -  MemoryUsage of job (MB)
+	1169632  -  ResidentSetSize of job (KB)
+...
+028 (7298643.000.000) 03/02 21:25:43 Job ad information event triggered.
+JOB_GLIDEIN_Name = "Unknown"
+JOB_GLIDEIN_ClusterId = "Unknown"
+JOB_GLIDEIN_SiteWMS = "Unknown"
+EventTypeNumber = 28
+Subproc = 0
+JOB_GLIDEIN_Gatekeeper = "Unknown"
+JOB_GLIDEIN_SiteWMS_Slot = "Unknown"
+MyType = "JobImageSizeEvent"
+TriggerEventTypeName = "ULOG_IMAGE_SIZE"
+JOB_Site = "MIT_CampusFactory"
+JOB_GLIDEIN_Site = "MIT_CampusFactory"
+Proc = 0
+EventTime = "2019-03-02T21:25:43"
+TriggerEventTypeNumber = 6
+ResidentSetSize = 1169632
+JOB_GLIDEIN_Schedd = "Unknown"
+Cluster = 7298643
+JOB_GLIDEIN_Entry_Name = "Unknown"
+JOB_GLIDEIN_ProcId = "Unknown"
+JOB_GLIDEIN_Factory = "Unknown"
+JOB_GLIDEIN_SiteWMS_Queue = "Unknown"
+Size = 3159644
+JOB_GLIDEIN_SiteWMS_JobId = "Unknown"
+MemoryUsage = 1143
+...
+006 (7298643.000.000) 03/02 21:26:07 Image size of job updated: 3209116
+	1143  -  MemoryUsage of job (MB)
+	1169632  -  ResidentSetSize of job (KB)
+...
+028 (7298643.000.000) 03/02 21:26:07 Job ad information event triggered.
+JOB_GLIDEIN_Name = "Unknown"
+JOB_GLIDEIN_ClusterId = "Unknown"
+JOB_GLIDEIN_SiteWMS = "Unknown"
+EventTypeNumber = 28
+Subproc = 0
+JOB_GLIDEIN_Gatekeeper = "Unknown"
+JOB_GLIDEIN_SiteWMS_Slot = "Unknown"
+MyType = "JobImageSizeEvent"
+TriggerEventTypeName = "ULOG_IMAGE_SIZE"
+JOB_Site = "MIT_CampusFactory"
+JOB_GLIDEIN_Site = "MIT_CampusFactory"
+Proc = 0
+EventTime = "2019-03-02T21:26:07"
+TriggerEventTypeNumber = 6
+ResidentSetSize = 1169632
+JOB_GLIDEIN_Schedd = "Unknown"
+Cluster = 7298643
+JOB_GLIDEIN_Entry_Name = "Unknown"
+JOB_GLIDEIN_ProcId = "Unknown"
+JOB_GLIDEIN_Factory = "Unknown"
+JOB_GLIDEIN_SiteWMS_Queue = "Unknown"
+Size = 3209116
+JOB_GLIDEIN_SiteWMS_JobId = "Unknown"
+MemoryUsage = 1143
+...
+005 (7298643.000.000) 03/02 21:26:08 Job terminated.
+	(1) Normal termination (return value 0)
+		Usr 0 00:04:12, Sys 0 00:00:06  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:04:12, Sys 0 00:00:06  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	1851277  -  Run Bytes Sent By Job
+	2793  -  Run Bytes Received By Job
+	1851277  -  Total Bytes Sent By Job
+	2793  -  Total Bytes Received By Job
+	Partitionable Resources :    Usage  Request Allocated
+	   Cpus                 :                 2         2
+	   Disk (KB)            :     1940        1   4570266
+	   Memory (MB)          :     1143     2048      2048
+...
+028 (7298643.000.000) 03/02 21:26:08 Job ad information event triggered.
+SentBytes = 1851277.0
+JOB_GLIDEIN_Name = "Unknown"
+TerminatedNormally = true
+ReturnValue = 0
+JOB_GLIDEIN_ClusterId = "Unknown"
+JOB_GLIDEIN_SiteWMS = "Unknown"
+EventTypeNumber = 28
+Subproc = 0
+JOB_GLIDEIN_Gatekeeper = "Unknown"
+ReceivedBytes = 2793.0
+JOB_GLIDEIN_SiteWMS_Slot = "Unknown"
+MyType = "JobTerminatedEvent"
+TriggerEventTypeName = "ULOG_JOB_TERMINATED"
+TotalRemoteUsage = "Usr 0 00:04:12, Sys 0 00:00:06"
+JOB_Site = "MIT_CampusFactory"
+JOB_GLIDEIN_Site = "MIT_CampusFactory"
+Proc = 0
+EventTime = "2019-03-02T21:26:08"
+TotalSentBytes = 1851277.0
+TriggerEventTypeNumber = 5
+TotalLocalUsage = "Usr 0 00:00:00, Sys 0 00:00:00"
+JOB_GLIDEIN_Schedd = "Unknown"
+Cluster = 7298643
+RunLocalUsage = "Usr 0 00:00:00, Sys 0 00:00:00"
+JOB_GLIDEIN_Entry_Name = "Unknown"
+JOB_GLIDEIN_Factory = "Unknown"
+JOB_GLIDEIN_ProcId = "Unknown"
+JOB_GLIDEIN_SiteWMS_Queue = "Unknown"
+RunRemoteUsage = "Usr 0 00:04:12, Sys 0 00:00:06"
+JOB_GLIDEIN_SiteWMS_JobId = "Unknown"
+TotalReceivedBytes = 2793.0
+...
