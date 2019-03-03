@@ -102,6 +102,7 @@ def write_runscirpt_sh(group, user, genExecutable, nevents, genOptions, genOutpu
     file = open("runscript.sh","w")
     file.write(str_script)
     file.close()
+    subprocess.call(["chmod","+X","runscript.sh"])
     print "Done.\n"
 
 def condor_submit():
