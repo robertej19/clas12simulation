@@ -81,7 +81,7 @@ def write_clas12_condor(project, jobs):
     str_script=str_script.replace('jobs_scard', jobs)
     hostname = socket.gethostname()
     if hostname == "scosg16.jlab.org":
-        str_script=str_script.replace("(GLIDEIN_Site == \"MIT_CampusFactory\" && BOSCOGroup == \"bosco_lns\") ","Requirements = HAS_SINGULARITY == TRUE")
+        str_script=str_script.replace("(GLIDEIN_Site == \"MIT_CampusFactory\" && BOSCOGroup == \"bosco_lns\") ","HAS_SINGULARITY == TRUE")
     print "overwrite \'clas12.condor\' in current directory ..."
     file = open("clas12.condor","w")
     file.write(str_script)
