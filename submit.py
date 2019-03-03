@@ -34,6 +34,9 @@ if float(scard.pcurrent)%10==0:
 genOutput = scard.genOutput
 genExecutable = scard.genExecutable
 
+#give executable permission
+subprocess.call(["chmod","+X","run_job.sh"])
+subprocess.call(["chmod","+X","condor_wrapper"])
 # overwrite clas12.condor
 write_clas12_condor(project,jobs)
 #overwrite runscript.sh
