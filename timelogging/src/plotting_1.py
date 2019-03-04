@@ -5,6 +5,11 @@ import matplotlib.pyplot as plt
 conn = sqlite3.connect('TimeLog.db')
 c = conn.cursor()
 
+def grab_color():
+    c.execute('SELECT nevents FROM JobLog')
+    nevents = list(c.fetchall())
+    return nevents
+
 def grab_data():
     c.execute('SELECT initialization, generation, gemc, evio2hipo, reconstruction, total FROM JobLog')
     dba = list(c.fetchall())
@@ -12,12 +17,15 @@ def grab_data():
 
 comps = ['initialization', 'generation', 'gemc', 'evio2hipo', 'reconstruction', 'total']
 sv = grab_data()
-
+colorbook = grab_color()
 #print " number of events: {0} \n number of jobs: {1}".format(scard_values[1],scard_values[2])
 
+colors = ['r','k','b']
+colornum = [1000,2000,4000]
 
 for i in range(0,49):
   y = sv[i]
+  line_color = colors[colornum.index(colorbook[i][0])]
   print(y)
   z = tuple([x/3600 for x in y])
   w=[z[0]]
@@ -25,6 +33,6 @@ for i in range(0,49):
     w.append(z[i]+w[i-1])
   #for j in range(0,len(y)):
   #  y[j] = y[j]/3600
-  plt.plot(comps, w)
+  plt.plot(comps, w, color = line_color)
 #plt.ylim(0,12)
 plt.show()
