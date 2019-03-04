@@ -1,4 +1,5 @@
 **/out_dir*
+*.db
 *.log
 *.out
 *.err

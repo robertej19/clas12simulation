@@ -45,4 +45,3 @@ transfer_output_files = out_dir$(Cluster)
 # QUEUE is the "start button" - it launches any jobs that have been
 # specified thus far. 1 means launch only 1 job
 Queue jobs_scard
-

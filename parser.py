@@ -1,4 +1,4 @@
-import argparse, sys, os, subprocess
+import argparse, sys, os, subprocess, socket
 
 # declare a global dictionary to match genOutput and genExecutable to generator row
 genOutput= {'clasdis': 'sidis.dat', 'dvcs': 'dvcs.dat','disrad':'dis-rad.dat'}
@@ -79,6 +79,9 @@ def write_clas12_condor(project, jobs):
     file_template.close()
     str_script=str_template.replace('project_scard', project)
     str_script=str_script.replace('jobs_scard', jobs)
+    hostname = socket.gethostname()
+    if hostname == "scosg16.jlab.org":
+        str_script=str_script.replace("(GLIDEIN_Site == \"MIT_CampusFactory\" && BOSCOGroup == \"bosco_lns\") ","HAS_SINGULARITY == TRUE")
     print "overwrite \'clas12.condor\' in current directory ..."
     file = open("clas12.condor","w")
     file.write(str_script)
@@ -102,7 +105,8 @@ def write_runscript_sh(group, user, genExecutable, nevents, genOptions, genOutpu
     file = open("runscript.sh","w")
     file.write(str_script)
     file.close()
-    subprocess.call(["chmod","+x","runscript.sh"])
+   #subprocess.call(["chmod","+x","runscript.sh"])
+    os.chmod("runscript.sh", 0775)
     print "Done.\n"
 
 def condor_submit():
