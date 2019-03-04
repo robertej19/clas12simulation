@@ -5,10 +5,6 @@
 # This also assumes that run times do NOT cross over days, which NEEDS to be addressed
 import os
 
-components = ['initialization','generation','gemc','evio2hipo','reconstruction','total']
-
-filename = 'job.7299011.7.out'
-
 def swapper(ar):
   ar[0],ar[1],ar[2],ar[3],ar[4],ar[5] = ar[4],ar[3],ar[2],ar[1],ar[0],ar[5]
   return ar
@@ -44,8 +40,7 @@ def runtimes(ta):
   runtime.append(sum(runtime))
   return runtime
 
-p, t = job_out_reader(filename) #p here is actually not useful
-
-useable_times = timeconvert(t)
-print components
-print runtimes(useable_times)
+def parse_times(filename):
+  p, t = job_out_reader(filename) #p here is actually not useful
+  useable_times = timeconvert(t)
+  return runtimes(useable_times)
