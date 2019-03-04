@@ -1,4 +1,4 @@
-#!/bin/csh 
+#!/bin/csh
 
 set script_start  = `date`
 
@@ -84,8 +84,8 @@ echo creating directory
 mkdir out_dir$ClusterId
 echo moving file
 mv out.$ProcId.ev out_dir$ClusterId
-mv out_gemc.hipo out_gemc.$ProcId.hipo
-mv out_gemc.$ProcId.hipo out_dir$ClusterId
+mv out_gemc.hipo out_gemc.nevents_scard.genExecutable_scard.$ProcId.hipo
+mv out_gemc.nevents_scard.genExecutable_scard.$ProcId.hipo out_dir$ClusterId
 
 #final job log
 printf "Job finished time: "; /bin/date

@@ -10,7 +10,7 @@ Requirements  = (GLIDEIN_Site == "MIT_CampusFactory" && BOSCOGroup == "bosco_lns
 +SingularityImage = "/cvmfs/singularity.opensciencegrid.org/jeffersonlab/clas12simulations:production"
 +SingularityBindCVMFS = True
 
-request_cpus = 2
+request_cpus = 1
 request_memory = 2 GB
 
 # EXECUTABLE is the program your job will run It's often useful
