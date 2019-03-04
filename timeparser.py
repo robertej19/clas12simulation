@@ -1,23 +1,51 @@
+#Note: This workin is EXTREMELY contingent on having a certain structure in the log output files
+#IF the structur of the output files are changed, this script must be changed accordingly.
+#This needs to be fixed for code maintaince purposes. Perhaps write directly to logging database instead of parsing log files
+# This is written in python2
+# This also assumes that run times do NOT cross over days, which NEEDS to be addressed
 import os
+
+components = ['initialization','generation','gemc','evio2hipo','reconstruction','total']
 
 filename = 'job.7299011.7.out'
 
-lineno = 0
+def swapper(ar):
+  ar[0],ar[1],ar[2],ar[3],ar[4],ar[5] = ar[4],ar[3],ar[2],ar[1],ar[0],ar[5]
+  return ar
 
-def split_line(text):
-    # split the text
-    words = text.split()
-    # for each word in the line:
-    for word in words:
+def timeconvert(timearray): #assumes timestamp entries of form 'HH:MM:SS'
+  i = 0
+  for item in timearray:
+    tb = item.split(':')
+    daytime = int(tb[0])*3600+int(tb[1])*60+int(tb[2])
+    timearray[i] = daytime
+    i +=1
+  return timearray
 
-        # print the word
-        print(words)
+def job_out_reader(filename):
+  process = []
+  timestamp = []
+  lineno = 0
+  for line in reversed(open('log/'+filename).readlines()): # This is inefficent as it has to read in the whole file. Change this to a better method if needed. For now, it works.
+    words = line.split()
+    process.append(words[0])
+    timestamp.append(words[6])
+    lineno +=1
+    if lineno > 5:
+        break
+  swapper(process)
+  swapper(timestamp)
+  return process, timestamp
 
-for line in reversed(open('log/'+filename).readlines()):
-  #print line.rstrip()
-  #print line
-  words = line.split()
-  print words
-  lineno +=1
-  if lineno > 5:
-      break
+def runtimes(ta):
+  runtime = []
+  for i in range(0,len(ta)-1):
+    runtime.append(ta[i+1] - ta[i])
+  runtime.append(sum(runtime))
+  return runtime
+
+p, t = job_out_reader(filename) #p here is actually not useful
+
+useable_times = timeconvert(t)
+print components
+print runtimes(useable_times)
