@@ -26,4 +26,5 @@ for i in range(0,49):
   #for j in range(0,len(y)):
   #  y[j] = y[j]/3600
   plt.plot(comps, w)
+#plt.ylim(0,12)
 plt.show()
