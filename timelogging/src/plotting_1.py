@@ -20,7 +20,7 @@ sv = grab_data()
 colorbook = grab_color()
 #print " number of events: {0} \n number of jobs: {1}".format(scard_values[1],scard_values[2])
 
-colors = ['r','k','b']
+colors = ['k','r','b']
 colornum = [1000,2000,4000]
 
 for i in range(0,49):
@@ -34,5 +34,11 @@ for i in range(0,49):
   #for j in range(0,len(y)):
   #  y[j] = y[j]/3600
   plt.plot(comps, w, color = line_color)
-#plt.ylim(0,12)
+plt.title('Processing Time for Simulation Runs', fontsize=24)
+plt.ylabel("Real Time (Hours)", fontsize=22)
+#plt.xlabel("Computation Process", fontsize=18)
+plt.xticks(fontsize=20)
+plt.yticks(fontsize=20)
+#plt.legend(loc="best")
+plt.tight_layout()
 plt.show()
