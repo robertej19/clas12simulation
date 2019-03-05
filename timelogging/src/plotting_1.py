@@ -23,17 +23,40 @@ colorbook = grab_color()
 colors = ['k','r','b']
 colornum = [1000,2000,4000]
 
-init=[]
-gen = []
-gemc = []
-evio = []
-recon = []
+init4=[]
+gen4 = []
+gemc4 = []
+evio4 = []
+recon4 = []
+init2=[]
+gen2 = []
+gemc2 = []
+evio2 = []
+recon2 = []
+init1=[]
+gen1 = []
+gemc1 = []
+evio1 = []
+recon1 = []
 for i in range(0,49):
-  init.append(sv[i][0])
-  gen.append(sv[i][1])
-  gemc.append(sv[i][2])
-  evio.append(sv[i][3])
-  recon.append(sv[i][4])
+  if colorbook[i][0] == 1000:
+    init1.append(sv[i][0])
+    gen1.append(sv[i][1])
+    gemc1.append(sv[i][2])
+    evio1.append(sv[i][3])
+    recon1.append(sv[i][4])
+  elif colorbook[i][0] == 2000:
+    init2.append(sv[i][0])
+    gen2.append(sv[i][1])
+    gemc2.append(sv[i][2])
+    evio2.append(sv[i][3])
+    recon2.append(sv[i][4])
+  elif colorbook[i][0] == 4000:
+    init4.append(sv[i][0])
+    gen4.append(sv[i][1])
+    gemc4.append(sv[i][2])
+    evio4.append(sv[i][3])
+    recon4.append(sv[i][4])
   y = (0,)+sv[i]
   line_color = colors[colornum.index(colorbook[i][0])]
   print(y)
@@ -58,15 +81,37 @@ def avs(array):
   return ave
 
 labels = comps[:-1]
-sizes = [avs(init),avs(gen),avs(gemc),avs(evio),avs(recon)]
+
+a = avs(init4)
+b = avs(gen4)
+c = avs(gemc4)
+d = avs(evio4)
+e = avs(recon4)
+
+sizes = [a,b,c,d,e]
 colors = ['black','gold', 'yellowgreen', 'lightcoral', 'lightskyblue']
-explode = (0,0,0,0,0)  # explode 1st slice
+explode = (0.1,0.1,0,0.1,0)  # explode 1st slice
 
 # Plot
 #plt.pie(sizes, explode=explode, labels=labels, colors=colors,
 #autopct='%1.1f%%', shadow=True, startangle=140)
-plt.pie(sizes, explode=explode, labels=labels, colors=colors,
-autopct='%1.1f%%')
+plt.pie(sizes, explode=explode,colors=colors, startangle=90)
 
 plt.axis('equal')
+plt.show()
+
+print('SIZEES')
+for i in range(0,len(sizes)):
+  print(sizes[i]/sum(sizes)*100)
+sizes1 = [0,a,b,c,d,e]
+
+
+plt.plot(comps, sizes1, color = 'b')
+plt.title('Processing Time for Simulation Runs', fontsize=24)
+plt.ylabel("Real Time (Hours)", fontsize=22)
+#plt.xlabel("Computation Process", fontsize=18)
+plt.xticks(fontsize=20)
+plt.yticks(fontsize=20)
+#plt.legend(loc="best")
+plt.tight_layout()
 plt.show()
