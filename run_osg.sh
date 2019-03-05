@@ -1,7 +1,27 @@
 #!/bin/csh
 
-# initial job log
+set script_start  = `date`
 
+echo " ==== PWD"
+pwd
+
+echo " ==== ./"
+ls -lhrt ./
+
+echo " ==== /etc/profile.d/"
+ls -lhrt /etc/profile.d/
+
+echo " ==== ENV"
+env
+
+set ClusterId = ` awk -F '=' '/^ClusterId/ {print $2}' $PWD/.job.ad`
+echo ClusterId $ClusterId
+
+
+set ProcId = ` awk -F '=' '/^ProcId/ {print $2}' $PWD/.job.ad`
+echo ProcId $ProcId
+
+mkdir out_dir$ClusterId
 
 # using official gcard
 rm -f gemc.log
@@ -27,4 +47,3 @@ echo
 
 # final job log
 printf "Job finished time: "; /bin/date
-
