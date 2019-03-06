@@ -26,7 +26,7 @@ Log    = log/job.$(Cluster).$(Process).log
 # periodic_release =  (NumJobStarts < 5) && ((CurrentTime - EnteredCurrentStatus) > 60*60)
 
 # default CLAS12 project
-+ProjectName = "osg.clas12MC"
++ProjectName = "project_scard"
 
 
 # Input files. Do not add comments after the file list
@@ -34,8 +34,10 @@ Log    = log/job.$(Cluster).$(Process).log
 
 # output
 # should_transfer_files = YES
+# transfer_input_files=runscript.sh,condor_wrapper
 when_to_transfer_output = ON_EXIT
+transfer_output_files = out_dir$(Cluster)
 
 # QUEUE is the "start button" - it launches any jobs that have been
 # specified thus far. 1 means launch only 1 job
-Queue 1
+Queue jobs_scard
