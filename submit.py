@@ -46,7 +46,7 @@ if hostname == "submit.mit.edu":
     write_runscript_sh(group,user,genExecutable, nevents, genOptions, genOutput, gcards, tcurrent, pcurrent)
 elif hostname == "scosg16.jlab.org":
     write_clas12_osg_condor(project,jobs)
-    write_runscript_sh(group,user,genExecutable, nevents, genOptions, genOutput, gcards, tcurrent, pcurrent)
+    write_runscript_osg_sh(group,user,genExecutable, nevents, genOptions, genOutput, gcards, tcurrent, pcurrent)
 else:
     # str_script=str_script.replace("(GLIDEIN_Site == \"MIT_CampusFactory\" && BOSCOGroup == \"bosco_lns\") ","HAS_SINGULARITY == TRUE")
     #give executable permission
