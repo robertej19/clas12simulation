@@ -78,8 +78,8 @@ mv out_gemc.hipo out_gemc.nevents_scard.genExecutable_scard.$ProcId.hipo
 mv out_gemc.nevents_scard.genExecutable_scard.$ProcId.hipo out_dir$ClusterId
 
 #clearing log files
-mv e2h.log out_dir$ClusterId
-mv gemc.log out_dir$ClusterId
+rm -f gemc.log
+rm -f e2h.log
 
 #final job log
 printf "Job finished time: "; /bin/date
