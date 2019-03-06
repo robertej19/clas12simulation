@@ -59,7 +59,7 @@ else:
 print "Event generator"
 print genExecutable+" --trig " +nevents +" --docker "+ genOptions
 print "\nGEMC"
-print "gemc -USE_GUI=0 -N="+nevents+" -INPUT_GEN_FILE=\"lund, "+genOutput+"\"  gcards_scard"
+print "gemc -USE_GUI=0 -N="+nevents+" -INPUT_GEN_FILE=\"lund, "+genOutput+"\" "+  gcards
 print "\nDecoder"
 print "evio2hipo -r 11 -t " +tcurrent+" -s "+ pcurrent+" -i out.ev -o gemc.hipo"
 print "\nCooking"
