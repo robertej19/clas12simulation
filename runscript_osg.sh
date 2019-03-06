@@ -2,15 +2,6 @@
 
 set script_start  = `date`
 
-# source /cvmfs/cms.cern.ch/cmsset_default.csh
-
-echo "XXXXXXXXXXXX"
-#cat $PWD/.job.ad
-echo "XXXXXXXXXXXX"
-echo "Submitted by mungaro, rgaDIS"
-
-uname -a
-
 echo " ==== PWD"
 pwd
 
@@ -23,11 +14,6 @@ ls -lhrt /etc/profile.d/
 echo " ==== ENV"
 env
 
-source /etc/profile.d/environmentB.csh
-cd /tmp
-
-#set ClusterId = `sed -n '0,/ClusterId = "\([^"]*\)"/\1/p' $PWD/.job.ad`
-
 set ClusterId = ` awk -F '=' '/^ClusterId/ {print $2}' $PWD/.job.ad`
 echo ClusterId $ClusterId
 
@@ -35,11 +21,15 @@ echo ClusterId $ClusterId
 set ProcId = ` awk -F '=' '/^ProcId/ {print $2}' $PWD/.job.ad`
 echo ProcId $ProcId
 
+mkdir out_dir$ClusterId
 
+
+# initial job log
 printf "Start time: "; /bin/date
 printf "Job is running on node: "; /bin/hostname
 printf "Job running as user: "; /usr/bin/id
 printf "Job is running in directory: "; /bin/pwd
+
 
 echo
 echo JLAB_ROOT: $JLAB_ROOT
@@ -76,16 +66,20 @@ ls -l
 
 echo Moving file
 echo $ClusterId
-mv out.ev out.$ProcId.ev
+mv gemc.hipo gemc.$ProcId.hipo
 echo File moved
-echo `basename out.$ProcId.ev`
+echo `basename gemc.$ProcId.hipo`
 
 echo creating directory
 mkdir out_dir$ClusterId
 echo moving file
-mv out.$ProcId.ev out_dir$ClusterId
+mv gemc.$ProcId.hipo out_dir$ClusterId
 mv out_gemc.hipo out_gemc.10.clasdis.$ProcId.hipo
 mv out_gemc.10.clasdis.$ProcId.hipo out_dir$ClusterId
+
+#clearing log files
+rm -f gemc.log
+rm -f e2h.log
 
 #final job log
 printf "Job finished time: "; /bin/date
