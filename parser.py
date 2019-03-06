@@ -79,9 +79,9 @@ def write_clas12_condor(project, jobs):
     file_template.close()
     str_script=str_template.replace('project_scard', project)
     str_script=str_script.replace('jobs_scard', jobs)
-    hostname = socket.gethostname()
-    if hostname == "scosg16.jlab.org":
-        str_script=str_script.replace("(GLIDEIN_Site == \"MIT_CampusFactory\" && BOSCOGroup == \"bosco_lns\") ","HAS_SINGULARITY == TRUE")
+    # hostname = socket.gethostname()
+    # if hostname == "scosg16.jlab.org":
+    #     str_script=str_script.replace("(GLIDEIN_Site == \"MIT_CampusFactory\" && BOSCOGroup == \"bosco_lns\") ","HAS_SINGULARITY == TRUE")
     print "overwrite \'clas12.condor\' in current directory ..."
     file = open("clas12.condor","w")
     file.write(str_script)
@@ -109,6 +109,47 @@ def write_runscript_sh(group, user, genExecutable, nevents, genOptions, genOutpu
     os.chmod("runscript.sh", 0775)
     print "Done.\n"
 
+def write_clas12_osg_condor(project, jobs):
+    file_template = open("clas12_osg.condor.template","r")
+    str_template = file_template.read()
+    file_template.close()
+    str_script=str_template.replace('project_scard', project)
+    str_script=str_script.replace('jobs_scard', jobs)
+    # hostname = socket.gethostname()
+    # if hostname == "scosg16.jlab.org":
+    #     str_script=str_script.replace("(GLIDEIN_Site == \"MIT_CampusFactory\" && BOSCOGroup == \"bosco_lns\") ","HAS_SINGULARITY == TRUE")
+    print "overwrite \'clas12_osg.condor\' in current directory ..."
+    file = open("clas12_osg.condor","w")
+    file.write(str_script)
+    file.close()
+    print "Done.\n"
+
+def write_runscript_osg_sh(group, user, genExecutable, nevents, genOptions, genOutput, gcards, tcurrent, pcurrent):
+    file_template = open("runscript_osg.sh.template","r")
+    str_template = file_template.read()
+    file_template.close()
+    str_script=str_template.replace('group_scard', group)
+    str_script=str_script.replace('user_scard',user)
+    str_script=str_script.replace('genExecutable_scard', genExecutable)
+    str_script=str_script.replace('nevents_scard', nevents)
+    str_script=str_script.replace('genOptions_scard', genOptions)
+    str_script=str_script.replace('genOutput_scard', genOutput)
+    str_script=str_script.replace('gcards_scard', gcards)
+    str_script=str_script.replace('tcurrent_scard', tcurrent)
+    str_script=str_script.replace('pcurrent_scard', pcurrent)
+    print "overwrite \'runscript_osg.sh\' in current directory ..."
+    file = open("runscript_osg.sh","w")
+    file.write(str_script)
+    file.close()
+   #subprocess.call(["chmod","+x","runscript_osg.sh"])
+    os.chmod("runscript_osg.sh", 0775)
+    print "Done.\n"
+
+
 def condor_submit():
     print "submitting jobs from python script...\n"
     subprocess.call(["condor_submit","clas12.condor"])
+
+def condor_osg_submit():
+    print "submitting jobs from python script...\n"
+    subprocess.call(["condor_submit","clas12_osg.condor"])
