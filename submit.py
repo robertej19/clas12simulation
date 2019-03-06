@@ -57,7 +57,7 @@ else:
     #overwrite runscript.sh
     write_runscript_sh(group,user,genExecutable, nevents, genOptions, genOutput, gcards, tcurrent, pcurrent)
 print "Event generator"
-print genExecutable+" --trig " +nevents +" --docker "+ genOptions_scard
+print genExecutable+" --trig " +nevents +" --docker "+ genOptions
 print "\nGEMC"
 print "gemc -USE_GUI=0 -N="+nevents+" -INPUT_GEN_FILE=\"lund, "+genOutput+"\"  gcards_scard"
 print "\nDecoder"
