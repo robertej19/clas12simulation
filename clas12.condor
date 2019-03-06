@@ -6,7 +6,7 @@ Universe = vanilla
 
 # singularity image
 
-Requirements  = (GLIDEIN_Site == "MIT_CampusFactory" && BOSCOGroup == "bosco_lns") 
+Requirements  = (GLIDEIN_Site == "MIT_CampusFactory" && BOSCOGroup == "bosco_lns")
 +SingularityImage = "/cvmfs/singularity.opensciencegrid.org/jeffersonlab/clas12simulations:production"
 +SingularityBindCVMFS = True
 
@@ -37,9 +37,9 @@ Log    = log/job.$(Cluster).$(Process).log
 # transfer_input_files = cook.csh
 
 # output
-should_transfer_files = YES
+# should_transfer_files = YES
+# transfer_input_files=runscript.sh,condor_wrapper
 when_to_transfer_output = ON_EXIT
-transfer_input_files=runscript.sh,condor_wrapper
 transfer_output_files = out_dir$(Cluster)
 
 # QUEUE is the "start button" - it launches any jobs that have been
