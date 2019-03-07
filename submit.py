@@ -24,7 +24,7 @@ genOptions = scard.genOptions
 gcards = scard.gcards
 jobs = scard.jobs
 project = scard.project
-luminosity =  '%1.2f'%(124000 * float(scard.luminosity))
+luminosity =  '%1.2f'%(124000 * float(scard.luminosity)/100)
 if float(scard.luminosity) == 0:
     print "Warning: luminosity is 0. GEMC will run with 100% luminosity."
     luminosity = '124000'
@@ -63,7 +63,7 @@ else:
     write_runscript_sh(group,user,genExecutable, nevents, genOptions, genOutput, gcards, tcurrent, pcurrent)
 print "Event generator"
 print genExecutable+" --trig " +nevents +" --docker "+ genOptions
-print "\nGEMC"
+print "\nGEMC with luminosity " + scard.luminosity + "% of 124000"
 print "gemc -USE_GUI=0 -N="+nevents+" -INPUT_GEN_FILE=\"lund, "+genOutput+"\" "+  gcards +" -LUMI_EVENT=\""+luminosity+", 248.5*ns, 4*ns\" -LUMI_P=\"e-, 10.6*GeV, 0*deg, 0*deg\" -LUMI_V=\"(0.0, 0.0, -10)cm\" -LUMI_SPREAD_V=\"(0.03, 0.03)cm\""
 print "\nDecoder"
 print "evio2hipo -r 11 -t " +tcurrent+" -s "+ pcurrent+" -i out.ev -o gemc.hipo"
