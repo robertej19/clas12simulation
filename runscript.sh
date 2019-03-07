@@ -48,14 +48,14 @@ echo
 echo starting files
 ls -l
 set generator_start  = `date`
-clasdis --trig 10 --docker --t 20 25
+clasdis --trig 1000 --docker --t 20 25
 #dvcsgen --trig 71 --docker
 
 echo after generator
 echo test finish
 ls -l
 set gemc_start = `date`
-gemc -USE_GUI=0 -N=10 -INPUT_GEN_FILE="lund, sidis.dat"  /jlab/work/clas12.gcard
+gemc -USE_GUI=0 -N=1000 -INPUT_GEN_FILE="lund, sidis.dat"  /jlab/work/clas12.gcard
 
 echo after gemc
 ls -l
@@ -84,8 +84,8 @@ echo creating directory
 mkdir out_dir$ClusterId
 echo moving file
 mv out.$ProcId.ev out_dir$ClusterId
-mv out_gemc.hipo out_gemc.10.clasdis.$ProcId.hipo
-mv out_gemc.10.clasdis.$ProcId.hipo out_dir$ClusterId
+mv out_gemc.hipo out_gemc.1000.clasdis.$ProcId.hipo
+mv out_gemc.1000.clasdis.$ProcId.hipo out_dir$ClusterId
 
 #final job log
 printf "Job finished time: "; /bin/date

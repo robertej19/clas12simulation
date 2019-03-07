@@ -66,6 +66,8 @@ print "\nCooking"
 print "notsouseful-util -i gemc.hipo -o out_gemc.hipo -c 2"
 #if submit flag turned on, submit
 if args.submit:
+    #make log directory
+    subprocess.call(["mkdir","-p","log"])
     if hostname == "submit.mit.edu":
         condor_submit()
     elif hostname == "scosg16.jlab.org":
