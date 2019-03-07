@@ -38,9 +38,9 @@ hostname = socket.gethostname()
 if hostname == "submit.mit.edu":
     # str_script=str_script.replace("(GLIDEIN_Site == \"MIT_CampusFactory\" && BOSCOGroup == \"bosco_lns\") ","HAS_SINGULARITY == TRUE")
     #give executable permission
-    subprocess(["cp",filepath+"run_job.sh","."])
+    subprocess.call(["cp",parser_path+"/run_job.sh","."])
     os.chmod("run_job.sh", 0775)
-    subprocess(["cp",filepath+"condor_wrapper","."])
+    subprocess.call(["cp",parser_path+"/condor_wrapper","."])
     os.chmod("condor_wrapper", 0775)
     # overwrite clas12.condor
     write_clas12_condor(project,jobs)

@@ -74,7 +74,7 @@ class scard_parser:
         self.genExecutable = genExecutable.get(self.data.get("generator"))
 
 def write_clas12_condor(project, jobs):
-    file_template = open(parser_path+"clas12.condor.template","r")
+    file_template = open(parser_path+"/clas12.condor.template","r")
     str_template = file_template.read()
     file_template.close()
     str_script=str_template.replace('project_scard', project)
@@ -89,7 +89,7 @@ def write_clas12_condor(project, jobs):
     print "Done.\n"
 
 def write_runscript_sh(group, user, genExecutable, nevents, genOptions, genOutput, gcards, tcurrent, pcurrent):
-    file_template = open(parser_path+"runscript.sh.template","r")
+    file_template = open(parser_path+"/runscript.sh.template","r")
     str_template = file_template.read()
     file_template.close()
     str_script=str_template.replace('group_scard', group)
@@ -110,7 +110,7 @@ def write_runscript_sh(group, user, genExecutable, nevents, genOptions, genOutpu
     print "Done.\n"
 
 def write_clas12_osg_condor(project, jobs):
-    file_template = open(parser_path+"clas12_osg.condor.template","r")
+    file_template = open(parser_path+"/clas12_osg.condor.template","r")
     str_template = file_template.read()
     file_template.close()
     str_script=str_template.replace('project_scard', project)
@@ -125,7 +125,7 @@ def write_clas12_osg_condor(project, jobs):
     print "Done.\n"
 
 def write_runscript_osg_sh(group, user, genExecutable, nevents, genOptions, genOutput, gcards, tcurrent, pcurrent):
-    file_template = open(parser_path+"runscript_osg.sh.template","r")
+    file_template = open(parser_path+"/runscript_osg.sh.template","r")
     str_template = file_template.read()
     file_template.close()
     str_script=str_template.replace('group_scard', group)
