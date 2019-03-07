@@ -98,6 +98,11 @@ def write_runscript_sh(group, user, genExecutable, nevents, genOptions, genOutpu
     str_script=str_script.replace('nevents_scard', nevents)
     str_script=str_script.replace('genOptions_scard', genOptions)
     str_script=str_script.replace('genOutput_scard', genOutput)
+    if luminosity == '0':
+        LUMIOPTION = ''
+    else:
+        LUMIOPTION = ' -LUMI_EVENT=\"'+luminosity+', 248.5*ns, 4*ns\" -LUMI_P=\"e-, 10.6*GeV, 0*deg, 0*deg\" -LUMI_V=\"(0.0, 0.0, -10)cm\" -LUMI_SPREAD_V=\"(0.03, 0.03)cm\"'
+    str_script=str_script.replace('LUMIOPTION_scard', LUMIOPTION)
     str_script=str_script.replace('gcards_scard', gcards)
     str_script=str_script.replace('NLUMI_scard', luminosity)
     str_script=str_script.replace('tcurrent_scard', tcurrent)
@@ -136,7 +141,11 @@ def write_runscript_osg_sh(group, user, genExecutable, nevents, genOptions, genO
     str_script=str_script.replace('genOptions_scard', genOptions)
     str_script=str_script.replace('genOutput_scard', genOutput)
     str_script=str_script.replace('gcards_scard', gcards)
-    str_script=str_script.replace('NLUMI_scard', luminosity)
+    if luminosity == '0':
+        LUMIOPTION = ''
+    else:
+        LUMIOPTION = ' -LUMI_EVENT=\"'+luminosity+', 248.5*ns, 4*ns\" -LUMI_P=\"e-, 10.6*GeV, 0*deg, 0*deg\" -LUMI_V=\"(0.0, 0.0, -10)cm\" -LUMI_SPREAD_V=\"(0.03, 0.03)cm\"'
+    str_script=str_script.replace('LUMIOPTION_scard', LUMIOPTION)
     str_script=str_script.replace('tcurrent_scard', tcurrent)
     str_script=str_script.replace('pcurrent_scard', pcurrent)
     print "overwrite \'runscript_osg.sh\' in current directory ..."
