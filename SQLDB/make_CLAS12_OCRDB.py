@@ -6,7 +6,10 @@ import sqlite3
 #Note: "Group" is a reserved word in SQL and so cannot be used for field name
 # https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=RSQL_reservedwords
 #Field tuples contain all fields except for PK
+
+"""***************************************************************************"""
 """ DB Schema Specification """
+
 scard_fields = (('UserID','TEXT'),('Group_name','INT'),('User','INT'),('Nevents','INT'),
                 ('Generator','TEXT'),('GenOptions','TEXT'),('Gcards','TEXT'),('Jobs','INT'),
                 ('Project','TEXT'),('Luminosity','INT'),('Tcurrent','INT'),('Pcurrent','INT'),
@@ -23,10 +26,11 @@ jobslog_fields = (('BatchID', 'TEXT'),('UserID','TEXT'),('Job_Submission_Datesta
 tables = ['Users','Scards','JobsLog']
 table_fields = [users_fields,scard_fields,jobslog_fields]
 
-conn = sqlite3.connect('CLAS12_OCRDB.db')
-c = conn.cursor()
+"""***************************************************************************"""
+"""***************************************************************************"""
+""" Function definitions"""
 
-def create_tableX():
+def create_tables():
     c.execute('CREATE TABLE IF NOT EXISTS Scards(BatchID integer primary key autoincrement)')
     c.execute('CREATE TABLE IF NOT EXISTS Users(UserID integer primary key autoincrement)')
     c.execute('CREATE TABLE IF NOT EXISTS JobsLog(JobID integer primary key autoincrement)')
@@ -37,18 +41,23 @@ def add_column(tablename,field_name,field_type):
   print(field_type)
   c.execute('ALTER TABLE %s ADD COLUMN %s %s' % (tablename,field_name, field_type))
 
-create_tableX()
 
-
-def field_writer(table_name,arr):
+def write_fields(table_name,arr):
   for i in range(0,len(arr)):
     add_column(table_name,arr[i][0],arr[i][1])
 
-for i in range(0,len(tables)):
-  print(tables[i])
-  print(table_fields[i])
-  field_writer(tables[i],table_fields[i])
 
+"""***************************************************************************"""
+""" Code execution"""
+
+conn = sqlite3.connect('CLAS12_OCRDB.db')
+c = conn.cursor()
+
+create_tables()
+
+for i in range(0,len(tables)):
+  write_fields(tables[i],table_fields[i])
 
 c.close()
 conn.close()
+"""***************************************************************************"""
