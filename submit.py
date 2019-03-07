@@ -38,7 +38,9 @@ hostname = socket.gethostname()
 if hostname == "submit.mit.edu":
     # str_script=str_script.replace("(GLIDEIN_Site == \"MIT_CampusFactory\" && BOSCOGroup == \"bosco_lns\") ","HAS_SINGULARITY == TRUE")
     #give executable permission
+    subprocess(["cp",filepath+"run_job.sh","."])
     os.chmod("run_job.sh", 0775)
+    subprocess(["cp",filepath+"condor_wrapper","."])
     os.chmod("condor_wrapper", 0775)
     # overwrite clas12.condor
     write_clas12_condor(project,jobs)
@@ -59,13 +61,15 @@ else:
 print "Event generator"
 print genExecutable+" --trig " +nevents +" --docker "+ genOptions
 print "\nGEMC"
-print "gemc -USE_GUI=0 -N="+nevents+" -INPUT_GEN_FILE=\"lund, "+genOutput+"\"  gcards_scard"
+print "gemc -USE_GUI=0 -N="+nevents+" -INPUT_GEN_FILE=\"lund, "+genOutput+"\" "+  gcards
 print "\nDecoder"
 print "evio2hipo -r 11 -t " +tcurrent+" -s "+ pcurrent+" -i out.ev -o gemc.hipo"
 print "\nCooking"
 print "notsouseful-util -i gemc.hipo -o out_gemc.hipo -c 2"
 #if submit flag turned on, submit
 if args.submit:
+    #make log directory
+    subprocess.call(["mkdir","-p","log"])
     if hostname == "submit.mit.edu":
         condor_submit()
     elif hostname == "scosg16.jlab.org":
