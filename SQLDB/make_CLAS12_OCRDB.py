@@ -10,10 +10,10 @@ import sqlite3
 """***************************************************************************"""
 """ DB Schema Specification """
 
-scard_fields = (('UserID','TEXT'),('Group_name','INT'),('User','INT'),('Nevents','INT'),
+scard_fields = (('UserID','TEXT'),('Group_name','TEXT'),('User','TEXT'),('Nevents','INT'),
                 ('Generator','TEXT'),('GenOptions','TEXT'),('Gcards','TEXT'),('Jobs','INT'),
                 ('Project','TEXT'),('Luminosity','INT'),('Tcurrent','INT'),('Pcurrent','INT'),
-                ('Cores Requested','INT'),('Memory Requested','INT'))
+                ('Cores_Req','INT'),('Mem_Req','INT'))
 
 users_fields = (('Username','TEXT'),('Affiliation','TEXT'),('JoinDateStamp','INT'),
                 ('Permissions','TEXT'),('Default_Output_Dir','TEXT'),('Total_Batches','INT'),
