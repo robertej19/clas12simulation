@@ -88,7 +88,7 @@ def write_clas12_condor(project, jobs):
     file.close()
     print "Done.\n"
 
-def write_runscript_sh(group, user, genExecutable, nevents, genOptions, genOutput, gcards, tcurrent, pcurrent):
+def write_runscript_sh(group, user, genExecutable, nevents, genOptions, genOutput, gcards, luminosity, tcurrent, pcurrent):
     file_template = open(parser_path+"/runscript.sh.template","r")
     str_template = file_template.read()
     file_template.close()
@@ -99,6 +99,7 @@ def write_runscript_sh(group, user, genExecutable, nevents, genOptions, genOutpu
     str_script=str_script.replace('genOptions_scard', genOptions)
     str_script=str_script.replace('genOutput_scard', genOutput)
     str_script=str_script.replace('gcards_scard', gcards)
+    str_script=str_script.replace('NLUMI_scard', luminosity)
     str_script=str_script.replace('tcurrent_scard', tcurrent)
     str_script=str_script.replace('pcurrent_scard', pcurrent)
     print "overwrite \'runscript.sh\' in current directory ..."
@@ -124,7 +125,7 @@ def write_clas12_osg_condor(project, jobs):
     file.close()
     print "Done.\n"
 
-def write_runscript_osg_sh(group, user, genExecutable, nevents, genOptions, genOutput, gcards, tcurrent, pcurrent):
+def write_runscript_osg_sh(group, user, genExecutable, nevents, genOptions, genOutput, gcards, luminosity, tcurrent, pcurrent):
     file_template = open(parser_path+"/runscript_osg.sh.template","r")
     str_template = file_template.read()
     file_template.close()
@@ -135,6 +136,7 @@ def write_runscript_osg_sh(group, user, genExecutable, nevents, genOptions, genO
     str_script=str_script.replace('genOptions_scard', genOptions)
     str_script=str_script.replace('genOutput_scard', genOutput)
     str_script=str_script.replace('gcards_scard', gcards)
+    str_script=str_script.replace('NLUMI_scard', luminosity)
     str_script=str_script.replace('tcurrent_scard', tcurrent)
     str_script=str_script.replace('pcurrent_scard', pcurrent)
     print "overwrite \'runscript_osg.sh\' in current directory ..."

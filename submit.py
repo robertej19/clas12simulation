@@ -24,7 +24,10 @@ genOptions = scard.genOptions
 gcards = scard.gcards
 jobs = scard.jobs
 project = scard.project
-luminosity = scard.luminosity
+luminosity =  '%1.2f'(124000 * float(scard.luminosity))
+if float(scard.luminosity) == 0:
+    print "Warning: luminosity is 0. GEMC will run with 100% luminosity."
+    luminosity = 124000
 tcurrent = '%1.2f'%(float(scard.tcurrent)/100.)
 if float(scard.tcurrent)%10==0:
     tcurrent = '%1.1f'%(float(scard.tcurrent)/100.)
@@ -45,10 +48,10 @@ if hostname == "submit.mit.edu":
     # overwrite clas12.condor
     write_clas12_condor(project,jobs)
     #overwrite runscript.sh
-    write_runscript_sh(group,user,genExecutable, nevents, genOptions, genOutput, gcards, tcurrent, pcurrent)
+    write_runscript_sh(group,user,genExecutable, nevents, genOptions, genOutput, gcards, luminosity, tcurrent, pcurrent)
 elif hostname == "scosg16.jlab.org":
     write_clas12_osg_condor(project,jobs)
-    write_runscript_osg_sh(group,user,genExecutable, nevents, genOptions, genOutput, gcards, tcurrent, pcurrent)
+    write_runscript_osg_sh(group,user,genExecutable, nevents, genOptions, genOutput, gcards, luminosity, tcurrent, pcurrent)
 else:
     # str_script=str_script.replace("(GLIDEIN_Site == \"MIT_CampusFactory\" && BOSCOGroup == \"bosco_lns\") ","HAS_SINGULARITY == TRUE")
     #give executable permission
