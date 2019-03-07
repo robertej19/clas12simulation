@@ -64,7 +64,7 @@ else:
 print "Event generator"
 print genExecutable+" --trig " +nevents +" --docker "+ genOptions
 print "\nGEMC"
-print "gemc -USE_GUI=0 -N="+nevents+" -INPUT_GEN_FILE=\"lund, "+genOutput+"\" "+  gcards
+print "gemc -USE_GUI=0 -N="+nevents+" -INPUT_GEN_FILE=\"lund, "+genOutput+"\" "+  gcards +"-LUMI_EVENT=\""+luminosity+", 248.5*ns, 4*ns\" -LUMI_P=\"e-, 10.6*GeV, 0*deg, 0*deg\" -LUMI_V=\"(0.0, 0.0, -10)cm\" -LUMI_SPREAD_V=\"(0.03, 0.03)cm\"
 print "\nDecoder"
 print "evio2hipo -r 11 -t " +tcurrent+" -s "+ pcurrent+" -i out.ev -o gemc.hipo"
 print "\nCooking"
