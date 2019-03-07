@@ -77,13 +77,16 @@ ls -l
 echo Moving file
 echo $ClusterId
 mv out.ev out.$ProcId.ev
+mv gemc.hipo gemc.$ProcId.hipo
 echo File moved
 echo `basename out.$ProcId.ev`
+echo `basename gemc.$ProcId.hipo`
 
 echo creating directory
 mkdir out_dir$ClusterId
 echo moving file
 mv out.$ProcId.ev out_dir$ClusterId
+mv gemc.$ProcId.hipo out_dir$ClusterId
 mv out_gemc.hipo out_gemc.nevents_scard.genExecutable_scard.$ProcId.hipo
 mv out_gemc.nevents_scard.genExecutable_scard.$ProcId.hipo out_dir$ClusterId
 
