@@ -27,6 +27,10 @@ project = scard.project
 luminosity =  '%d'%(124000 * float(scard.luminosity)/100)
 if float(scard.luminosity) == 0:
     luminosity = '0'
+    LUMIOPTION = ''
+else:
+    LUMIOPTION = '-LUMI_EVENT=\"'+luminosity+', 248.5*ns, 4*ns\" -LUMI_P=\"e-, 10.6*GeV, 0*deg, 0*deg\" -LUMI_V=\"(0.0, 0.0, -10)cm\" -LUMI_SPREAD_V=\"(0.03, 0.03)cm\" '
+
 tcurrent = '%1.2f'%(float(scard.tcurrent)/100.)
 if float(scard.tcurrent)%10==0:
     tcurrent = '%1.1f'%(float(scard.tcurrent)/100.)
@@ -63,7 +67,7 @@ else:
 print "Event generator"
 print genExecutable+" --trig " +nevents +" --docker "+ genOptions
 print "\nGEMC with luminosity " + scard.luminosity + "% of 124000"
-print "gemc -USE_GUI=0 -N="+nevents+" -INPUT_GEN_FILE=\"lund, "+genOutput+"\" " +"-LUMI_EVENT=\""+luminosity+", 248.5*ns, 4*ns\" -LUMI_P=\"e-, 10.6*GeV, 0*deg, 0*deg\" -LUMI_V=\"(0.0, 0.0, -10)cm\" -LUMI_SPREAD_V=\"(0.03, 0.03)cm\" " +  gcards
+print "gemc -USE_GUI=0 -N="+nevents+" -INPUT_GEN_FILE=\"lund, "+genOutput+"\" "+LUMIOPTION  +  gcards
 print "\nDecoder"
 print "evio2hipo -r 11 -t " +tcurrent+" -s "+ pcurrent+" -i out.ev -o gemc.hipo"
 print "\nCooking"
