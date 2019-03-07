@@ -7,7 +7,6 @@ genExecutable =  {'clasdis': 'clasdis', 'dvcs': 'dvcsgen','disrad':'generate-dis
 # Proper configuration of scard:
 scard_key = ['group','user','nevents','generator', 'genOptions',  'gcards', 'jobs',  'project', 'luminosity', 'tcurrent',  'pcurrent']
 
-
 # from https://codegolf.stackexchange.com/questions/4707/outputting-ordinal-numbers-1st-2nd-3rd#answer-4712
 def ordinal(n):
     return "%d%s" % (n,"tsnrhtdd"[(n/10%10!=1)*(n%10<4)*n%10::4])
@@ -33,7 +32,7 @@ class scard_parser:
             print "That line must have the key " + scard_key[linenum] +"."
         self.data[key] = value
 
-# voild function for parsing scard.txt into a dictionary
+# void function for parsing scard.txt into a dictionary
     def parse_scard(self, filename, store=True):
         scard=open(filename, "r")
         for linenum, line in enumerate(scard):
@@ -57,55 +56,28 @@ class scard_parser:
             print "ERROR: number of colons>1 at "+ordinal(linenum+1)+" line."
             print "\':\' can be only used for a delimeter and for once. Stopped."
             exit()
-# store info's in dictionary into single variables
-    def store(self):
-        self.group = self.data.get("group")
-        self.user = self.data.get("user")
-        self.nevents = self.data.get("nevents")
-        self.generator = self.data.get("generator")
-        self.genOptions = self.data.get("genOptions")
-        self.gcards = self.data.get("gcards")
-        self.jobs = self.data.get("jobs")
-        self.project = self.data.get("project")
-        self.luminosity = self.data.get("luminosity")
-        self.tcurrent = self.data.get("tcurrent")
-        self.pcurrent = self.data.get("pcurrent")
-        self.genOutput = genOutput.get(self.data.get("generator"))
-        self.genExecutable = genExecutable.get(self.data.get("generator"))
 
-def write_clas12_condor(project, jobs):
-    file_template = open("clas12.condor.template","r")
-    str_template = file_template.read()
-    file_template.close()
-    str_script=str_template.replace('project_scard', project)
-    str_script=str_script.replace('jobs_scard', jobs)
+def replacer(filename,old,new):
+  filename = filename.replace(old,new)
+  return filename
+
+def write_clas12_condor(template_file,condor_old_vals,condor_new_vals):
+    with open(template_file,"r") as tmp: str_script = tmp.read()
+    for i in range(0,len(condor_old_vals)):
+      str_script = replacer(str_script,condor_old_vals[i],str(condor_new_vals[i]))
     hostname = socket.gethostname()
     if hostname == "scosg16.jlab.org":
         str_script=str_script.replace("(GLIDEIN_Site == \"MIT_CampusFactory\" && BOSCOGroup == \"bosco_lns\") ","HAS_SINGULARITY == TRUE")
     print "overwrite \'clas12.condor\' in current directory ..."
-    file = open("clas12.condor","w")
-    file.write(str_script)
-    file.close()
+    with open("clas12.condor","w") as file: file.write(str_script)
     print "Done.\n"
 
-def write_runscript_sh(group, user, genExecutable, nevents, genOptions, genOutput, gcards, tcurrent, pcurrent):
-    file_template = open("runscript.sh.template","r")
-    str_template = file_template.read()
-    file_template.close()
-    str_script=str_template.replace('group_scard', group)
-    str_script=str_script.replace('user_scard',user)
-    str_script=str_script.replace('genExecutable_scard', genExecutable)
-    str_script=str_script.replace('nevents_scard', nevents)
-    str_script=str_script.replace('genOptions_scard', genOptions)
-    str_script=str_script.replace('genOutput_scard', genOutput)
-    str_script=str_script.replace('gcards_scard', gcards)
-    str_script=str_script.replace('tcurrent_scard', tcurrent)
-    str_script=str_script.replace('pcurrent_scard', pcurrent)
+def write_runscript_sh(template_file,rs_old_vals,rs_new_vals):
+    with open(template_file,"r") as tmp: str_script = tmp.read()
+    for i in range(0,len(rs_old_vals)):
+      str_script = replacer(str_script,rs_old_vals[i],str(rs_new_vals[i]))
     print "overwrite \'runscript.sh\' in current directory ..."
-    file = open("runscript.sh","w")
-    file.write(str_script)
-    file.close()
-   #subprocess.call(["chmod","+x","runscript.sh"])
+    with open("runscript.sh","w") as file: file.write(str_script)
     os.chmod("runscript.sh", 0775)
     print "Done.\n"
 

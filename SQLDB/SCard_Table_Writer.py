@@ -31,13 +31,16 @@ def create_bank_account_details(bank_type):
 
 UID = "robertEJ"
 CReq = 1
-MReq = 2
+MReq = 2389133114
 
 def dynamic_data_entry(UID,scard_array,CReq,MReq):
     conn = sqlite3.connect('CLAS12_OCRDB.db')
     c = conn.cursor()
     ta = scard_array
-    c.execute("INSERT INTO Scards(UserID, Group_name, User, Nevents, Generator, GenOptions, Gcards, Jobs, Project, Luminosity, Tcurrent, Pcurrent, Cores_Req, Mem_Req) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+    c.execute("""INSERT INTO Scards(UserID, Group_name, User, Nevents,
+              Generator, GenOptions, Gcards, Jobs, Project, Luminosity,
+              Tcurrent, Pcurrent, Cores_Req, Mem_Req)
+              VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
               (UID,ta[0],ta[1],ta[2],ta[3],ta[4],ta[5],ta[6],ta[7],ta[8],ta[9],ta[10],CReq,MReq))
     conn.commit()
     print("Record added to DB from Scard")
