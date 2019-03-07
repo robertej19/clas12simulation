@@ -24,10 +24,10 @@ genOptions = scard.genOptions
 gcards = scard.gcards
 jobs = scard.jobs
 project = scard.project
-luminosity =  '%1.2f'(124000 * float(scard.luminosity))
+luminosity =  '%1.2f'%(124000 * float(scard.luminosity))
 if float(scard.luminosity) == 0:
     print "Warning: luminosity is 0. GEMC will run with 100% luminosity."
-    luminosity = 124000
+    luminosity = '124000'
 tcurrent = '%1.2f'%(float(scard.tcurrent)/100.)
 if float(scard.tcurrent)%10==0:
     tcurrent = '%1.1f'%(float(scard.tcurrent)/100.)
