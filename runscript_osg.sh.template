@@ -78,8 +78,10 @@ echo $ClusterId
 mv out.ev out.$ProcId.ev
 mv gemc.hipo gemc.$ProcId.hipo
 echo File moved
+echo `basename genOutput_scard`
 echo `basename out.$ProcId.ev`
 echo `basename gemc.$ProcId.hipo`
+echo `basename out_gemc.nevents_scard.genExecutable_scard.$ProcId.hipo`
 
 echo creating directory
 mkdir out_dir$ClusterId
