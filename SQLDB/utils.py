@@ -23,9 +23,20 @@ def grab_DB_data(DBName,table,dictionary): #DBName, table = str, dictionary = di
       newvals.append((c.fetchall()[-1])[0]) #This [-1] just grabs the most recent DB entry. The [0] is because it returns a tuple
     return oldvals, newvals
 
-def add_field(tablename,field_name,field_type):
-      conn = sqlite3.connect('CLAS12_OCRDB.db')
-      c = conn.cursor()
-      c.execute('ALTER TABLE %s ADD COLUMN %s %s' % (tablename,field_name, field_type))
-      c.close()
-      conn.close()
+def add_field(DBname,tablename,field_name,field_type):
+  strn = "ALTER TABLE {} ADD COLUMN {} {}".format(tablename,field_name, field_type)
+  sql3_exec(DBname,strn)
+  print('In database {}, table {} has succesfully added field {}'.format(DBname,tablename,field_name))
+
+def create_table(DBname,tablename,PKname):
+  strn = "CREATE TABLE IF NOT EXISTS {}({} integer primary key autoincrement)".format(tablename,PKname)
+  sql3_exec(DBname,strn)
+  print('In database {}, table {} has succesfully been created with primary key {}'.format(DBname,
+        tablename,PKname))
+
+def sql3_exec(DBname,strn):
+  conn = sqlite3.connect(DBname)
+  c = conn.cursor()
+  c.execute(strn)
+  c.close()
+  conn.close()

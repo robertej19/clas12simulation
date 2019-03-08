@@ -1,36 +1,16 @@
+from __future__ import print_function
 import sqlite3, utils, file_struct
 
-"""***************************************************************************"""
-
-
+DBname = 'CLAS12_OCRDB.db'
 tables = ['Users','Scards','JobsLog']
-table_fields = [file_struct.users_fields,file_struct.scard_fields,file_struct.jobslog_fields]
+PKs = ['UserID','BatchID','JobID']
+tab_fields = [file_struct.users_fields,file_struct.scard_fields,file_struct.jobslog_fields]
 
-"""***************************************************************************"""
-"""***************************************************************************"""
-""" Function definitions"""
-
-def create_tables():
-    conn = sqlite3.connect('CLAS12_OCRDB.db')
-    c = conn.cursor()
-    c.execute('CREATE TABLE IF NOT EXISTS Scards(BatchID integer primary key autoincrement)')
-    c.execute('CREATE TABLE IF NOT EXISTS Users(UserID integer primary key autoincrement)')
-    c.execute('CREATE TABLE IF NOT EXISTS JobsLog(JobID integer primary key autoincrement)')
-    c.close()
-    conn.close()
-    
-def write_fields(table_name,arr):
-  for i in range(0,len(arr)):
-    utils.add_field(table_name,arr[i][0],arr[i][1])
-
-
-"""***************************************************************************"""
-""" Code execution"""
-
-create_tables()
-
+#Create tables in the database
 for i in range(0,len(tables)):
-  write_fields(tables[i],table_fields[i])
+  utils.create_table(DBname,tables[i],PKs[i])
 
-
-"""***************************************************************************"""
+#Add fields to each table in the database
+for j in range(0,len(tables)):
+  for i in range(0,(len(tab_fields[j]))):
+    utils.add_field(DBname,tables[j],tab_fields[j][i][0],tab_fields[j][i][1])
