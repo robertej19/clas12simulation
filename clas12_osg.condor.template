@@ -33,10 +33,10 @@ Log    = log/job.$(Cluster).$(Process).log
 # transfer_input_files = cook.csh
 
 # output
-# should_transfer_files = YES
+should_transfer_files = YES
 transfer_input_files= scard_name
 when_to_transfer_output = ON_EXIT
-transfer_output_files = out_dir$(Cluster)_nevents_scard
+transfer_output_files = out_$(Cluster)_nevents_scard
 
 # QUEUE is the "start button" - it launches any jobs that have been
 # specified thus far. 1 means launch only 1 job
