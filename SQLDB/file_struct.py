@@ -1,3 +1,6 @@
+
+DBname = 'CLAS12_OCRDB.db'
+
 #This defines the ordering and items that need to be in scard.txt
 scard_key = ('group','user','nevents','generator',
             'genOptions',  'gcards', 'jobs',  'project',
@@ -29,7 +32,7 @@ users_fields = (('Username','TEXT'),('Affiliation','TEXT'),('JoinDateStamp','INT
 jobslog_fields = (('BatchID', 'TEXT'),('UserID','TEXT'),('Job_Submission_Datestamp','INT'),
                   ('Job_Completion_Datestamp','TEXT'),('Output_file_directory','TEXT'),
                   ('Output_file_size','INT'),('Number_Job_failures','INT'))
-                  
+
 # This defines a mapping between 'generator' in scard and the genOutput and genExecutable literals to be invoked
 genOutput= {'clasdis': 'sidis.dat', 'dvcs': 'dvcs.dat','disrad':'dis-rad.dat'}
 genExecutable =  {'clasdis': 'clasdis', 'dvcs': 'dvcsgen','disrad':'generate-dis'}

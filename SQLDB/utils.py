@@ -12,31 +12,40 @@ def overwrite_file(template_file,old_vals,new_vals): #template_file = str, old_v
     print("Done.\n")
 
 #Takes a dictionary, retuns 2 lists: key (oldvals) and value (newvals) from table in DBName
-def grab_DB_data(DBName,table,dictionary): #DBName, table = str, dictionary = dict
-    conn = sqlite3.connect(DBName)
+def grab_DB_data(DBname,table,dictionary): #DBName, table = str, dictionary = dict
+    conn = sqlite3.connect(DBname)
     c = conn.cursor()
     oldvals, newvals = [],[]
     for key in dictionary:
-      strn = "SELECT {} FROM {};".format(dictionary[key],table)
+      strn = "SELECT {} FROM {} ORDER BY BatchID DESC LIMIT 1;".format(dictionary[key],table)#This [-1] just grabs the most recent DB entry.
       c.execute(strn)
       oldvals.append(key)
-      newvals.append((c.fetchall()[-1])[0]) #This [-1] just grabs the most recent DB entry. The [0] is because it returns a tuple
+      value = c.fetchall()[0][0]#Get value from list of tuples. Fix this?
+      print(value)
+      #if len(value) == 0:
+      #  print("There appears to be no records in the selected table, exiting")
+      newvals.append(value)
+    print(newvals)
     return oldvals, newvals
 
+#Add a field to an existing DB. Need to add error statements if DB or table does not exist
 def add_field(DBname,tablename,field_name,field_type):
   strn = "ALTER TABLE {} ADD COLUMN {} {}".format(tablename,field_name, field_type)
   sql3_exec(DBname,strn)
   print('In database {}, table {} has succesfully added field {}'.format(DBname,tablename,field_name))
 
+#Create a table in a database
 def create_table(DBname,tablename,PKname):
   strn = "CREATE TABLE IF NOT EXISTS {}({} integer primary key autoincrement)".format(tablename,PKname)
   sql3_exec(DBname,strn)
   print('In database {}, table {} has succesfully been created with primary key {}'.format(DBname,
         tablename,PKname))
 
+#Executes writing commands to DB. does not return data
 def sql3_exec(DBname,strn):
   conn = sqlite3.connect(DBname)
   c = conn.cursor()
   c.execute(strn)
+  print('Executed SQL Command {}'.format(strn))
   c.close()
   conn.close()
