@@ -84,5 +84,5 @@ if args.submit:
         print "You are not on any pool. Please ssh into farms. If you are not authorized, please contact maurizio at ungaro@jlab.org"
 #if not, print some messages
 else:
-    print "The scripts \'clas12.condor\' and \'runscript.sh\' are updated based on \'"+filename+".\'"
-    print "Please turn on -s flag for job submission e.g.) python submit.py -s scard.txt\n"
+    print "\nThe scripts \'clas12.condor\' and \'runscript.sh\' are updated based on \'"+filename+".\'"
+    print "\nPlease turn on -s flag for job submission e.g.) python submit.py -s scard.txt\n"
