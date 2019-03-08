@@ -1,16 +1,8 @@
 #!/bin/csh -f
 
-<<<<<<< HEAD
-#print the env
-unsetenv XERCESCROOT
-
-source /etc/profile.d/environmentB.csh
-=======
 # print the env
 unsetenv XERCESCROOT
 source /etc/profile.d/environmentB.csh
-
->>>>>>> e5e7e60ed931aad5af4e2cb3fd3cc7acd8907748
 
 set script_start  = `date`
 
