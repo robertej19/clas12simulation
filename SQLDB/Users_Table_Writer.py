@@ -1,9 +1,6 @@
 #from utils import utils
 import sqlite3
 
-#Set up tablelogic for username, timestamping
-#Edit Runscript.sh to write a timelogging details file, then a parser to parse into timelogging
-
 username = 'robertej'
 affiliation = 'MIT'
 date = 'TODAY'
