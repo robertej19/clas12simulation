@@ -77,20 +77,25 @@ echo Moving file
 echo $ClusterId
 mv out.ev out.$ProcId.ev
 mv gemc.hipo gemc.$ProcId.hipo
+mv genOutput_scard genOutput_scard.$ProcId
 echo File moved
-echo `basename genOutput_scard`
+echo `basename genOutput_scard.$ProcId`
 echo `basename out.$ProcId.ev`
 echo `basename gemc.$ProcId.hipo`
 echo `basename out_gemc.nevents_scard.genExecutable_scard.$ProcId.hipo`
 
 echo creating directory
-mkdir out_dir$ClusterId
+mkdir out_$ClusterId_nevents_scard
 echo moving file
-mv genOutput_scard out_dir$ClusterId
-mv out.$ProcId.ev out_dir$ClusterId
-mv gemc.$ProcId.hipo out_dir$ClusterId
-mv out_gemc.hipo out_gemc.nevents_scard.genExecutable_scard.$ProcId.hipo
-mv out_gemc.nevents_scard.genExecutable_scard.$ProcId.hipo out_dir$ClusterId
+mv genOutput_scard_$ProcId out_$ClusterId_nevents_scard
+mv out.$ProcId.ev out_$ClusterId_nevents_scard
+mv gemc.$ProcId.hipo out_$ClusterId_nevents_scard
+mv out_gemc.hipo out_gemc.$ProcId.hipo
+mv out_gemc.$ProcId.hipo out_$ClusterId_nevents_scard
+
+echo moving scard and gcard
+cp gcards_scard out_$ClusterId_nevents_scard
+
 
 #final job log
 printf "Job finished time: "; /bin/date
