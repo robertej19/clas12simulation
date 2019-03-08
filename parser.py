@@ -73,11 +73,12 @@ class scard_parser:
         self.genOutput = genOutput.get(self.data.get("generator"))
         self.genExecutable = genExecutable.get(self.data.get("generator"))
 
-def write_clas12_condor(project, jobs):
+def write_clas12_condor(project, nevents, jobs):
     file_template = open(parser_path+"/clas12.condor.template","r")
     str_template = file_template.read()
     file_template.close()
     str_script=str_template.replace('project_scard', project)
+    str_script=str_script.replace('nevents_scard', nevents)
     str_script=str_script.replace('jobs_scard', jobs)
     # hostname = socket.gethostname()
     # if hostname == "scosg16.jlab.org":
@@ -115,11 +116,12 @@ def write_runscript_sh(group, user, genExecutable, nevents, genOptions, genOutpu
     os.chmod("runscript.sh", 0775)
     print "Done.\n"
 
-def write_clas12_osg_condor(project, jobs):
+def write_clas12_osg_condor(project, nevents, jobs):
     file_template = open(parser_path+"/clas12_osg.condor.template","r")
     str_template = file_template.read()
     file_template.close()
     str_script=str_template.replace('project_scard', project)
+    str_script=str_script.replace('nevents_scard', nevents)
     str_script=str_script.replace('jobs_scard', jobs)
     # hostname = socket.gethostname()
     # if hostname == "scosg16.jlab.org":
