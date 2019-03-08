@@ -82,7 +82,7 @@ def write_clas12_condor(project, jobs):
     # hostname = socket.gethostname()
     # if hostname == "scosg16.jlab.org":
     #     str_script=str_script.replace("(GLIDEIN_Site == \"MIT_CampusFactory\" && BOSCOGroup == \"bosco_lns\") ","HAS_SINGULARITY == TRUE")
-    print "overwrite \'clas12.condor\' in current directory ..."
+    print "overwriting \'clas12.condor\' in current directory ..."
     file = open("clas12.condor","w")
     file.write(str_script)
     file.close()
@@ -107,7 +107,7 @@ def write_runscript_sh(group, user, genExecutable, nevents, genOptions, genOutpu
     str_script=str_script.replace('NLUMI_scard', luminosity)
     str_script=str_script.replace('tcurrent_scard', tcurrent)
     str_script=str_script.replace('pcurrent_scard', pcurrent)
-    print "overwrite \'runscript.sh\' in current directory ..."
+    print "overwriting \'runscript.sh\' in current directory ..."
     file = open("runscript.sh","w")
     file.write(str_script)
     file.close()
@@ -124,7 +124,7 @@ def write_clas12_osg_condor(project, jobs):
     # hostname = socket.gethostname()
     # if hostname == "scosg16.jlab.org":
     #     str_script=str_script.replace("(GLIDEIN_Site == \"MIT_CampusFactory\" && BOSCOGroup == \"bosco_lns\") ","HAS_SINGULARITY == TRUE")
-    print "overwrite \'clas12_osg.condor\' in current directory ..."
+    print "overwriting \'clas12_osg.condor\' in current directory ..."
     file = open("clas12_osg.condor","w")
     file.write(str_script)
     file.close()
@@ -148,7 +148,7 @@ def write_runscript_osg_sh(group, user, genExecutable, nevents, genOptions, genO
     str_script=str_script.replace('LUMIOPTION_scard', LUMIOPTION)
     str_script=str_script.replace('tcurrent_scard', tcurrent)
     str_script=str_script.replace('pcurrent_scard', pcurrent)
-    print "overwrite \'runscript_osg.sh\' in current directory ..."
+    print "overwriting \'runscript_osg.sh\' in current directory ..."
     file = open("runscript_osg.sh","w")
     file.write(str_script)
     file.close()
