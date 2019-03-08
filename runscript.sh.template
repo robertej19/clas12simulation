@@ -97,6 +97,7 @@ mv out_gemc.$ProcId.hipo out_$ClusterId_nevents_scard
 
 echo copying gcard and scard
 cp gcards_scard out_$ClusterId_nevents_scard
+cp scard_name out_$ClusterId_nevents_scard
 
 #final job log
 printf "Job finished time: "; /bin/date
