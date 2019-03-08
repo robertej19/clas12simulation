@@ -85,6 +85,7 @@ echo `basename gemc.$ProcId.hipo`
 echo creating directory
 mkdir out_dir$ClusterId
 echo moving file
+mv genOutput_scard out_dir$ClusterId
 mv out.$ProcId.ev out_dir$ClusterId
 mv gemc.$ProcId.hipo out_dir$ClusterId
 mv out_gemc.hipo out_gemc.nevents_scard.genExecutable_scard.$ProcId.hipo

@@ -38,10 +38,6 @@ Log    = log/job.$(Cluster).$(Process).log
 
 # output
 should_transfer_files = YES
-<<<<<<< HEAD
-transfer_input_files=runscript.sh,condor_wrapper
-=======
->>>>>>> fa18b19d77b88a7ebf63703a4aa0472a14e4a6a1
 when_to_transfer_output = ON_EXIT
 transfer_input_files=runscript.sh,condor_wrapper
 transfer_output_files = out_dir$(Cluster)
