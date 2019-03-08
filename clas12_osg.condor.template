@@ -34,7 +34,7 @@ Log    = log/job.$(Cluster).$(Process).log
 
 # output
 # should_transfer_files = YES
-# transfer_input_files=runscript.sh,condor_wrapper
+transfer_input_files= scard_name
 when_to_transfer_output = ON_EXIT
 transfer_output_files = out_dir$(Cluster)_nevents_scard
 
