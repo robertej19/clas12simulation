@@ -78,7 +78,7 @@ echo Moving file
 echo $ClusterId
 mv out.ev out.$ProcId.ev
 mv gemc.hipo gemc.$ProcId.hipo
-mv genOutput_scard.$ProcId
+mv genOutput_scard genOutput_scard.$ProcId
 echo File moved
 echo `basename genOutput_scard.$ProcId`
 echo `basename out.$ProcId.ev`
