@@ -88,7 +88,6 @@ def write_clas12_condor(project, nevents, jobs, scard_name):
     file = open("clas12.condor","w")
     file.write(str_script)
     file.close()
-    print "Done.\n"
 
 def write_runscript_sh(group, user, genExecutable, nevents, genOptions, genOutput, gcards, luminosity, tcurrent, pcurrent, scard_name):
     file_template = open(parser_path+"/runscript.sh.template","r")
@@ -116,7 +115,6 @@ def write_runscript_sh(group, user, genExecutable, nevents, genOptions, genOutpu
     file.close()
    #subprocess.call(["chmod","+x","runscript.sh"])
     os.chmod("runscript.sh", 0775)
-    print "Done.\n"
 
 def write_clas12_osg_condor(project, nevents, jobs, scard_name):
     file_template = open(parser_path+"/clas12_osg.condor.template","r")
@@ -133,7 +131,6 @@ def write_clas12_osg_condor(project, nevents, jobs, scard_name):
     file = open("clas12_osg.condor","w")
     file.write(str_script)
     file.close()
-    print "Done.\n"
 
 def write_runscript_osg_sh(group, user, genExecutable, nevents, genOptions, genOutput, gcards, luminosity, tcurrent, pcurrent, scard_name):
     file_template = open(parser_path+"/runscript_osg.sh.template","r")
@@ -160,7 +157,6 @@ def write_runscript_osg_sh(group, user, genExecutable, nevents, genOptions, genO
     file.close()
    #subprocess.call(["chmod","+x","runscript_osg.sh"])
     os.chmod("runscript_osg.sh", 0775)
-    print "Done.\n"
 
 
 def condor_submit():
