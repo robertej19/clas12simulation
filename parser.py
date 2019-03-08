@@ -73,13 +73,14 @@ class scard_parser:
         self.genOutput = genOutput.get(self.data.get("generator"))
         self.genExecutable = genExecutable.get(self.data.get("generator"))
 
-def write_clas12_condor(project, nevents, jobs):
+def write_clas12_condor(project, nevents, jobs, scard_name):
     file_template = open(parser_path+"/clas12.condor.template","r")
     str_template = file_template.read()
     file_template.close()
     str_script=str_template.replace('project_scard', project)
     str_script=str_script.replace('nevents_scard', nevents)
     str_script=str_script.replace('jobs_scard', jobs)
+    str_script=str_script.replace('scard_name', scard_name)
     # hostname = socket.gethostname()
     # if hostname == "scosg16.jlab.org":
     #     str_script=str_script.replace("(GLIDEIN_Site == \"MIT_CampusFactory\" && BOSCOGroup == \"bosco_lns\") ","HAS_SINGULARITY == TRUE")
@@ -89,7 +90,7 @@ def write_clas12_condor(project, nevents, jobs):
     file.close()
     print "Done.\n"
 
-def write_runscript_sh(group, user, genExecutable, nevents, genOptions, genOutput, gcards, luminosity, tcurrent, pcurrent):
+def write_runscript_sh(group, user, genExecutable, nevents, genOptions, genOutput, gcards, luminosity, tcurrent, pcurrent, scard_name):
     file_template = open(parser_path+"/runscript.sh.template","r")
     str_template = file_template.read()
     file_template.close()
@@ -108,6 +109,7 @@ def write_runscript_sh(group, user, genExecutable, nevents, genOptions, genOutpu
     str_script=str_script.replace('NLUMI_scard', luminosity)
     str_script=str_script.replace('tcurrent_scard', tcurrent)
     str_script=str_script.replace('pcurrent_scard', pcurrent)
+    str_script=str_script.replace('scard_name', scard_name)
     print "Preparing \'runscript.sh\' in current directory ..."
     file = open("runscript.sh","w")
     file.write(str_script)
@@ -116,13 +118,14 @@ def write_runscript_sh(group, user, genExecutable, nevents, genOptions, genOutpu
     os.chmod("runscript.sh", 0775)
     print "Done.\n"
 
-def write_clas12_osg_condor(project, nevents, jobs):
+def write_clas12_osg_condor(project, nevents, jobs, scard_name):
     file_template = open(parser_path+"/clas12_osg.condor.template","r")
     str_template = file_template.read()
     file_template.close()
     str_script=str_template.replace('project_scard', project)
     str_script=str_script.replace('nevents_scard', nevents)
     str_script=str_script.replace('jobs_scard', jobs)
+    str_script=str_script.replace('scard_name', scard_name)
     # hostname = socket.gethostname()
     # if hostname == "scosg16.jlab.org":
     #     str_script=str_script.replace("(GLIDEIN_Site == \"MIT_CampusFactory\" && BOSCOGroup == \"bosco_lns\") ","HAS_SINGULARITY == TRUE")
@@ -132,7 +135,7 @@ def write_clas12_osg_condor(project, nevents, jobs):
     file.close()
     print "Done.\n"
 
-def write_runscript_osg_sh(group, user, genExecutable, nevents, genOptions, genOutput, gcards, luminosity, tcurrent, pcurrent):
+def write_runscript_osg_sh(group, user, genExecutable, nevents, genOptions, genOutput, gcards, luminosity, tcurrent, pcurrent, scard_name):
     file_template = open(parser_path+"/runscript_osg.sh.template","r")
     str_template = file_template.read()
     file_template.close()
@@ -150,6 +153,7 @@ def write_runscript_osg_sh(group, user, genExecutable, nevents, genOptions, genO
     str_script=str_script.replace('LUMIOPTION_scard', LUMIOPTION)
     str_script=str_script.replace('tcurrent_scard', tcurrent)
     str_script=str_script.replace('pcurrent_scard', pcurrent)
+    str_script=str_script.replace('scard_name', scard_name)
     print "Preparing \'runscript_osg.sh\' in current directory ..."
     file = open("runscript_osg.sh","w")
     file.write(str_script)

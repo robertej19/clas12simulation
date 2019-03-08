@@ -53,17 +53,17 @@ if hostname == "submit.mit.edu":
     #overwrite runscript.sh
     write_runscript_sh(group,user,genExecutable, nevents, genOptions, genOutput, gcards, luminosity, tcurrent, pcurrent)
 elif hostname == "scosg16.jlab.org":
-    write_clas12_osg_condor(project, nevents, jobs)
-    write_runscript_osg_sh(group,user,genExecutable, nevents, genOptions, genOutput, gcards, luminosity, tcurrent, pcurrent)
+    write_clas12_osg_condor(project, nevents, jobs, filename)
+    write_runscript_osg_sh(group,user,genExecutable, nevents, genOptions, genOutput, gcards, luminosity, tcurrent, pcurrent, filename)
 else:
     # str_script=str_script.replace("(GLIDEIN_Site == \"MIT_CampusFactory\" && BOSCOGroup == \"bosco_lns\") ","HAS_SINGULARITY == TRUE")
     #give executable permission
     os.chmod("run_job.sh", 0775)
     os.chmod("condor_wrapper", 0775)
     # overwrite clas12.condor
-    write_clas12_condor(project, nevents, jobs)
+    write_clas12_condor(project, nevents, jobs, filename)
     #overwrite runscript.sh
-    write_runscript_sh(group,user,genExecutable, nevents, genOptions, genOutput, gcards, tcurrent, pcurrent)
+    write_runscript_sh(group,user,genExecutable, nevents, genOptions, genOutput, gcards, tcurrent, pcurrent, filename)
 print "Event generator"
 print genExecutable+" --trig " +nevents +" --docker "+ genOptions
 print "\nGEMC with luminosity " + scard.luminosity + "% of 124000"
