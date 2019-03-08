@@ -6,7 +6,7 @@ genExecutable =  {'clasdis': 'clasdis', 'dvcs': 'dvcsgen','disrad':'generate-dis
 
 # Proper configuration of scard:
 scard_key = ['group','user','nevents','generator', 'genOptions',  'gcards', 'jobs',  'project', 'luminosity', 'tcurrent',  'pcurrent']
-
+parser_path = os.path.dirname(os.path.realpath(__file__))
 
 # from https://codegolf.stackexchange.com/questions/4707/outputting-ordinal-numbers-1st-2nd-3rd#answer-4712
 def ordinal(n):
@@ -74,7 +74,7 @@ class scard_parser:
         self.genExecutable = genExecutable.get(self.data.get("generator"))
 
 def write_clas12_condor(project, jobs):
-    file_template = open("clas12.condor.template","r")
+    file_template = open(parser_path+"/clas12.condor.template","r")
     str_template = file_template.read()
     file_template.close()
     str_script=str_template.replace('project_scard', project)
@@ -88,8 +88,8 @@ def write_clas12_condor(project, jobs):
     file.close()
     print "Done.\n"
 
-def write_runscript_sh(group, user, genExecutable, nevents, genOptions, genOutput, gcards, tcurrent, pcurrent):
-    file_template = open("runscript.sh.template","r")
+def write_runscript_sh(group, user, genExecutable, nevents, genOptions, genOutput, gcards, luminosity, tcurrent, pcurrent):
+    file_template = open(parser_path+"/runscript.sh.template","r")
     str_template = file_template.read()
     file_template.close()
     str_script=str_template.replace('group_scard', group)
@@ -98,7 +98,13 @@ def write_runscript_sh(group, user, genExecutable, nevents, genOptions, genOutpu
     str_script=str_script.replace('nevents_scard', nevents)
     str_script=str_script.replace('genOptions_scard', genOptions)
     str_script=str_script.replace('genOutput_scard', genOutput)
+    if luminosity == '0':
+        LUMIOPTION = ''
+    else:
+        LUMIOPTION = ' -LUMI_EVENT=\"'+luminosity+', 248.5*ns, 4*ns\" -LUMI_P=\"e-, 10.6*GeV, 0*deg, 0*deg\" -LUMI_V=\"(0.0, 0.0, -10)cm\" -LUMI_SPREAD_V=\"(0.03, 0.03)cm\"'
+    str_script=str_script.replace('LUMIOPTION_scard', LUMIOPTION)
     str_script=str_script.replace('gcards_scard', gcards)
+    str_script=str_script.replace('NLUMI_scard', luminosity)
     str_script=str_script.replace('tcurrent_scard', tcurrent)
     str_script=str_script.replace('pcurrent_scard', pcurrent)
     print "overwrite \'runscript.sh\' in current directory ..."
@@ -110,7 +116,7 @@ def write_runscript_sh(group, user, genExecutable, nevents, genOptions, genOutpu
     print "Done.\n"
 
 def write_clas12_osg_condor(project, jobs):
-    file_template = open("clas12_osg.condor.template","r")
+    file_template = open(parser_path+"/clas12_osg.condor.template","r")
     str_template = file_template.read()
     file_template.close()
     str_script=str_template.replace('project_scard', project)
@@ -124,8 +130,8 @@ def write_clas12_osg_condor(project, jobs):
     file.close()
     print "Done.\n"
 
-def write_runscript_osg_sh(group, user, genExecutable, nevents, genOptions, genOutput, gcards, tcurrent, pcurrent):
-    file_template = open("runscript_osg.sh.template","r")
+def write_runscript_osg_sh(group, user, genExecutable, nevents, genOptions, genOutput, gcards, luminosity, tcurrent, pcurrent):
+    file_template = open(parser_path+"/runscript_osg.sh.template","r")
     str_template = file_template.read()
     file_template.close()
     str_script=str_template.replace('group_scard', group)
@@ -135,6 +141,11 @@ def write_runscript_osg_sh(group, user, genExecutable, nevents, genOptions, genO
     str_script=str_script.replace('genOptions_scard', genOptions)
     str_script=str_script.replace('genOutput_scard', genOutput)
     str_script=str_script.replace('gcards_scard', gcards)
+    if luminosity == '0':
+        LUMIOPTION = ''
+    else:
+        LUMIOPTION = ' -LUMI_EVENT=\"'+luminosity+', 248.5*ns, 4*ns\" -LUMI_P=\"e-, 10.6*GeV, 0*deg, 0*deg\" -LUMI_V=\"(0.0, 0.0, -10)cm\" -LUMI_SPREAD_V=\"(0.03, 0.03)cm\"'
+    str_script=str_script.replace('LUMIOPTION_scard', LUMIOPTION)
     str_script=str_script.replace('tcurrent_scard', tcurrent)
     str_script=str_script.replace('pcurrent_scard', pcurrent)
     print "overwrite \'runscript_osg.sh\' in current directory ..."

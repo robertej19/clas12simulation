@@ -1,6 +1,6 @@
 group:  rgaDIS                   # project description
 user:  mungaro                   # username
-nevents: 1000                    # number of events each job
+nevents: 10                      # number of events each job
 generator: clasdis               # one of clasdis, dvcs, disrad
 genOptions:  --t 20 25           # generator option
 gcards: /jlab/work/clas12.gcard  # gcard gemc option

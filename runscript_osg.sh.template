@@ -1,9 +1,16 @@
 #!/bin/csh -f
 
+<<<<<<< HEAD
 #print the env
 unsetenv XERCESCROOT
 
 source /etc/profile.d/environmentB.csh
+=======
+# print the env
+unsetenv XERCESCROOT
+source /etc/profile.d/environmentB.csh
+
+>>>>>>> e5e7e60ed931aad5af4e2cb3fd3cc7acd8907748
 
 set script_start  = `date`
 
@@ -26,9 +33,6 @@ echo ClusterId $ClusterId
 set ProcId = ` awk -F '=' '/^ProcId/ {print $2}' $PWD/.job.ad`
 echo ProcId $ProcId
 
-mkdir out_dir$ClusterId
-
-
 # initial job log
 printf "Start time: "; /bin/date
 printf "Job is running on node: "; /bin/hostname
@@ -50,7 +54,7 @@ echo after generator
 echo test finish
 ls -l
 set gemc_start = `date`
-gemc -USE_GUI=0 -N=nevents_scard -INPUT_GEN_FILE="lund, genOutput_scard"  gcards_scard
+gemc -USE_GUI=0 -N=nevents_scard -INPUT_GEN_FILE="lund, genOutput_scard"LUMIOPTION_scard gcards_scard
 
 echo after gemc
 ls -l
@@ -74,6 +78,7 @@ echo $ClusterId
 mv out.ev out.$ProcId.ev
 mv gemc.hipo gemc.$ProcId.hipo
 echo File moved
+echo `basename out.$ProcId.ev`
 echo `basename gemc.$ProcId.hipo`
 
 echo creating directory
@@ -84,10 +89,6 @@ mv out.$ProcId.ev out_dir$ClusterId
 mv gemc.$ProcId.hipo out_dir$ClusterId
 mv out_gemc.hipo out_gemc.nevents_scard.genExecutable_scard.$ProcId.hipo
 mv out_gemc.nevents_scard.genExecutable_scard.$ProcId.hipo out_dir$ClusterId
-
-#clearing log files
-rm -f gemc.log
-rm -f e2h.log
 
 #final job log
 printf "Job finished time: "; /bin/date
