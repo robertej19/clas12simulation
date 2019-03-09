@@ -20,13 +20,13 @@ def grab_DB_data(DBname,table,dictionary): #DBName, table = str, dictionary = di
       strn = "SELECT {} FROM {} ORDER BY BatchID DESC LIMIT 1;".format(dictionary[key],table)#This [-1] just grabs the most recent DB entry.
       c.execute(strn)
       oldvals.append(key)
-      value = c.fetchall()[0][0]#Get value from list of tuples. Fix this?
-      print(value)
-      #if len(value) == 0:
-      #  print("There appears to be no records in the selected table, exiting")
+      try:
+        value = c.fetchall()[0][0]#Get value from list of tuples. Fix this?
+      except:
+        print("There appears to be no records in the table {} in DB {}, exiting".format(table,DBname))
+        return [], [], 1
       newvals.append(value)
-    print(newvals)
-    return oldvals, newvals
+    return oldvals, newvals, 0
 
 #Add a field to an existing DB. Need to add error statements if DB or table does not exist
 def add_field(DBname,tablename,field_name,field_type):

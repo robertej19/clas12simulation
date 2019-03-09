@@ -14,7 +14,13 @@ def dynamic_data_entry(UID,scard_dict):
     conn = sqlite3.connect('CLAS12_OCRDB.db')
     c = conn.cursor()
     unixtimestamp = int(time.time()) # Can modify this if need 10ths of seconds or more resolution
-    c.execute("INSERT INTO Scards(UserID, timestamp) VALUES (?,?)",(UID,unixtimestamp))
+    command = 'INSERT INTO Scards(UserID, timestamp) VALUES (?,?)'
+    vals = ',("{}",{})'.format(UID,unixtimestamp)
+    strn = command+vals
+    print(strn)
+    c.execute(strn)
+
+    conn = sqlite3.connect('CLAS12_OCRDB.db')
     for key in scard_dict:
       strn = "UPDATE Scards SET {} = '{}' WHERE timestamp = {};".format(key,scard_dict[key],unixtimestamp)
       c.execute(strn)
@@ -32,18 +38,20 @@ scard_fields.data['group_name'] = scard_fields.data.pop('group') #'group' is a p
 scard_fields.data['genExecutable'] = file_struct.genExecutable.get(scard_fields.data.get('generator'))
 scard_fields.data['genOutput'] = file_struct.genOutput.get(scard_fields.data.get('generator'))
 
-DBname = file_struct.DBname
+UID = "robertEJ" #This is more or less a placeholder, currently
 
-def dynamic_data_entry(DBname,tablename,scard_dict):
-    UID = "robert" #This is more or less a placeholder, currently
+def dynamic_data_entry(UID,scard_dict):
+    conn = sqlite3.connect('CLAS12_OCRDB.db')
+    c = conn.cursor()
     unixtimestamp = int(time.time()) # Can modify this if need 10ths of seconds or more resolution
-    unixtimestamp = 9999
-    strn = "INSERT INTO {} ({}, {}) VALUES ('{}',{})".format(tablename,'UserID','timestamp',UID,unixtimestamp)
-    utils.sql3_exec(DBname,strn)
+    c.execute("INSERT INTO Scards(UserID, timestamp) VALUES (?,?)",(UID,unixtimestamp))
     for key in scard_dict:
       strn = "UPDATE Scards SET {} = '{}' WHERE timestamp = {};".format(key,scard_dict[key],unixtimestamp)
-      utils.sql3_exec(DBname,strn)
+      c.execute(strn)
+    conn.commit()
     print("Record added to DB from Scard")
+    c.close()
+    conn.close()
 
-dynamic_data_entry(DBname,'Scards',scard_fields.data)
+dynamic_data_entry(UID,scard_fields.data)
 """
