@@ -6,12 +6,12 @@ Universe = vanilla
 
 # singularity image
 
-Requirements  = (GLIDEIN_Site == "MIT_CampusFactory" && BOSCOGroup == "bosco_lns") 
+Requirements  = (GLIDEIN_Site == "MIT_CampusFactory" && BOSCOGroup == "bosco_lns")
 +SingularityImage = "/cvmfs/singularity.opensciencegrid.org/jeffersonlab/clas12simulations:production"
 +SingularityBindCVMFS = True
 
-request_cpus = 1
-request_memory = 2 GB
+request_cpus = cores_req_scard
+request_memory = mem_req_scard GB
 
 # EXECUTABLE is the program your job will run It's often useful
 # to create a shell script to "wrap" your actual work.
@@ -30,7 +30,7 @@ Log    = log/job.$(Cluster).$(Process).log
 # periodic_release =  (NumJobStarts < 5) && ((CurrentTime - EnteredCurrentStatus) > 60*60)
 
 # default CLAS12 project
-+ProjectName = "osg.clas12MC"
++ProjectName = "project_scard"
 
 
 # Input files. Do not add comments after the file list
@@ -44,4 +44,4 @@ transfer_output_files = out_dir$(Cluster)
 
 # QUEUE is the "start button" - it launches any jobs that have been
 # specified thus far. 1 means launch only 1 job
-Queue 3
+Queue jobs_scard
