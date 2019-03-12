@@ -62,7 +62,7 @@ ls -l
 
 
 set evio2hipo_start = `date`
-evio2hipo -r 11 -t -1.0 -s -1.0 -i out.ev -o gemc.hipo
+evio2hipo -r 11 -t -100 -s -100 -i out.ev -o gemc.hipo
 
 echo after decoder
 ls -l
