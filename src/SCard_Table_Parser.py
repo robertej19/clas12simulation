@@ -2,7 +2,7 @@ from __future__ import print_function
 import sqlite3, file_struct, utils, os, shutil
 
 cwd = os.getcwd()
-print(cwd)
+
 temp_location = cwd + "/templates/"
 
 #Grab values to write from database from table 'SCards'
