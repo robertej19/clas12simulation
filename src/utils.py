@@ -17,13 +17,13 @@ def grab_DB_data(DBname,table,dictionary): #DBName, table = str, dictionary = di
     c = conn.cursor()
     oldvals, newvals = [],[]
     for key in dictionary:
-      strn = "SELECT {} FROM {} ORDER BY BatchID DESC LIMIT 1;".format(dictionary[key],table)#This [-1] just grabs the most recent DB entry.
+      strn = "SELECT {} FROM {} ORDER BY BatchID DESC LIMIT 1;".format(dictionary[key],table)#This just grabs the most recent DB entry.
       c.execute(strn)
       oldvals.append(key)
       try:
-        value = c.fetchall()[0][0]#Get value from list of tuples. Fix this?
+        value = c.fetchall()[0][0]#Get value from list of tuples. There should be a cleaner way to do this (maybe don't return a list of tuples from c.fetchall)
       except:
-        print("There appears to be no records in the table {} in DB {}, exiting".format(table,DBname))
+        print('There appears to be no records in the table {} in DB {}, exiting'.format(table,DBname))
         return [], [], 1
       newvals.append(value)
     return oldvals, newvals, 0
@@ -41,11 +41,12 @@ def create_table(DBname,tablename,PKname):
   print('In database {}, table {} has succesfully been created with primary key {}'.format(DBname,
         tablename,PKname))
 
-#Executes writing commands to DB. does not return data
+#Executes writing commands to DB. Cannot currently be used to return data from DB
 def sql3_exec(DBname,strn):
   conn = sqlite3.connect(DBname)
   c = conn.cursor()
   c.execute(strn)
-  print('Executed SQL Command {}'.format(strn))
+  #print('Executed SQL Command: {}'.format(strn)) #Turn this on for explict printing of all DB write commands
+  conn.commit()
   c.close()
   conn.close()

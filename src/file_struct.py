@@ -19,7 +19,7 @@ SCTable_RSOverwrite = {'gcards_scard': 'gcards', 'genOutput_scard': 'genOutput',
 
 """ DB Schema Specification """
 
-scard_fields = (('UserID','TEXT'),('group_name','TEXT'),('User','TEXT'),('Nevents','INT'),
+scard_fields = (('UserID','INT'),('group_name','TEXT'),('User','TEXT'),('Nevents','INT'),
                 ('Generator','TEXT'),('genExecutable','TEXT'),('genOutput','TEXT'),
                 ('GenOptions','TEXT'),('Gcards','TEXT'),('Jobs','INT'),
                 ('Project','TEXT'),('Luminosity','INT'),('Tcurrent','INT'),('Pcurrent','INT'),
