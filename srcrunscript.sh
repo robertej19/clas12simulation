@@ -7,7 +7,7 @@ set script_start  = `date`
 echo "XXXXXXXXXXXX"
 #cat $PWD/.job.ad
 echo "XXXXXXXXXXXX"
-echo "Submitted by user_scard, group_scard"
+echo "Submitted by mungaro, rgaDIS"
 
 uname -a
 
@@ -48,21 +48,21 @@ echo
 echo starting files
 ls -l
 set generator_start  = `date`
-genExecutable_scard --trig nevents_scard --docker genOptions_scard
+clasdis --trig 10 --docker --t 20 25
 #dvcsgen --trig 71 --docker
 
 echo after generator
 echo test finish
 ls -l
 set gemc_start = `date`
-gemc -USE_GUI=0 -N=nevents_scard -INPUT_GEN_FILE="lund, genOutput_scard"  gcards_scard
+gemc -USE_GUI=0 -N=10 -INPUT_GEN_FILE="lund, sidis.dat"  /jlab/work/clas12.gcard
 
 echo after gemc
 ls -l
 
 
 set evio2hipo_start = `date`
-evio2hipo -r 11 -t tcurrent_scard -s pcurrent_scard -i out.ev -o gemc.hipo
+evio2hipo -r 11 -t -100 -s -100 -i out.ev -o gemc.hipo
 
 echo after decoder
 ls -l
@@ -84,8 +84,8 @@ echo creating directory
 mkdir out_dir$ClusterId
 echo moving file
 mv out.$ProcId.ev out_dir$ClusterId
-mv out_gemc.hipo out_gemc.nevents_scard.genExecutable_scard.$ProcId.hipo
-mv out_gemc.nevents_scard.genExecutable_scard.$ProcId.hipo out_dir$ClusterId
+mv out_gemc.hipo out_gemc.10.clasdis.$ProcId.hipo
+mv out_gemc.10.clasdis.$ProcId.hipo out_dir$ClusterId
 
 #final job log
 printf "Job finished time: "; /bin/date
