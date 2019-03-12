@@ -3,10 +3,10 @@ import scard_parser, sqlite3, file_struct, time
 import utils
 
 def SCard_Entry(DBname,UID,timestamp,scard_dict,):
-    strnx = "INSERT INTO Scards(UserID,timestamp) VALUES ('{}',{});".format(UID,timestamp)
+    strnx = "INSERT INTO Scards(UserID,timestamp) VALUES ('{0}',{1});".format(UID,timestamp)
     utils.sql3_exec(file_struct.DBname,strnx)
     for key in scard_dict:
-      strn = "UPDATE Scards SET {} = '{}' WHERE timestamp = {};".format(key,scard_dict[key],unixtimestamp)
+      strn = "UPDATE Scards SET {0} = '{1}' WHERE timestamp = {2};".format(key,scard_dict[key],unixtimestamp)
       utils.sql3_exec(file_struct.DBname,strn)
     print("SCard record added to database")
 
