@@ -30,4 +30,6 @@ cd ../
 mv src/runscript.sh .
 mv src/clas12.condor .
 
+chmod +x runscript.sh
+
 condor_submit clas12.condor
