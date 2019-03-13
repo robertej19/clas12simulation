@@ -8,7 +8,7 @@ scard_key = ('group','user','nevents','generator',
 
 #This defines the variables that will be written out to submission scripts and maps to DB values
 SCTable_CondOverwrite = {'project_scard':'project','jobs_scard':'jobs',
-                          'cores_req_scard':'cores_req','mem_req_scard':'mem_req'}
+                          'cores_req_scard':'cores_req','mem_req_scard':'mem_req','nevents_scard': 'nevents'}
 
 SCTable_RSOverwrite = {'gcards_scard': 'gcards', 'genOutput_scard': 'genOutput',
                         'user_scard': 'user','nevents_scard': 'nevents',
