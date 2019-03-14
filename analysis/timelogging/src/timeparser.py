@@ -2,7 +2,7 @@
 #IF the structur of the output files are changed, this script must be changed accordingly.
 #This needs to be fixed for code maintaince purposes. Perhaps write directly to logging database instead of parsing log files
 # This is written in python2
-# This also assumes that run times do NOT cross over days, which NEEDS to be addressed
+# This also assumes that run times do NOT cross over 2 days, which might not be a problem as job would then have to run for more than 24 hours
 import os
 
 def swapper(ar):
@@ -36,6 +36,8 @@ def job_out_reader(filename):
 def runtimes(ta):
   runtime = []
   for i in range(0,len(ta)-1):
+    if ta[i+1] - ta[i] < 0:
+      ta[i+1] = ta[i+1]+24*3600 #This handles cases where the job runs over 1 day. Does NOT handle cases where job spans 2 days
     runtime.append(ta[i+1] - ta[i])
   runtime.append(sum(runtime))
   return runtime

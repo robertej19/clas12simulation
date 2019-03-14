@@ -9,3 +9,5 @@ project:  osg.clas12MC           # OSG project
 luminosity:  0                   # percent of 10^35 luminosity from 0 to 100
 tcurrent: -100                   # percent of torus current from -100 to 100
 pcurrent: -100                   # percent of solenoid current from -100 to 100
+cores_req: 1                     # number of cores to request from node
+mem_req: 2                       # GB of RAM to request from node. Currently set to 4 for testing purposes
