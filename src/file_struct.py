@@ -19,7 +19,7 @@ SCTable_RSOverwrite = {'gcards_scard': 'gcards', 'genOutput_scard': 'genOutput',
 
 """ DB Schema Specification """
 
-scard_fields = (('UserID','INT'),('group_name','TEXT'),('User','TEXT'),('Nevents','INT'),
+scard_fields = (('group_name','TEXT'),('User','TEXT'),('Nevents','INT'),
                 ('Generator','TEXT'),('genExecutable','TEXT'),('genOutput','TEXT'),
                 ('GenOptions','TEXT'),('Gcards','TEXT'),('Jobs','INT'),
                 ('Project','TEXT'),('Luminosity','INT'),('Tcurrent','INT'),('Pcurrent','INT'),
@@ -29,7 +29,7 @@ users_fields = (('Username','TEXT'),('Affiliation','TEXT'),('JoinDateStamp','INT
                 ('Permissions','TEXT'),('Default_Output_Dir','TEXT'),('Total_Batches','INT'),
                 ('Total_Jobs','INT'),('Total_Events','INT'),('Most_Recent_Active_Date','INT'))
 
-jobslog_fields = (('BatchID', 'TEXT'),('UserID','TEXT'),('Job_Submission_Datestamp','INT'),
+jobslog_fields = (('Job_Submission_Datestamp','INT'),
                   ('Job_Completion_Datestamp','TEXT'),('Output_file_directory','TEXT'),
                   ('Output_file_size','INT'),('Number_Job_failures','INT'))
 

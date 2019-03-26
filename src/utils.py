@@ -35,8 +35,8 @@ def add_field(DBname,tablename,field_name,field_type):
   print('In database {0}, table {1} has succesfully added field {2}'.format(DBname,tablename,field_name))
 
 #Create a table in a database
-def create_table(DBname,tablename,PKname):
-  strn = "CREATE TABLE IF NOT EXISTS {0}({1} integer primary key autoincrement)".format(tablename,PKname)
+def create_table(DBname,tablename,PKname,FKargs):
+  strn = "CREATE TABLE IF NOT EXISTS {0}({1} integer primary key autoincrement {2})".format(tablename,PKname,FKargs)
   sql3_exec(DBname,strn)
   print('In database {0}, table {1} has succesfully been created with primary key {2}'.format(DBname,
         tablename,PKname))
@@ -45,6 +45,7 @@ def create_table(DBname,tablename,PKname):
 def sql3_exec(DBname,strn):
   conn = sqlite3.connect(DBname)
   c = conn.cursor()
+  c.execute('PRAGMA foreign_keys = ON;')
   c.execute(strn)
   #print('Executed SQL Command: {}'.format(strn)) #Turn this on for explict printing of all DB write commands
   conn.commit()
