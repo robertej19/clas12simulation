@@ -33,7 +33,7 @@ scards_fields = (('group_name','TEXT'),('User','TEXT'),('Nevents','INT'),
                 ('Project','TEXT'),('Luminosity','INT'),('Tcurrent','INT'),('Pcurrent','INT'),
                 ('Cores_Req','INT'),('Mem_Req','INT'),('timestamp','FLOAT'))
 
-gcards_fields = (('Gcards','VARCHAR'),)
+gcards_fields = (('Gcards','VARCHAR'),('timestamp','FLOAT'))
 
 joblogs_fields = (('Job_Submission_Datestamp','INT'),
                   ('Job_Completion_Datestamp','TEXT'),('Output_file_directory','TEXT'),

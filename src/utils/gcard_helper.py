@@ -7,10 +7,12 @@ import urllib2
 #>>> resp = urllib2.urlopen("http://google.com/abc.jpg")
 
 def GCard_Entry(DBname,UID,BatchID,unixtimestamp,url_dir):
-  gcard_urls = Gather_Gcard_urls(url_dir)
+  #gcard_urls = Gather_Gcard_urls(url_dir)
+  gcard_urls = ["444","555"]
   for url_ending in gcard_urls:
-    response = urllib2.urlopen(url_dir+'/'+url_ending)
-    gcard_text = response.read()
+    #response = urllib2.urlopen(url_dir+'/'+url_ending)
+    #gcard_text = response.read()
+    gcard_text = url_ending
     db_gcard_write(DBname,UID,BatchID,unixtimestamp,gcard_text)
 
 def db_gcard_write(DBname,UID,BatchID,timestamp,gcard_text):
