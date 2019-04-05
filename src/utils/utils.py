@@ -1,5 +1,5 @@
 from __future__ import print_function
-import file_struct, sqlite3
+import file_struct, sqlite3, os
 
 #Takes in a .template file, a list of values to replace (old_vals) and a list of what to replace them with (new_vals)
 def overwrite_file(template_file,old_vals,new_vals,BatchID,batch_field): #template_file = str, old_vals, new_vals = LIST
@@ -42,11 +42,12 @@ def create_table(DBname,tablename,PKname,FKargs):
 
 #Executes writing commands to DB. To return data from DB, use sql3_grab(), defined below
 def sql3_exec(DBname,strn):
-  conn = sqlite3.connect(DBname)
+  dirname = os.path.dirname(__file__)
+  conn = sqlite3.connect(dirname+file_struct.DB_rel_location+DBname)
   c = conn.cursor()
   c.execute('PRAGMA foreign_keys = ON;')
+  #print('Executing SQL Command: {}'.format(strn)) #Turn this on for explict printing of all DB write commands
   c.execute(strn)
-  #print('Executed SQL Command: {}'.format(strn)) #Turn this on for explict printing of all DB write commands
   conn.commit()
   c.close()
   conn.close()
@@ -55,8 +56,8 @@ def sql3_exec(DBname,strn):
 def sql3_grab(DBname,strn):
   conn = sqlite3.connect(DBname)
   c = conn.cursor()
+  #print('Executing SQL Command: {}'.format(strn)) #Turn this on for explict printing of all DB write commands
   c.execute(strn)
-  #print('Executed SQL Command: {}'.format(strn)) #Turn this on for explict printing of all DB write commands
   try:
     return_item = c.fetchall()[0][0]#Get value from list of tuples. There should be a cleaner way to do this (maybe don't return a list of tuples from c.fetchall)
   #Also note that return_item will only give the first item in a list of possibly many items.

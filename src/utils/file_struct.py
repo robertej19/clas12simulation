@@ -12,8 +12,8 @@
 -------------------------  DB Schema Specification -----------------------------
 *****************************************************************************"""
 DBname = 'CLAS12_OCRDB.db'
-
-tables = ['Users','Batches','Scards','JobsLog']
+DB_rel_location = "/../../database/"
+tables = ['Users','Batches','Scards','Gcards','JobsLog']
 
 users_fields = (('Username','TEXT'),('Affiliation','TEXT'),('JoinDateStamp','INT'),
                 ('Permissions','TEXT'),('Default_Output_Dir','TEXT'),('Total_Batches','INT'),
@@ -24,18 +24,26 @@ condor_field = 'condor_script' #This is a crutch until a better and more general
 batches_fields = (('timestamp','FLOAT'),('scard','VARCHAR'),('submission_pool','TEXT'),#submission pool is not yet used
                   (runscript_field,'VARCHAR'),(condor_field,'VARCHAR'))
 
+#Since there is only 1 scard / batch, in princple this entire scard table should be deleted
+#The submission scripts can be completely written using just the text in the VARCHAR 'scard' field in the Batches table
+#Importantly, this is not yet implemented. It should be straightforward to do so, but time consuming
 scards_fields = (('group_name','TEXT'),('User','TEXT'),('Nevents','INT'),
                 ('Generator','TEXT'),('genExecutable','TEXT'),('genOutput','TEXT'),
                 ('GenOptions','TEXT'),('Gcards','TEXT'),('Jobs','INT'),
                 ('Project','TEXT'),('Luminosity','INT'),('Tcurrent','INT'),('Pcurrent','INT'),
                 ('Cores_Req','INT'),('Mem_Req','INT'),('timestamp','FLOAT'))
 
-jobslog_fields = (('Job_Submission_Datestamp','INT'),
+gcards_fields = (('Gcards','VARCHAR'),)
+
+joblogs_fields = (('Job_Submission_Datestamp','INT'),
                   ('Job_Completion_Datestamp','TEXT'),('Output_file_directory','TEXT'),
                   ('Output_file_size','INT'),('Number_Job_failures','INT'))
 
+table_fields = [users_fields,batches_fields, scards_fields, gcards_fields, joblogs_fields]
+
+
 #Primary Key definitions:
-PKs = ['UserID','BatchID','ScardID','JobID']
+PKs = ['UserID','BatchID','ScardID','GcardID','JobID']
 
 #Below defines foreign key relations. There is a more succinet way to do this but as we have
 #only a few relations, I did not spend the time to modifiy this code.
@@ -45,11 +53,15 @@ batches_foreign_keys = """, UserID INTEGER,
 scards_foreign_keys = """, UserID INTEGER, BatchID INTEGER,
                       FOREIGN KEY(UserID) REFERENCES Users(UserID)
                       FOREIGN KEY(BatchID) REFERENCES Batches(BatchID)"""
-logs_foreign_keys = """, BatchID TEXT, UserID TEXT,
-                    FOREIGN KEY(BatchID) REFERENCES Batches(BatchID)
-                    FOREIGN KEY(UserID) REFERENCES Users(UserID)"""
+gcards_foreign_keys = """, UserID INTEGER, BatchID INTEGER,
+                      FOREIGN KEY(UserID) REFERENCES Users(UserID)
+                      FOREIGN KEY(BatchID) REFERENCES Batches(BatchID)"""
+joblogs_foreign_keys = """, UserID INTEGER, BatchID INTEGER,
+                      FOREIGN KEY(UserID) REFERENCES Users(UserID)
+                      FOREIGN KEY(BatchID) REFERENCES Batches(BatchID)"""
 
-foreign_key_relations = [users_foreign_keys, batches_foreign_keys, scards_foreign_keys, logs_foreign_keys]
+foreign_key_relations = [users_foreign_keys, batches_foreign_keys,
+                        scards_foreign_keys, gcards_foreign_keys, joblogs_foreign_keys]
 """*****************************************************************************
 -------------------- Scard and Runscripts Specifications -----------------------
 *****************************************************************************"""

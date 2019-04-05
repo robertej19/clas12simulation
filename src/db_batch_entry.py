@@ -17,12 +17,18 @@ def Batch_Entry(DBname,UID,timestamp,scard_file):
     BatchID = utils.sql3_grab(file_struct.DBname,strn)
     print("Batch specifications written to database with BatchID {}".format(BatchID))
 
-    #Write scard into table fields (This will not be needed in the future)
+    #Write scard into scard table fields (This will not be needed in the future)
     scard_fields = scard_helper.scard_class(scard_file)
     scard_fields.data['group_name'] = scard_fields.data.pop('group') #'group' is a protected word in SQL so we can't use the field title "group"
     scard_fields.data['genExecutable'] = file_struct.genExecutable.get(scard_fields.data.get('generator'))
     scard_fields.data['genOutput'] = file_struct.genOutput.get(scard_fields.data.get('generator'))
     scard_helper.SCard_Entry(file_struct.DBname,UID,BatchID,unixtimestamp,scard_fields.data)
+
+    #Write gcards into gcards table
+    """This function needs to be created
+    we can use scard_fields.gcards to find location of gcard files
+    then use wget to make local
+    finally read in using with open(gcard_file, 'r'), similar to above, to write to db"""
 
 scard_file = "scard.txt"
 UID = 1 #This 1 references the first USER listed in the USERS table of the database. This User must exist, or else an error will be thrown.
