@@ -11,8 +11,8 @@ rs_old, rs_new, batchID2, fail_rs = utils.grab_DB_data(file_struct.DBname,'Scard
 if fail_con + fail_rs == 0: #I think there is a better way to handle error conditions, should recode this part
   #As constructed, this will only run if grab_DB_data returns 0 for both condor and runscript
   #Write from template files out to submission files
-  utils.overwrite_file(temp_location+"clas12.condor.template",con_old,con_new,batchID1,"condor_script")
-  utils.overwrite_file(temp_location+"runscript.sh.template",rs_old,rs_new,batchID2,"runscript")
+  utils.overwrite_file(temp_location+"clas12.condor.template",con_old,con_new,batchID1,file_struct.condor_field)
+  utils.overwrite_file(temp_location+"runscript.sh.template",rs_old,rs_new,batchID2,file_struct.runscript_field)
 else:
   print('Error retrieving values from database. Are you sure database is populated?')
 

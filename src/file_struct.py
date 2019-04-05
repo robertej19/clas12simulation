@@ -19,8 +19,10 @@ users_fields = (('Username','TEXT'),('Affiliation','TEXT'),('JoinDateStamp','INT
                 ('Permissions','TEXT'),('Default_Output_Dir','TEXT'),('Total_Batches','INT'),
                 ('Total_Jobs','INT'),('Total_Events','INT'),('Most_Recent_Active_Date','INT'))
 
-batches_fields = (('timestamp','FLOAT'),('scard','VARCHAR'),('submission_pool','TEXT'),
-                  ('runscript','VARCHAR'),('condor_script','VARCHAR'))
+runscript_field = 'runscript' #This is a crutch until a better and more general data structure is established
+condor_field = 'condor_script' #This is a crutch until a better and more general data structure is established
+batches_fields = (('timestamp','FLOAT'),('scard','VARCHAR'),('submission_pool','TEXT'),#submission pool is not yet used
+                  (runscript_field,'VARCHAR'),(condor_field,'VARCHAR'))
 
 scards_fields = (('group_name','TEXT'),('User','TEXT'),('Nevents','INT'),
                 ('Generator','TEXT'),('genExecutable','TEXT'),('genOutput','TEXT'),
