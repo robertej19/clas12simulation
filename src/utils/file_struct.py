@@ -78,7 +78,7 @@ SCTable_RSOverwrite = {'gcards_scard': 'gcards', 'genOutput_scard': 'genOutput',
                         'user_scard': 'user','nevents_scard': 'nevents',
                         'pcurrent_scard': 'pcurrent', 'tcurrent_scard': 'tcurrent',
                         'genOptions_scard': 'genOptions', 'genExecutable_scard': 'genExecutable',
-                        'group_scard': 'group_name'}
+                        'LUMIOPTION_scard':'luminosity','group_scard': 'group_name'}
 """*****************************************************************************
 ---------------------------- Other Specifications ------------------------------
 *****************************************************************************"""

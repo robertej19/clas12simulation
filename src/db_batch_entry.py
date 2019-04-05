@@ -1,5 +1,5 @@
 from __future__ import print_function
-from utils import utils, file_struct, scard_helper
+from utils import utils, file_struct, scard_helper, gcard_helper
 import sqlite3, time
 
 def Batch_Entry(DBname,UID,timestamp,scard_file):
@@ -25,7 +25,8 @@ def Batch_Entry(DBname,UID,timestamp,scard_file):
     scard_helper.SCard_Entry(file_struct.DBname,UID,BatchID,unixtimestamp,scard_fields.data)
 
     #Write gcards into gcards table
-    """This function needs to be created
+    gcard_helper.GCard_Entry(file_struct.DBname,UID,BatchID,unixtimestamp,scard_fields.data['gcards'])
+    """This function is currently a work in progress and needs to be created
     we can use scard_fields.gcards to find location of gcard files
     then use wget to make local
     finally read in using with open(gcard_file, 'r'), similar to above, to write to db"""

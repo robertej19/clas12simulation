@@ -1,6 +1,6 @@
 from __future__ import print_function
-import sqlite3, file_struct, time
-import utils
+import sqlite3, time
+import utils, file_struct
 
 class scard_class:
 # Default Constructor: a = scard_parser();  a.parse_scard("scard.txt")
@@ -41,10 +41,11 @@ class scard_class:
             print("ERROR: No colon in line {0}".format(linenum+1))
             print("The data cannot be interpreted. Stopped.")
             exit()
-        elif line.count(":")>1:
-            print("ERROR: number of colons>1 at line {0}".format(linenum+1))
-            print("':' can be used only as a delimeter and only once per line. Edit scard to fix.")
-            exit()
+        #The below is now commented out because urls have at least 1 colon
+        #elif line.count(":")>1:
+        #    print("ERROR: number of colons>1 at line {0}".format(linenum+1))
+        #    print("':' can be used only as a delimeter and only once per line. Edit scard to fix.")
+        #    exit()
 
 def SCard_Entry(DBname,UID,BatchID,timestamp,scard_dict):
     strn = "INSERT INTO Scards(UserID,timestamp) VALUES ('{0}',{1});".format(UID,timestamp)
