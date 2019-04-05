@@ -1,5 +1,6 @@
 from __future__ import print_function
-import sqlite3, utils, file_struct
+from utils import utils, file_struct
+import sqlite3
 
 
 tab_fields = [file_struct.users_fields,file_struct.batches_fields,

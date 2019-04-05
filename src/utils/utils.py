@@ -9,32 +9,22 @@ def overwrite_file(template_file,old_vals,new_vals,BatchID,batch_field): #templa
       str_script = str_script.replace(old_vals[i],str(new_vals[i]))
     print("Overwriting '{0}'".format(newfile))
     with open(newfile,"w") as file: file.write(str_script)
-    print("Done.\n")
     str_script_db = str_script.replace('"',"'") #I can't figure out a way to write "" into a sqlite field without errors
     #For now, we can replace " with ', which works ok, but IDK how it will run if the scripts were submitted to HTCondor
     strn = 'UPDATE Batches SET {0} = "{1}" WHERE BatchID = {2};'.format(batch_field,str_script_db,BatchID)
-    print(strn)
+    print("Saving submission script to batch field '{0}' with BatchID = {1} \n".format(batch_field,BatchID))
     sql3_exec(file_struct.DBname,strn)
 
 #Takes a dictionary, retuns 2 lists: key (oldvals) and value (newvals) from table in DBName
 def grab_DB_data(DBname,table,dictionary): #DBName, table = str, dictionary = dict
-    conn = sqlite3.connect(DBname)
-    c = conn.cursor()
     oldvals, newvals = [],[]
     for key in dictionary:
       strn = "SELECT {0} FROM {1} ORDER BY ScardID DESC LIMIT 1;".format(dictionary[key],table)#This just grabs the most recent DB entry.
-      c.execute(strn)
+      value = sql3_grab(DBname,strn)
       oldvals.append(key)
-      try:
-        value = c.fetchall()[0][0]#Get value from list of tuples. There should be a cleaner way to do this (maybe don't return a list of tuples from c.fetchall)
-      except:
-        print('There appears to be no records in the table {0} in DB {1}, exiting'.format(table,DBname))
-        return [], [], -1, -1
       newvals.append(value)
     strn = "SELECT {0} FROM {1} ORDER BY ScardID DESC LIMIT 1;".format("BatchID",table)#This just grabs the most recent DB entry.
-    c.execute(strn)
-    batchID = c.fetchall()[0][0]#Get value from list of tuples. There should be a cleaner way to do this (maybe don't return a list of tuples from c.fetchall)
-    print(batchID)
+    batchID = sql3_grab(DBname,strn)
     return oldvals, newvals, batchID, 0
 
 #Add a field to an existing DB. Need to add error statements if DB or table does not exist
@@ -50,7 +40,7 @@ def create_table(DBname,tablename,PKname,FKargs):
   print('In database {0}, table {1} has succesfully been created with primary key {2}'.format(DBname,
         tablename,PKname))
 
-#Executes writing commands to DB. Cannot currently be used to return data from DB
+#Executes writing commands to DB. To return data from DB, use sql3_grab(), defined below
 def sql3_exec(DBname,strn):
   conn = sqlite3.connect(DBname)
   c = conn.cursor()
@@ -60,3 +50,18 @@ def sql3_exec(DBname,strn):
   conn.commit()
   c.close()
   conn.close()
+
+#Executes reading commands to DB. Cannot currently be used to return data from DB
+def sql3_grab(DBname,strn):
+  conn = sqlite3.connect(DBname)
+  c = conn.cursor()
+  c.execute(strn)
+  #print('Executed SQL Command: {}'.format(strn)) #Turn this on for explict printing of all DB write commands
+  try:
+    return_item = c.fetchall()[0][0]#Get value from list of tuples. There should be a cleaner way to do this (maybe don't return a list of tuples from c.fetchall)
+  #Also note that return_item will only give the first item in a list of possibly many items.
+  except:
+    print('There appears to be no records in the table {0} in DB {1}, exiting'.format(table,DBname))
+  c.close()
+  conn.close()
+  return return_item
