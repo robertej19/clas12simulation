@@ -7,18 +7,17 @@ import urllib2
 #>>> resp = urllib2.urlopen("http://google.com/abc.jpg")
 
 def GCard_Entry(DBname,UID,BatchID,unixtimestamp,url_dir):
-  #gcard_urls = Gather_Gcard_urls(url_dir)
-  gcard_urls = ["444","555"]
+  gcard_urls = Gather_Gcard_urls(url_dir)
   for url_ending in gcard_urls:
-    #response = urllib2.urlopen(url_dir+'/'+url_ending)
-    #gcard_text = response.read()
-    gcard_text = url_ending
-    db_gcard_write(DBname,UID,BatchID,unixtimestamp,gcard_text)
+    response = urllib2.urlopen(url_dir+'/'+url_ending)
+    gcard_text = response.read()
+    gcard_text_db = gcard_text.replace('"',"'")
+    db_gcard_write(DBname,UID,BatchID,unixtimestamp,gcard_text_db)
 
 def db_gcard_write(DBname,UID,BatchID,timestamp,gcard_text):
     strn = "INSERT INTO Gcards(UserID,timestamp) VALUES ('{0}',{1});".format(UID,timestamp)
     utils.sql3_exec(DBname,strn)
-    strn = "UPDATE Gcards SET {0} = '{1}' WHERE timestamp = {2};".format('Gcards',gcard_text,timestamp)
+    strn = """UPDATE Gcards SET {0} = "{1}" WHERE timestamp = {2};""".format('Gcards',gcard_text,timestamp)
     utils.sql3_exec(DBname,strn)
     print("GCard record added to database corresponding to BatchID {}".format(BatchID))
     strn = "UPDATE Gcards SET {0} = '{1}' WHERE timestamp = {2};".format("BatchID",BatchID,timestamp)
