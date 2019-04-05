@@ -54,7 +54,8 @@ def sql3_exec(DBname,strn):
 
 #Executes reading commands to DB. Cannot currently be used to return data from DB
 def sql3_grab(DBname,strn):
-  conn = sqlite3.connect(DBname)
+  dirname = os.path.dirname(__file__)
+  conn = sqlite3.connect(dirname+file_struct.DB_rel_location+DBname)
   c = conn.cursor()
   #print('Executing SQL Command: {}'.format(strn)) #Turn this on for explict printing of all DB write commands
   c.execute(strn)

@@ -2,26 +2,28 @@
 
 #Currently, this must be run in the "clas12simulation[s]" directory!
 
+clear
+
 if [ ! -f scard.txt ]; then
-	echo "scard.txt not found, please create before attempting to continue. Exiting"
+	printf "scard.txt not found, please create before attempting to continue. Exiting"
 	exit
 fi
 
 if [ ! -f database/CLAS12_OCRDB.db ]; then
-	echo "CLAS12 Off Campus Resources Database not found, creating!"
+	printf "\n\n CLAS12 Off Campus Resources Database not found, creating! \n\n"
 	python2 src/utils/create_database.py
 fi
 
-echo "Creating example user [needed for testing purposes]"
+printf "\n\n Creating example user [needed for testing purposes] \n\n"
 python2 src/db_user_entry.py
 
-#echo "Reading scard & other information into database"
-#python2 src/db_batch_entry.py
+printf "\n\n Reading scard & other information into database \n\n"
+python2 src/db_batch_entry.py
 
 #rm scard.txt
 
-#echo "\n\nWriting submission scripts"
-#python2 sub_script_generator.py
+printf "\n\n Writing submission scripts  \n\n"
+python2 src/sub_script_generator.py
 
 
 #mv src/runscript.sh .

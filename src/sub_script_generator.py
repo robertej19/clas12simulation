@@ -2,8 +2,8 @@ from __future__ import print_function
 from utils import utils, file_struct
 import sqlite3, os, shutil
 
-cwd = os.getcwd()
-temp_location = cwd + "/templates/"
+dirname = os.path.dirname(__file__)
+temp_location = dirname + "/templates/"
 
 #Grab values to write from database from table 'SCards'
 con_old, con_new, BatchID1, fail_con = utils.grab_DB_data(file_struct.DBname,'Scards',file_struct.SCTable_CondOverwrite)
@@ -24,6 +24,7 @@ else:
   print('Error retrieving values from database. Are you sure database is populated?')
 
 files = ["/runscript.sh","/clas12.condor"]
+cwd = os.getcwd()
 for file in files:
   old = temp_location+file
   new = cwd+file
