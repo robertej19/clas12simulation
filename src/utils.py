@@ -2,7 +2,7 @@ from __future__ import print_function
 import file_struct, sqlite3
 
 #Takes in a .template file, a list of values to replace (old_vals) and a list of what to replace them with (new_vals)
-def overwrite_file(template_file,old_vals,new_vals): #template_file = str, old_vals, new_vals = LIST
+def overwrite_file(template_file,old_vals,new_vals,BatchID,batch_field): #template_file = str, old_vals, new_vals = LIST
     with open(template_file,"r") as tmp: str_script = tmp.read()
     newfile = str(template_file)[:-9]#This removes the '.template' ending
     for i in range(0,len(old_vals)):
@@ -10,6 +10,11 @@ def overwrite_file(template_file,old_vals,new_vals): #template_file = str, old_v
     print("Overwriting '{0}'".format(newfile))
     with open(newfile,"w") as file: file.write(str_script)
     print("Done.\n")
+    str_script_db = str_script.replace('"',"'") #I can't figure out a way to write "" into a sqlite field without errors
+    #For now, we can replace " with ', which works ok, but IDK how it will run if the scripts were submitted to HTCondor
+    strn = 'UPDATE Batches SET {0} = "{1}" WHERE BatchID = {2};'.format(batch_field,str_script_db,BatchID)
+    print(strn)
+    sql3_exec(file_struct.DBname,strn)
 
 #Takes a dictionary, retuns 2 lists: key (oldvals) and value (newvals) from table in DBName
 def grab_DB_data(DBname,table,dictionary): #DBName, table = str, dictionary = dict
@@ -17,16 +22,20 @@ def grab_DB_data(DBname,table,dictionary): #DBName, table = str, dictionary = di
     c = conn.cursor()
     oldvals, newvals = [],[]
     for key in dictionary:
-      strn = "SELECT {0} FROM {1} ORDER BY BatchID DESC LIMIT 1;".format(dictionary[key],table)#This just grabs the most recent DB entry.
+      strn = "SELECT {0} FROM {1} ORDER BY ScardID DESC LIMIT 1;".format(dictionary[key],table)#This just grabs the most recent DB entry.
       c.execute(strn)
       oldvals.append(key)
       try:
         value = c.fetchall()[0][0]#Get value from list of tuples. There should be a cleaner way to do this (maybe don't return a list of tuples from c.fetchall)
       except:
         print('There appears to be no records in the table {0} in DB {1}, exiting'.format(table,DBname))
-        return [], [], 1
+        return [], [], -1, -1
       newvals.append(value)
-    return oldvals, newvals, 0
+    strn = "SELECT {0} FROM {1} ORDER BY ScardID DESC LIMIT 1;".format("BatchID",table)#This just grabs the most recent DB entry.
+    c.execute(strn)
+    batchID = c.fetchall()[0][0]#Get value from list of tuples. There should be a cleaner way to do this (maybe don't return a list of tuples from c.fetchall)
+    print(batchID)
+    return oldvals, newvals, batchID, 0
 
 #Add a field to an existing DB. Need to add error statements if DB or table does not exist
 def add_field(DBname,tablename,field_name,field_type):

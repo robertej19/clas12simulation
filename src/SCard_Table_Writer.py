@@ -9,6 +9,8 @@ def SCard_Entry(DBname,UID,timestamp,scard_dict,):
       strn = "UPDATE Scards SET {0} = '{1}' WHERE timestamp = {2};".format(key,scard_dict[key],unixtimestamp)
       utils.sql3_exec(file_struct.DBname,strn)
     print("SCard record added to database")
+    strn = "UPDATE Scards SET {0} = '{1}' WHERE timestamp = {2};".format("BatchID",1,unixtimestamp)
+    utils.sql3_exec(file_struct.DBname,strn)
 
 filename = "scard.txt"
 scard_fields = scard_parser.scard_parser(filename)
