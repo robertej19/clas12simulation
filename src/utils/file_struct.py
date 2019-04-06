@@ -50,7 +50,7 @@ PKs = ['UserID','BatchID','ScardID','GcardID','SubmissionID','JobID']
 
 #Below defines foreign key relations. There is a more succinet way to do this but as we have
 #only a few relations, I did not spend the time to modifiy this code.
-users_foreign_keys = """, User TEXT NOT NULL UNIQUE"""
+users_special_relations = """, User TEXT NOT NULL UNIQUE"""
 batches_foreign_keys = """, User TEXT,
                       FOREIGN KEY(User) REFERENCES Users(User)"""
 scards_foreign_keys = """, User TEXT, BatchID INTEGER,
@@ -66,7 +66,7 @@ joblogs_foreign_keys = """, UserID INTEGER, BatchID INTEGER, SubmissionID INTEGE
                       FOREIGN KEY(SubmissionID) REFERENCES Submissions(SubmissionID)"""
 #create table yourtablename (_id  integer primary key autoincrement, column1 text not null unique, column2 text);
 
-foreign_key_relations = [users_foreign_keys, batches_foreign_keys,
+foreign_key_relations = [users_special_relations, batches_foreign_keys,
                         scards_foreign_keys, gcards_foreign_keys,
                         submissions_foreign_keys, joblogs_foreign_keys]
 """*****************************************************************************
