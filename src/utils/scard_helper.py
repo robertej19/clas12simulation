@@ -47,12 +47,10 @@ class scard_class:
         #    print("':' can be used only as a delimeter and only once per line. Edit scard to fix.")
         #    exit()
 
-def SCard_Entry(DBname,UID,BatchID,timestamp,scard_dict):
-    strn = "INSERT INTO Scards(UserID,timestamp) VALUES ('{0}',{1});".format(UID,timestamp)
+def SCard_Entry(DBname,BatchID,timestamp,scard_dict):
+    strn = "INSERT INTO Scards(BatchID,timestamp) VALUES ('{0}',{1});".format(BatchID,timestamp)
     utils.sql3_exec(file_struct.DBname,strn)
     for key in scard_dict:
-      strn = "UPDATE Scards SET {0} = '{1}' WHERE timestamp = {2};".format(key,scard_dict[key],timestamp)
+      strn = "UPDATE Scards SET {0} = '{1}' WHERE BatchID = {2};".format(key,scard_dict[key],BatchID)
       utils.sql3_exec(file_struct.DBname,strn)
     print("SCard record added to database corresponding to BatchID {}".format(BatchID))
-    strn = "UPDATE Scards SET {0} = '{1}' WHERE timestamp = {2};".format("BatchID",BatchID,timestamp)
-    utils.sql3_exec(file_struct.DBname,strn)

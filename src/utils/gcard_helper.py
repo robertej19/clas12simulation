@@ -4,23 +4,19 @@ import utils, file_struct
 import subprocess
 import urllib
 import urllib2
-#>>> resp = urllib2.urlopen("http://google.com/abc.jpg")
 
-def GCard_Entry(DBname,UID,BatchID,unixtimestamp,url_dir):
+def GCard_Entry(DBname,BatchID,unixtimestamp,url_dir):
   gcard_urls = Gather_Gcard_urls(url_dir)
   for url_ending in gcard_urls:
     response = urllib2.urlopen(url_dir+'/'+url_ending)
     gcard_text = response.read()
     gcard_text_db = gcard_text.replace('"',"'")
-    db_gcard_write(DBname,UID,BatchID,unixtimestamp,gcard_text_db)
+    db_gcard_write(DBname,BatchID,unixtimestamp,gcard_text_db)
 
-def db_gcard_write(DBname,UID,BatchID,timestamp,gcard_text):
-    strn = "INSERT INTO Gcards(UserID,timestamp) VALUES ('{0}',{1});".format(UID,timestamp)
+def db_gcard_write(DBname,BatchID,timestamp,gcard_text):
+    strn = "INSERT INTO Gcards(BatchID) VALUES ({0});".format(BatchID)
     utils.sql3_exec(DBname,strn)
-    strn = """UPDATE Gcards SET {0} = "{1}" WHERE timestamp = {2};""".format('Gcards',gcard_text,timestamp)
-    utils.sql3_exec(DBname,strn)
-    print("GCard record added to database corresponding to BatchID {}".format(BatchID))
-    strn = "UPDATE Gcards SET {0} = '{1}' WHERE timestamp = {2};".format("BatchID",BatchID,timestamp)
+    strn = """UPDATE Gcards SET {0} = "{1}" WHERE BatchID = {2};""".format('gcard_text',gcard_text,BatchID)
     utils.sql3_exec(DBname,strn)
 
 def Gather_Gcard_urls(url_dir):
@@ -29,6 +25,7 @@ def Gather_Gcard_urls(url_dir):
   html = response.read().split(' ')
   matching_text = ".gcard"
   second_qualifier = ">"
+  """Do something like 'if href = XXX' with XXX contiaing .gcard, then download location"""
   for section in html:
     if matching_text in section:
       sections = section.split('"')

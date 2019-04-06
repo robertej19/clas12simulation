@@ -30,3 +30,12 @@ for file in files:
   new = cwd+file
   shutil.move(old,new)
   #Should these files be given unique names so they are not overwritten everytime?
+
+
+"""Also need to generate gcard for submission from GCards table,
+and pass location to runscript """
+#oldvals, newvals = [],[]
+#    for key in dictionary:
+strn = "SELECT gcard_text FROM GCards WHERE BatchID = {};".format(BatchID1)#This just grabs the most recent DB entry.
+value = utils.sql3_grab(file_struct.DBname,strn)
+#print(value)

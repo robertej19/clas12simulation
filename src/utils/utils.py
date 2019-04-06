@@ -59,11 +59,12 @@ def sql3_grab(DBname,strn):
   c = conn.cursor()
   #print('Executing SQL Command: {}'.format(strn)) #Turn this on for explict printing of all DB write commands
   c.execute(strn)
+  #print(c.fetchall())
   try:
     return_item = c.fetchall()[0][0]#Get value from list of tuples. There should be a cleaner way to do this (maybe don't return a list of tuples from c.fetchall)
   #Also note that return_item will only give the first item in a list of possibly many items.
   except:
-    print('There appears to be no records in the table {0} in DB {1}, exiting'.format(table,DBname))
+    print('There appears to be no records in DB {0}, exiting'.format(DBname))
   c.close()
   conn.close()
   return return_item
