@@ -9,11 +9,8 @@ def overwrite_file(template_file,old_vals,new_vals,BatchID,batch_field): #templa
       str_script = str_script.replace(old_vals[i],str(new_vals[i]))
     print("Overwriting '{0}'".format(newfile))
     with open(newfile,"w") as file: file.write(str_script)
-    str_script_db = str_script.replace('"',"'") #I can't figure out a way to write "" into a sqlite field without errors
-    #For now, we can replace " with ', which works ok, but IDK how it will run if the scripts were submitted to HTCondor
-    strn = 'UPDATE Batches SET {0} = "{1}" WHERE BatchID = {2};'.format(batch_field,str_script_db,BatchID)
-    print("Saving submission script to batch field '{0}' with BatchID = {1} \n".format(batch_field,BatchID))
-    sql3_exec(file_struct.DBname,strn)
+    return str_script
+
 
 #Takes a dictionary, retuns 2 lists: key (oldvals) and value (newvals) from table in DBName
 def grab_DB_data(DBname,table,dictionary): #DBName, table = str, dictionary = dict

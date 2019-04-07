@@ -13,8 +13,11 @@
 *****************************************************************************"""
 DBname = 'CLAS12_OCRDB.db'
 DB_rel_location = "/../../database/" #This will get changed when moving to SQL RDBMS
-DB_rel_location_src = "/../database/" #This is needed for db_user_entry, should be removed later
+DB_rel_location_src = "../database/" #This is needed for db_user_entry, should be removed later
 tables = ['Users','Batches','Scards','Gcards','Submissions','JobsLog']
+
+#Primary Key definitions:
+PKs = ['UserID','BatchID','ScardID','GcardID','SubmissionID','JobID']
 
 users_fields = (('Email','TEXT'),('JoinDateStamp','INT'),('Total_Batches','INT'),
                 ('Total_Jobs','INT'),('Total_Events','INT'),('Most_Recent_Active_Date','INT'))
@@ -44,10 +47,6 @@ joblogs_fields = (('Job_Submission_Datestamp','INT'),
                   ('Output_file_size','INT'),('Number_Job_failures','INT'))
 
 table_fields = [users_fields,batches_fields, scards_fields, gcards_fields, submissions_fields, joblogs_fields]
-
-
-#Primary Key definitions:
-PKs = ['UserID','BatchID','ScardID','GcardID','SubmissionID','JobID']
 
 #Below defines foreign key relations. There is a more succinet way to do this but as we have
 #only a few relations, I did not spend the time to modifiy this code.
@@ -90,6 +89,9 @@ SCTable_RSOverwrite = {'gcards_scard': 'gcards', 'genOutput_scard': 'genOutput',
 """*****************************************************************************
 ---------------------------- Other Specifications ------------------------------
 *****************************************************************************"""
+#This specifies a folder where all submission files live (runscripts, gcards,etc)
+sub_files_rel_location = "/../../submission_files/"
+sub_files_rel_location_src = "../submission_files/"
 # This defines a mapping between 'generator' in scard and the genOutput and genExecutable literals to be invoked
 genOutput= {'clasdis': 'sidis.dat', 'dvcs': 'dvcs.dat','disrad':'dis-rad.dat'}
 genExecutable =  {'clasdis': 'clasdis', 'dvcs': 'dvcsgen','disrad':'generate-dis'}

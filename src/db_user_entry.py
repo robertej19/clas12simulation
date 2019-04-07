@@ -20,9 +20,7 @@ join_datestamp = int(time.time())
 user_array = (default_user,default_email)
 
 dirname = os.path.dirname(__file__)
-s = dirname+file_struct.DB_rel_location_src+file_struct.DBname
-print(s)
-conn = sqlite3.connect('../database/CLAS12_OCRDB.db')
+conn = sqlite3.connect(dirname+file_struct.DB_rel_location_src+file_struct.DBname)
 c = conn.cursor()
 c.execute('PRAGMA foreign_keys = ON;')
 
