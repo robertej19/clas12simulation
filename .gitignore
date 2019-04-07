@@ -4,6 +4,7 @@
 *.out
 *.err
 *.pyc
+*.gcard
 clas12.condor
 runscript.sh
 runscript_osg.sh
