@@ -13,6 +13,7 @@
 *****************************************************************************"""
 DBname = 'CLAS12_OCRDB.db'
 DB_rel_location = "/../../database/" #This will get changed when moving to SQL RDBMS
+DB_rel_location_src = "/../database/" #This is needed for db_user_entry, should be removed later
 tables = ['Users','Batches','Scards','Gcards','Submissions','JobsLog']
 
 users_fields = (('Email','TEXT'),('JoinDateStamp','INT'),('Total_Batches','INT'),
