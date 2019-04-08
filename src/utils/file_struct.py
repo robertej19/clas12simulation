@@ -13,9 +13,6 @@
 """*****************************************************************************
 -------------------------  DB Schema Specification -----------------------------
 *****************************************************************************"""
-DBname = 'CLAS12_OCRDB.db'
-DB_rel_location = "/../../database/" #This will get changed when moving to SQL RDBMS
-DB_rel_location_src = "/../database/" #This is needed for db_user_entry, should be removed later
 tables = ['Users','Batches','Scards','Gcards','Submissions','JobsLog']
 
 #Primary Key definitions:
@@ -96,26 +93,61 @@ SCTable_RSOverwrite = {'gcards_scard': 'gcards', 'genOutput_scard': 'genOutput',
 
 SCTable_RunJobOverwrite = {'runscript.overwrite': 'rs_overwrite_unused'}
 
-SCTable_CWOverwrite = {'gcards_scard': 'gcards'} #This is scrap code
-
+SCTable_CWOverwrite = {'gcards_scard': 'gcards'} #This is unused currently
 
 """*****************************************************************************
----------------------------- Other Specifications ------------------------------
+------------------------- File Path Specifications -----------------------------
 *****************************************************************************"""
+"""Current path specifications are as follows: (only important files & dirs included)
+clas12simulation(s)
+  scard.txt
+  database
+    CLAS12_OCRDB.db
+  submission_files
+    condor_files
+    condor_wrapper_files
+    gcards
+    run_job_files
+    runscript_files
+  src
+     db_batch_entry.py
+     db_user_entry.py
+     sub_script_generator.py
+     templates
+        *.template
+     utils
+        create_database.py
+        file_struct.py **** this file, all locations are referenced relative to this
+        gcard_helper.py
+        scard_helper.py
+        utils.py
+"""
+#Specifiy Database name:
+DBname = 'CLAS12_OCRDB.db'
 
-#This specifies a folder where all submission files live (runscripts, gcards,etc)
-sub_files_rel_location = "/../submission_files/"
+#Specify the directory names of all submission files
 gcards_dir = 'gcards/'
 condor_dir = 'condor_files/'
 runscript_dir = 'runscript_files/'
 run_job_dir = 'run_job_files/'
-cw_dir = 'condor_wrapper_files'
+cw_dir = 'condor_wrapper_files' #This is not currently used / needed, but included for completenents
 
 import os
 dirname = os.path.dirname(__file__)
-if dirname == '': dirname = '.' #Need this because if running in this file's directory, dirname is blank
-db_path = dirname+DB_rel_location_src+DBname
-sub_files_path = dirname+'/..'+sub_files_rel_location
+#if dirname == '': dirname = '.' #Need this because if running in this file's directory, dirname is blank
+
+#This specifies a folder where all submission files live (runscripts, gcards,etc)
+sub_files_path = dirname+'/../../submission_files/'
+temp_location = dirname + "/../templates/"
+#Specify DB relative location (This will get changed when moving to SQL RDBMS)
+DB_rel_location = "/../../database/"
+#Specify scard location and file name
+scard_rel_location = dirname+"/../../"
+scard_name = 'scard.txt'
+db_path = dirname+DB_rel_location+DBname
+"""*****************************************************************************
+------------------------ Submission File Specifications ------------------------
+*****************************************************************************"""
 
 class sub_file():
   def __init__(self,name):
@@ -158,6 +190,10 @@ cw_obj.file_end = ''
 cw_obj.overwrite_vals = SCTable_CWOverwrite
 cw_obj.field_loc = cw_field
 cw_obj.script_name = 'cw_name'
+
+"""*****************************************************************************
+---------------------------- Other Specifications ------------------------------
+*****************************************************************************"""
 
 # This defines a mapping between 'generator' in scard and the genOutput and genExecutable literals to be invoked
 genOutput= {'clasdis': 'sidis.dat', 'dvcs': 'dvcs.dat','disrad':'dis-rad.dat'}

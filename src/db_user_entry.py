@@ -2,10 +2,6 @@ from __future__ import print_function
 from utils import utils, file_struct, scard_helper
 import sqlite3, time, os
 
-dirname = os.path.dirname(__file__)
-if dirname == '': dirname = '.' #Need this because if running in this file's directory, dirname is blank
-db_path = dirname+file_struct.DB_rel_location_src+file_struct.DBname
-
 #This function prompts the user to enter in information. In the future this will not run out of the command line, so this will change
 def manual_data():
   username = raw_input("Enter JLab username: ")
@@ -24,7 +20,7 @@ def command_writer(user,email):
 #then the prompt will come up at the command line asking for a new user
 # IF the username that is returned already exists in the command line, another error will be returned and program will quit.
 try:
-  conn = sqlite3.connect(db_path)
+  conn = sqlite3.connect(file_struct.db_path)
   c = conn.cursor()
   c.execute('PRAGMA foreign_keys = ON;')
   strn = command_writer(file_struct.default_user,file_struct.default_email)

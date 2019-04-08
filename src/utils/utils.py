@@ -9,7 +9,6 @@ def overwrite_file(template_file,newfile,old_vals,new_vals): #template_file = st
     with open(newfile,"w") as file: file.write(str_script)
     return str_script
 
-
 #Takes a dictionary, retuns 2 lists: key (oldvals) and value (newvals) from table in DBName
 def grab_DB_data(DBname,table,dictionary,BatchID): #DBName, table = str, dictionary = dict
     oldvals, newvals = [],[]
@@ -52,11 +51,7 @@ def sql3_grab(DBname,strn):
   c = conn.cursor()
   #print('Executing SQL Command: {}'.format(strn)) #Turn this on for explict printing of all DB write commands
   c.execute(strn)
-  try:
-    return_item = c.fetchall()[0][0]#Get value from list of tuples. There should be a cleaner way to do this (maybe don't return a list of tuples from c.fetchall)
-  #Also note that return_item will only give the first item in a list of possibly many items.
-  except:
-    print('There appears to be no records in DB {0}, exiting'.format(DBname))
+  return_array = c.fetchall()
   c.close()
   conn.close()
-  return return_item
+  return return_array

@@ -2,46 +2,35 @@ from __future__ import print_function
 from utils import utils, file_struct
 import sqlite3, os, shutil, argparse
 
-dirname = os.path.dirname(__file__)
-if dirname == '': dirname = '.' #Need this because if running in this file's directory, dirname is blank
-db_path = dirname+file_struct.DB_rel_location_src+file_struct.DBname
-sub_files_path = dirname+file_struct.sub_files_rel_location
-
-temp_location = dirname + "/templates/"
+#This allows a user to specifiy which batch to use to generate files using a specific BatchID
 argparser = argparse.ArgumentParser()
-argparser.add_argument('-b','--batchID', default='none', help = 'Enter the ID# of the batch you want to submit')
+argparser.add_argument('-b','--batchID', default='none', help = 'Enter the ID# of the batch you want to submit (e.g. -b 23)')
 args = argparser.parse_args()
 
-
-
-def grab_batchID(dirname,args):
+#This uses the argument passed from command line, if no args, grab most recent DB entry
+def grab_batchID(DBname,args):
   if args.batchID != 'none':
     BatchID = args.batchID
   else:
-    conn = sqlite3.connect(db_path)
-    c = conn.cursor()
     strn = "SELECT BatchID FROM Batches;"
-    c.execute(strn)
-    Batches = c.fetchall()
+    Batches = utils.sql3_grab(DBname,strn)
     BatchID = max(Batches)[0]
   return BatchID
 
-def grab_gcards(dirname,BatchID):
-  conn = sqlite3.connect(db_path)
-  c = conn.cursor()
-  strn = "SELECT GcardID, gcard_text FROM GCards WHERE BatchID = {};".format(BatchID)#This just grabs the most recent DB entry.
-  c.execute(strn)
-  gcards = c.fetchall()
+#Grabs all GCards from a corresponding Batch
+def grab_gcards(DBname,BatchID):
+  strn = "SELECT GcardID, gcard_text FROM GCards WHERE BatchID = {};".format(BatchID)
+  gcards = utils.sql3_grab(DBname,strn)
   return gcards
 
-def wrile(sub_file_obj,params):
+#This function writes a file from a file object (see file_struct file). This is currently not done consicely and should be improved for code readability
+def write_files(sub_file_obj,params):
   run_script_loc = ''
   sf = sub_file_obj
   p = params
   if sf.name != file_struct.run_job_obj.name:
     old_vals, new_vals = utils.grab_DB_data(p['DBname'],p['table'],sf.overwrite_vals,p['BatchID'])
   else:
-    #print(sf.overwrite_vals.keys()[0])
     old_vals, new_vals = sf.overwrite_vals.keys(), (run_script_loc,)
   print("Writing submission file '{0}' based off of specifications of BatchID = {1}, GcardID = {2}".format(sf.filebase,
         p['BatchID'],p['GcardID']))
@@ -57,18 +46,20 @@ def wrile(sub_file_obj,params):
     strn = 'UPDATE Submissions SET {0} = "{1}" WHERE GcardID = {2};'.format(field,value,p['GcardID'])
     utils.sql3_exec(file_struct.DBname,strn)
 
-BatchID = grab_batchID(dirname,args)
-gcards = grab_gcards(dirname,BatchID)
+#Grabs batch and gcards as described in respective files
+BatchID = grab_batchID(file_struct.DBname,args)
+gcards = grab_gcards(file_struct.DBname,BatchID)
 
+#Create a set of submission files for each gcard in the batch
 for gcard in gcards:
   GcardID = gcard[0]
   newfile = "gcard_{}_batch_{}.gcard".format(GcardID,BatchID)
-  gfile= sub_files_path+file_struct.gcards_dir+newfile
+  gfile= file_struct.sub_files_path+file_struct.gcards_dir+newfile
   with open(gfile,"w") as file: file.write(gcard[1])
   strn = "INSERT INTO Submissions(BatchID,GcardID) VALUES ({0},{1});".format(BatchID,GcardID)
   utils.sql3_exec(file_struct.DBname,strn)
   params = {'DBname':file_struct.DBname,'table':'Scards','BatchID':BatchID,'GcardID':GcardID,
-            'gfile':gfile,'temp_location':temp_location}
-  wrile(file_struct.condor_file_obj,params)
-  wrile(file_struct.runscript_file_obj,params)
-  wrile(file_struct.run_job_obj,params)
+            'gfile':gfile,'temp_location':file_struct.temp_location}
+  write_files(file_struct.condor_file_obj,params)
+  write_files(file_struct.runscript_file_obj,params)
+  write_files(file_struct.run_job_obj,params)

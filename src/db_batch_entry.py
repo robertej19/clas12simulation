@@ -14,7 +14,7 @@ def Batch_Entry(DBname,timestamp,scard_file):
 
     #Grab BatchID to pass to scard table (probably not needed in future)
     strn = "SELECT {0} FROM {1} WHERE timestamp = {2};".format('BatchID','Batches',timestamp)
-    BatchID = utils.sql3_grab(file_struct.DBname,strn)
+    BatchID = utils.sql3_grab(file_struct.DBname,strn)[0][0]#The [0][0]  is needed because sql3_grab returns a list of tuples, we need the value
     print("Batch specifications written to database with BatchID {}".format(BatchID))
 
     #Write scard into scard table fields (This will not be needed in the future)
@@ -26,15 +26,9 @@ def Batch_Entry(DBname,timestamp,scard_file):
 
     #Write gcards into gcards table
     gcard_helper.GCard_Entry(file_struct.DBname,BatchID,unixtimestamp,scard_fields.data['gcards'])
-    """This function is currently a work in progress and needs to be created
-    we can use scard_fields.gcards to find location of gcard files
-    then use wget to make local
-    finally read in using with open(gcard_file, 'r'), similar to above, to write to db"""
-
-
     strn = "UPDATE Batches SET {0} = '{1}' WHERE timestamp = {2};".format('User',scard_fields.data['user'],timestamp)
     utils.sql3_exec(file_struct.DBname,strn)
 
-scard_file = "scard.txt"
+scard_file = file_struct.scard_rel_location+file_struct.scard_name
 unixtimestamp = int(time.time()) # Can modify this if need 10ths of seconds or more resolution
 Batch_Entry(file_struct.DBname,unixtimestamp,scard_file)
