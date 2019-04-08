@@ -8,6 +8,8 @@
 #        - all values that will be overwritten in creating run scripts
 # - other specifications, including:
 #      - mapping between scard generator keyword and genOutput & genExecutable
+
+
 """*****************************************************************************
 -------------------------  DB Schema Specification -----------------------------
 *****************************************************************************"""
@@ -89,11 +91,47 @@ SCTable_RSOverwrite = {'gcards_scard': 'gcards', 'genOutput_scard': 'genOutput',
 """*****************************************************************************
 ---------------------------- Other Specifications ------------------------------
 *****************************************************************************"""
+
 #This specifies a folder where all submission files live (runscripts, gcards,etc)
 sub_files_rel_location = "/../submission_files/"
 gcards_dir = 'gcards/'
 condor_dir = 'condor_files/'
 runscript_dir = 'runscript_files/'
+
+
+import os
+dirname = os.path.dirname(__file__)
+if dirname == '': dirname = '.' #Need this because if running in this file's directory, dirname is blank
+db_path = dirname+DB_rel_location_src+DBname
+sub_files_path = dirname+'/..'+sub_files_rel_location
+
+class sub_file():
+  def __init__(self,name):
+    self.name = name
+    self.file_path = 0
+    self.filebase = 0
+    self.file_end = 0
+    self.overwrite_vals = 0
+    self.field_loc = 0
+    self.script_name = 0
+
+runscript_file_obj = sub_file('runscript')
+runscript_file_obj.file_path = sub_files_path+runscript_dir
+runscript_file_obj.filebase = 'runscript'
+runscript_file_obj.file_end = '.sh'
+runscript_file_obj.overwrite_vals = SCTable_RSOverwrite
+runscript_file_obj.field_loc = runscript_field
+runscript_file_obj.script_name = 'runscript_name'
+
+condor_file_obj = sub_file('clas12_condor')
+condor_file_obj.file_path = sub_files_path+condor_dir
+condor_file_obj.filebase = 'clas12'
+condor_file_obj.file_end = '.condor'
+condor_file_obj.overwrite_vals = SCTable_CondOverwrite
+condor_file_obj.field_loc = condor_field
+condor_file_obj.script_name = 'condor_script_name'
+
+
 # This defines a mapping between 'generator' in scard and the genOutput and genExecutable literals to be invoked
 genOutput= {'clasdis': 'sidis.dat', 'dvcs': 'dvcs.dat','disrad':'dis-rad.dat'}
 genExecutable =  {'clasdis': 'clasdis', 'dvcs': 'dvcsgen','disrad':'generate-dis'}

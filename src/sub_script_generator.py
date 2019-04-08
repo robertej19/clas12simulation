@@ -7,7 +7,6 @@ if dirname == '': dirname = '.' #Need this because if running in this file's dir
 db_path = dirname+file_struct.DB_rel_location_src+file_struct.DBname
 sub_files_path = dirname+file_struct.sub_files_rel_location
 
-
 temp_location = dirname + "/templates/"
 argparser = argparse.ArgumentParser()
 argparser.add_argument('-b','--batchID', default='none', help = 'Enter the ID# of the batch you want to submit')
@@ -34,7 +33,7 @@ def grab_gcards(dirname,BatchID):
   return gcards
 
 def wrile(sub_file_obj,params):
-  sf = sub_file
+  sf = sub_file_obj
   p = params
   old_vals, new_vals = utils.grab_DB_data(p['DBname'],p['table'],sf.overwrite_vals,p['BatchID'])
   print("\nWriting submission file '{0}' based off of specifications of scard from BatchID = {1} \n".format(sf.filebase,p['BatchID']))
@@ -45,36 +44,18 @@ def wrile(sub_file_obj,params):
     out_strn = utils.overwrite_file(newfile,newfile,['gcards_gcard',],[p['gfile'],])#Need to pass arrays to overwrite_file function
   str_script_db = out_strn.replace('"',"'") #I can't figure out a way to write "" into a sqlite field without errors
   #For now, we can replace " with ', which works ok, but IDK how it will run if the scripts were submitted to HTCondor
-  strn = 'UPDATE Submissions SET {0} = "{1}" WHERE GcardID = {2};'.format(sf.field_loc,str_script_db,p['GcardID'])
-  utils.sql3_exec(file_struct.DBname,strn)
-  strn = 'UPDATE Submissions SET {0} = "{1}" WHERE GcardID = {2};'.format(sf.script_name,newfile,p['GcardID'])
-  utils.sql3_exec(file_struct.DBname,strn)
+  for field, value in ((sf.field_loc,str_script_db),(sf.script_name,newfile)):
+    strn = 'UPDATE Submissions SET {0} = "{1}" WHERE GcardID = {2};'.format(field,value,p['GcardID'])
+    utils.sql3_exec(file_struct.DBname,strn)
+  #strn = 'UPDATE Submissions SET {0} = "{1}" WHERE GcardID = {2};'.format(sf.field_loc,str_script_db,p['GcardID'])
+  #utils.sql3_exec(file_struct.DBname,strn)
+  #strn = 'UPDATE Submissions SET {0} = "{1}" WHERE GcardID = {2};'.format(sf.script_name,newfile,p['GcardID'])
+  #utils.sql3_exec(file_struct.DBname,strn)
   print("Saving submission script to batch field '{0}' with BatchID = {1} \n".format(sf.field_loc,p['BatchID']))
 
 
 BatchID = grab_batchID(dirname,args)
 gcards = grab_gcards(dirname,BatchID)
-
-class sub_file():
-  def __init__(self,name):
-    self.name = name
-
-
-rs = sub_file('runscript')
-rs.file_path = sub_files_path+file_struct.runscript_dir
-rs.filebase = 'runscript'
-rs.file_end = '.sh'
-rs.overwrite_vals = file_struct.SCTable_RSOverwrite
-rs.field_loc = file_struct.runscript_field
-rs.script_name = 'runscript_name'
-
-cond = sub_file('clas12_condor')
-cond.file_path = sub_files_path+file_struct.condor_dir
-cond.filebase = 'clas12'
-cond.file_end = '.condor'
-cond.overwrite_vals = file_struct.SCTable_CondOverwrite
-cond.field_loc = file_struct.condor_field
-cond.script_name = 'condor_script_name'
 
 for gcard in gcards:
   GcardID = gcard[0]
@@ -83,7 +64,7 @@ for gcard in gcards:
   with open(gfile,"w") as file: file.write(gcard[1])
   strn = "INSERT INTO Submissions(BatchID,GcardID) VALUES ({0},{1});".format(BatchID,GcardID)
   utils.sql3_exec(file_struct.DBname,strn)
-  params = {'DBname':file_struct.DBname,'table':'Scards','BatchID':BatchID,'GCardID':GcardID,
+  params = {'DBname':file_struct.DBname,'table':'Scards','BatchID':BatchID,'GcardID':GcardID,
             'gfile':gfile,'temp_location':temp_location}
-  wrile(cond,params)
-  wrile(rs,params)
+  wrile(file_struct.condor_file_obj,params)
+  wrile(file_struct.runscript_file_obj,params)
