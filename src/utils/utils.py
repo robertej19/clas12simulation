@@ -6,7 +6,6 @@ def overwrite_file(template_file,newfile,old_vals,new_vals): #template_file = st
     with open(template_file,"r") as tmp: str_script = tmp.read()
     for i in range(0,len(old_vals)):
       str_script = str_script.replace(old_vals[i],str(new_vals[i]))
-    print("Writing file to '{0}'".format(newfile))
     with open(newfile,"w") as file: file.write(str_script)
     return str_script
 

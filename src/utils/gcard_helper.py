@@ -18,6 +18,8 @@ def db_gcard_write(DBname,BatchID,timestamp,gcard_text):
     utils.sql3_exec(DBname,strn)
     strn = """UPDATE Gcards SET {0} = "{1}" WHERE BatchID = {2};""".format('gcard_text',gcard_text,BatchID)
     utils.sql3_exec(DBname,strn)
+    print("GCard added to database corresponding to BatchID {}".format(BatchID))
+
 
 def Gather_Gcard_urls(url_dir):
   gcard_urls = []
