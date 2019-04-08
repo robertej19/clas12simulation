@@ -43,7 +43,7 @@ def wrile(sub_file_obj,params):
   else:
     #print(sf.overwrite_vals.keys()[0])
     old_vals, new_vals = sf.overwrite_vals.keys(), (run_script_loc,)
-  print("\nWriting submission file '{0}' based off of specifications of BatchID = {1}, GcardID = {2}".format(sf.filebase,
+  print("Writing submission file '{0}' based off of specifications of BatchID = {1}, GcardID = {2}".format(sf.filebase,
         p['BatchID'],p['GcardID']))
   extension = "_gcard_{}_batch_{}".format(p['GcardID'],p['BatchID'])
   newfile = sf.file_path+sf.filebase+extension+sf.file_end

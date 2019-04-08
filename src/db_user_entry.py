@@ -6,46 +6,42 @@ dirname = os.path.dirname(__file__)
 if dirname == '': dirname = '.' #Need this because if running in this file's directory, dirname is blank
 db_path = dirname+file_struct.DB_rel_location_src+file_struct.DBname
 
+#This function prompts the user to enter in information. In the future this will not run out of the command line, so this will change
 def manual_data():
   username = raw_input("Enter JLab username: ")
   email = raw_input("Enter email address: ")
   return username, email
 
-def command_writer(array):
+#This function is not really necessary, I just didn't want to have this long string repeated in the code
+def command_writer(user,email):
   strn = """INSERT INTO Users(User, Email, JoinDateStamp, Total_Batches,
           Total_Jobs, Total_Events, Most_Recent_Active_Date)
           VALUES ("{0}","{1}","{2}","{3}","{4}","{5}","{6}");""".format(
-          array[0],array[1],join_datestamp,0,0,0,"Null")
+          user,email,int(time.time()),0,0,0,"Null")
   return strn
 
-default_user = 'mungaro'
-default_email = 'mungaro@example.com'
-join_datestamp = int(time.time())
-user_array = (default_user,default_email)
-
-conn = sqlite3.connect(db_path)
-c = conn.cursor()
-c.execute('PRAGMA foreign_keys = ON;')
-
+#The code will try to submit a defualt user to the DB. If the default user already exists,
+#then the prompt will come up at the command line asking for a new user
+# IF the username that is returned already exists in the command line, another error will be returned and program will quit.
 try:
-    strn = command_writer(user_array)
-    c.execute(strn)
-    conn.commit()
-    c.close()
-    conn.close()
-    print("Record added to DB for User")
+  conn = sqlite3.connect(db_path)
+  c = conn.cursor()
+  c.execute('PRAGMA foreign_keys = ON;')
+  strn = command_writer(file_struct.default_user,file_struct.default_email)
+  c.execute(strn)
+  conn.commit()
+  c.close()
+  conn.close()
+  print("Record added to DB for User")
 except sqlite3.IntegrityError:
+  try:
     c.close()
     conn.close()
-    print("Default user '{0}' is already in Users table. Please enter a new, unique user".format(default_user))
+    print("Default user '{0}' is already in Users table. Please enter a new, unique user".format(file_struct.default_user))
     user, email = manual_data()
-    man_user_array = (user,email)
-    conn = sqlite3.connect(db_path)
-    c = conn.cursor()
-    c.execute('PRAGMA foreign_keys = ON;')
-    strn = command_writer(man_user_array)
-    c.execute(strn)
-    conn.commit()
-    c.close()
-    conn.close()
+    strn = command_writer(user,email)
+    utils.sql3_exec(file_struct.DBname,strn)
     print("Record added to DB for User")
+  except sqlite3.IntegrityError:
+    print("User {0} also already exists in the Users table. Please run the program again, and enter a UNIQUE user".format(user))
+    print("To see users already in DB, execute 'sqlite3 {}', 'SELECT * FROM Users'".format(file_struct.DBname))

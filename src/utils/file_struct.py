@@ -162,3 +162,7 @@ cw_obj.script_name = 'cw_name'
 # This defines a mapping between 'generator' in scard and the genOutput and genExecutable literals to be invoked
 genOutput= {'clasdis': 'sidis.dat', 'dvcs': 'dvcs.dat','disrad':'dis-rad.dat'}
 genExecutable =  {'clasdis': 'clasdis', 'dvcs': 'dvcsgen','disrad':'generate-dis'}
+
+#This is for creating a default user in the database
+default_user = 'mungaro'
+default_email = 'mungaro@example.com'
