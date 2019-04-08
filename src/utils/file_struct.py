@@ -13,7 +13,7 @@
 *****************************************************************************"""
 DBname = 'CLAS12_OCRDB.db'
 DB_rel_location = "/../../database/" #This will get changed when moving to SQL RDBMS
-DB_rel_location_src = "../database/" #This is needed for db_user_entry, should be removed later
+DB_rel_location_src = "/../database/" #This is needed for db_user_entry, should be removed later
 tables = ['Users','Batches','Scards','Gcards','Submissions','JobsLog']
 
 #Primary Key definitions:
@@ -24,8 +24,7 @@ users_fields = (('Email','TEXT'),('JoinDateStamp','INT'),('Total_Batches','INT')
 
 runscript_field = 'runscript' #This is a crutch until a better and more general data structure is established
 condor_field = 'condor_script' #This is a crutch until a better and more general data structure is established
-batches_fields = (('timestamp','FLOAT'),('scard','VARCHAR'),('submission_pool','TEXT'),#submission pool is not yet used
-                  (runscript_field,'VARCHAR'),(condor_field,'VARCHAR'))
+batches_fields = (('timestamp','FLOAT'),('scard','VARCHAR'))
 
 #Since there is only 1 scard / batch, in princple this entire scard table should be deleted
 #The submission scripts can be completely written using just the text in the VARCHAR 'scard' field in the Batches table
@@ -38,7 +37,7 @@ scards_fields = (('group_name','TEXT'),('Nevents','INT'),
 
 gcards_fields = (('gcard_text','VARCHAR'),)
 
-submissions_fields = (('submission_pool','TEXT'),
+submissions_fields = (('submission_pool','TEXT'),#submission pool is not yet used
                       ('runscript_name','TEXT'),(runscript_field,'VARCHAR'),
                       ('condor_script_name','TEXT'),(condor_field,'VARCHAR'))
 
@@ -58,8 +57,9 @@ scards_foreign_keys = """, User TEXT, BatchID INTEGER,
                       FOREIGN KEY(BatchID) REFERENCES Batches(BatchID)"""
 gcards_foreign_keys = """, BatchID INTEGER,
                       FOREIGN KEY(BatchID) REFERENCES Batches(BatchID)"""
-submissions_foreign_keys = """, BatchID INTEGER,
-                      FOREIGN KEY(BatchID) REFERENCES Batches(BatchID)"""
+submissions_foreign_keys = """, BatchID INTEGER, GcardID INTEGER,
+                      FOREIGN KEY(BatchID) REFERENCES Batches(BatchID)
+                      FOREIGN KEY(GcardID) REFERENCES Gcards(GcardID)"""
 joblogs_foreign_keys = """, UserID INTEGER, BatchID INTEGER, SubmissionID INTEGER,
                       FOREIGN KEY(UserID) REFERENCES Users(UserID)
                       FOREIGN KEY(BatchID) REFERENCES Batches(BatchID)
@@ -90,8 +90,7 @@ SCTable_RSOverwrite = {'gcards_scard': 'gcards', 'genOutput_scard': 'genOutput',
 ---------------------------- Other Specifications ------------------------------
 *****************************************************************************"""
 #This specifies a folder where all submission files live (runscripts, gcards,etc)
-sub_files_rel_location = "/../../submission_files/"
-sub_files_rel_location_src = "../submission_files/"
+sub_files_rel_location = "/../submission_files/"
 # This defines a mapping between 'generator' in scard and the genOutput and genExecutable literals to be invoked
 genOutput= {'clasdis': 'sidis.dat', 'dvcs': 'dvcs.dat','disrad':'dis-rad.dat'}
 genExecutable =  {'clasdis': 'clasdis', 'dvcs': 'dvcsgen','disrad':'generate-dis'}

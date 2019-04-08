@@ -2,6 +2,10 @@ from __future__ import print_function
 from utils import utils, file_struct, scard_helper
 import sqlite3, time, os
 
+dirname = os.path.dirname(__file__)
+if dirname == '': dirname = '.' #Need this because if running in this file's directory, dirname is blank
+db_path = dirname+file_struct.DB_rel_location_src+file_struct.DBname
+
 def manual_data():
   username = raw_input("Enter JLab username: ")
   email = raw_input("Enter email address: ")
@@ -19,8 +23,7 @@ default_email = 'mungaro@example.com'
 join_datestamp = int(time.time())
 user_array = (default_user,default_email)
 
-dirname = os.path.dirname(__file__)
-conn = sqlite3.connect(dirname+file_struct.DB_rel_location_src+file_struct.DBname)
+conn = sqlite3.connect(db_path)
 c = conn.cursor()
 c.execute('PRAGMA foreign_keys = ON;')
 
@@ -37,7 +40,7 @@ except sqlite3.IntegrityError:
     print("Default user '{0}' is already in Users table. Please enter a new, unique user".format(default_user))
     user, email = manual_data()
     man_user_array = (user,email)
-    conn = sqlite3.connect('../database/CLAS12_OCRDB.db')
+    conn = sqlite3.connect(db_path)
     c = conn.cursor()
     c.execute('PRAGMA foreign_keys = ON;')
     strn = command_writer(man_user_array)

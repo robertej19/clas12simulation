@@ -13,16 +13,14 @@ def overwrite_file(template_file,old_vals,new_vals,BatchID,batch_field): #templa
 
 
 #Takes a dictionary, retuns 2 lists: key (oldvals) and value (newvals) from table in DBName
-def grab_DB_data(DBname,table,dictionary): #DBName, table = str, dictionary = dict
+def grab_DB_data(DBname,table,dictionary,BatchID): #DBName, table = str, dictionary = dict
     oldvals, newvals = [],[]
     for key in dictionary:
-      strn = "SELECT {0} FROM {1} ORDER BY ScardID DESC LIMIT 1;".format(dictionary[key],table)#This just grabs the most recent DB entry.
+      strn = "SELECT {0} FROM {1} Where BatchID = {2};".format(dictionary[key],table,BatchID)#This just grabs the most recent DB entry.
       value = sql3_grab(DBname,strn)
       oldvals.append(key)
       newvals.append(value)
-    strn = "SELECT {0} FROM {1} ORDER BY ScardID DESC LIMIT 1;".format("BatchID",table)#This just grabs the most recent DB entry.
-    batchID = sql3_grab(DBname,strn)
-    return oldvals, newvals, batchID, 0
+    return oldvals, newvals
 
 #Add a field to an existing DB. Need to add error statements if DB or table does not exist
 def add_field(DBname,tablename,field_name,field_type):
@@ -56,7 +54,6 @@ def sql3_grab(DBname,strn):
   c = conn.cursor()
   #print('Executing SQL Command: {}'.format(strn)) #Turn this on for explict printing of all DB write commands
   c.execute(strn)
-  #print(c.fetchall())
   try:
     return_item = c.fetchall()[0][0]#Get value from list of tuples. There should be a cleaner way to do this (maybe don't return a list of tuples from c.fetchall)
   #Also note that return_item will only give the first item in a list of possibly many items.
