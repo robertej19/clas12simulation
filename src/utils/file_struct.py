@@ -26,6 +26,9 @@ users_fields = (('Email','TEXT'),('JoinDateStamp','INT'),('Total_Batches','INT')
 
 runscript_field = 'runscript' #This is a crutch until a better and more general data structure is established
 condor_field = 'condor_script' #This is a crutch until a better and more general data structure is established
+run_job_field = 'run_job_script'
+cw_field = 'condor_wrapper_script'
+
 batches_fields = (('timestamp','FLOAT'),('scard','VARCHAR'))
 
 #Since there is only 1 scard / batch, in princple this entire scard table should be deleted
@@ -41,7 +44,9 @@ gcards_fields = (('gcard_text','VARCHAR'),)
 
 submissions_fields = (('submission_pool','TEXT'),#submission pool is not yet used
                       ('runscript_name','TEXT'),(runscript_field,'VARCHAR'),
-                      ('condor_script_name','TEXT'),(condor_field,'VARCHAR'))
+                      ('condor_script_name','TEXT'),(condor_field,'VARCHAR'),
+                      ('run_job_name','TEXT'),(run_job_field,'VARCHAR'),
+                      ('cw_name','TEXT'),(cw_field,'VARCHAR'))
 
 joblogs_fields = (('Job_Submission_Datestamp','INT'),
                   ('Job_Completion_Datestamp','TEXT'),('Output_file_directory','TEXT'),
@@ -88,6 +93,12 @@ SCTable_RSOverwrite = {'gcards_scard': 'gcards', 'genOutput_scard': 'genOutput',
                         'pcurrent_scard': 'pcurrent', 'tcurrent_scard': 'tcurrent',
                         'genOptions_scard': 'genOptions', 'genExecutable_scard': 'genExecutable',
                         'LUMIOPTION_scard':'luminosity','group_scard': 'group_name'}
+
+SCTable_RunJobOverwrite = {'runscript.overwrite': 'rs_overwrite_unused'}
+
+SCTable_CWOverwrite = {'gcards_scard': 'gcards'} #This is scrap code
+
+
 """*****************************************************************************
 ---------------------------- Other Specifications ------------------------------
 *****************************************************************************"""
@@ -97,7 +108,8 @@ sub_files_rel_location = "/../submission_files/"
 gcards_dir = 'gcards/'
 condor_dir = 'condor_files/'
 runscript_dir = 'runscript_files/'
-
+run_job_dir = 'run_job_files/'
+cw_dir = 'condor_wrapper_files'
 
 import os
 dirname = os.path.dirname(__file__)
@@ -131,6 +143,21 @@ condor_file_obj.overwrite_vals = SCTable_CondOverwrite
 condor_file_obj.field_loc = condor_field
 condor_file_obj.script_name = 'condor_script_name'
 
+run_job_obj = sub_file('run_job')
+run_job_obj.file_path = sub_files_path+run_job_dir
+run_job_obj.filebase = 'run_job'
+run_job_obj.file_end = '.sh'
+run_job_obj.overwrite_vals = SCTable_RunJobOverwrite
+run_job_obj.field_loc = run_job_field
+run_job_obj.script_name = 'run_job_name'
+
+cw_obj = sub_file('condor_wrapper')
+cw_obj.file_path = sub_files_path+cw_dir
+cw_obj.filebase = 'condor_wrapper'
+cw_obj.file_end = ''
+cw_obj.overwrite_vals = SCTable_CWOverwrite
+cw_obj.field_loc = cw_field
+cw_obj.script_name = 'cw_name'
 
 # This defines a mapping between 'generator' in scard and the genOutput and genExecutable literals to be invoked
 genOutput= {'clasdis': 'sidis.dat', 'dvcs': 'dvcs.dat','disrad':'dis-rad.dat'}
