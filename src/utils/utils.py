@@ -2,12 +2,11 @@ from __future__ import print_function
 import file_struct, sqlite3, os
 
 #Takes in a .template file, a list of values to replace (old_vals) and a list of what to replace them with (new_vals)
-def overwrite_file(template_file,old_vals,new_vals,BatchID,batch_field): #template_file = str, old_vals, new_vals = LIST
+def overwrite_file(template_file,newfile,old_vals,new_vals): #template_file = str, old_vals, new_vals = LIST
     with open(template_file,"r") as tmp: str_script = tmp.read()
-    newfile = str(template_file)[:-9]#This removes the '.template' ending
     for i in range(0,len(old_vals)):
       str_script = str_script.replace(old_vals[i],str(new_vals[i]))
-    print("Overwriting '{0}'".format(newfile))
+    print("Writing file to '{0}'".format(newfile))
     with open(newfile,"w") as file: file.write(str_script)
     return str_script
 

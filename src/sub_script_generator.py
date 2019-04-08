@@ -33,43 +33,35 @@ def grab_gcards(dirname,BatchID):
   gcards = c.fetchall()
   return gcards
 
-BatchID = grab_batchID(dirname,args)
-gcards = grab_gcards(dirname,BatchID)
-con_old, con_new = utils.grab_DB_data(file_struct.DBname,
-                                      'Scards',file_struct.SCTable_CondOverwrite,BatchID)
-rs_old, rs_new = utils.grab_DB_data(file_struct.DBname,
-                                    'Scards',file_struct.SCTable_RSOverwrite,BatchID)
-for gcard in gcards:
-  GcardID = gcard[0]
-  newfile = "gcard_{}_batch_{}.gcard".format(GcardID,BatchID)
-  file_loc= sub_files_path+'gcards/'
-  print(file_loc+newfile)
-  with open(file_loc+newfile,"w") as file: file.write(gcard[1])
-  strn = "INSERT INTO Submissions(BatchID,GcardID) VALUES ({0},{1});".format(BatchID,GcardID)
+def wrile(file_path,filebase,file_end,DBname,table,overwrite_vals,BatchID,field_loc,GcardID,gfile):
+  old_vals, new_vals = utils.grab_DB_data(DBname,table,overwrite_vals,BatchID)
+  print("\nWriting submission file '{0}' based off of specifications of scard from BatchID = {1} \n".format(filebase,BatchID))
+  extension = "_gcard_{}_batch_{}".format(GcardID,BatchID)
+  newfile = file_path+filebase+extension+file_end
+  out_strn = utils.overwrite_file(temp_location+filebase+file_end+".template",newfile,old_vals,new_vals)
+  if filebase == 'runscript':
+    out_strn = utils.overwrite_file(newfile,newfile,['gcards_gcard',],[gfile,])
+  str_script_db = out_strn.replace('"',"'") #I can't figure out a way to write "" into a sqlite field without errors
+  #For now, we can replace " with ', which works ok, but IDK how it will run if the scripts were submitted to HTCondor
+  strn = 'UPDATE Submissions SET {0} = "{1}" WHERE GcardID = {2};'.format(field_loc,str_script_db,GcardID)
+  print("Saving submission script to batch field '{0}' with BatchID = {1} \n".format(field_loc,BatchID))
   utils.sql3_exec(file_struct.DBname,strn)
 
 
-#Write from template files out to submission files
-print("\nWriting submission files based off of specifications of scard from BatchID = {} \n".format(BatchID))
-conout = utils.overwrite_file(temp_location+"clas12.condor.template",con_old,con_new,BatchID,file_struct.condor_field)
-runout = utils.overwrite_file(temp_location+"runscript.sh.template",rs_old,rs_new,BatchID,file_struct.runscript_field)
 
-files = ["/runscript.sh","/clas12.condor"]
-cwd = os.getcwd()
-for file in files:
-  old = temp_location+file
-  new = cwd+file
-  shutil.move(old,new)
-  #Should these files be given unique names so they are not overwritten everytime?
+BatchID = grab_batchID(dirname,args)
+gcards = grab_gcards(dirname,BatchID)
 
-def submission_writer(BatchID,conout):
-#Assign a user and a timestamp for a given batch
-    strn = "INSERT INTO Submissions(BatchID) VALUES ({0});".format(BatchID)
-    utils.sql3_exec(file_struct.DBname,strn)
-    str_script_db = conout.replace('"',"'") #I can't figure out a way to write "" into a sqlite field without errors
-    #For now, we can replace " with ', which works ok, but IDK how it will run if the scripts were submitted to HTCondor
-    strn = 'UPDATE Submissions SET {0} = "{1}" WHERE BatchID = {2};'.format(file_struct.condor_field,str_script_db,BatchID)
-    print("Saving submission script to batch field '{0}' with BatchID = {1} \n".format(file_struct.condor_field,BatchID))
-    utils.sql3_exec(file_struct.DBname,strn)
+#gcards_gcard
 
-submission_writer(BatchID,conout)
+for gcard in gcards:
+  GcardID = gcard[0]
+  newfile = "gcard_{}_batch_{}.gcard".format(GcardID,BatchID)
+  gfile= sub_files_path+file_struct.gcards_dir+newfile
+  with open(gfile,"w") as file: file.write(gcard[1])
+  strn = "INSERT INTO Submissions(BatchID,GcardID) VALUES ({0},{1});".format(BatchID,GcardID)
+  utils.sql3_exec(file_struct.DBname,strn)
+  wrile(sub_files_path+file_struct.condor_dir,'clas12','.condor',
+      file_struct.DBname,'Scards',file_struct.SCTable_CondOverwrite,BatchID,file_struct.condor_field,GcardID,gfile)
+  wrile(sub_files_path+file_struct.runscript_dir,'runscript','.sh',
+      file_struct.DBname,'Scards',file_struct.SCTable_RSOverwrite,BatchID,file_struct.runscript_field,GcardID,gfile)

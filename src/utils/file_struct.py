@@ -91,6 +91,9 @@ SCTable_RSOverwrite = {'gcards_scard': 'gcards', 'genOutput_scard': 'genOutput',
 *****************************************************************************"""
 #This specifies a folder where all submission files live (runscripts, gcards,etc)
 sub_files_rel_location = "/../submission_files/"
+gcards_dir = 'gcards/'
+condor_dir = 'condor_files/'
+runscript_dir = 'runscript_files/'
 # This defines a mapping between 'generator' in scard and the genOutput and genExecutable literals to be invoked
 genOutput= {'clasdis': 'sidis.dat', 'dvcs': 'dvcs.dat','disrad':'dis-rad.dat'}
 genExecutable =  {'clasdis': 'clasdis', 'dvcs': 'dvcsgen','disrad':'generate-dis'}
