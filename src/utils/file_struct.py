@@ -124,27 +124,29 @@ clas12simulation(s)
 """
 #Specifiy Database name:
 DBname = 'CLAS12_OCRDB.db'
-
+#Specify scard name
+scard_name = 'scard.txt'
 #Specify the directory names of all submission files
 gcards_dir = 'gcards/'
 condor_dir = 'condor_files/'
 runscript_dir = 'runscript_files/'
 run_job_dir = 'run_job_files/'
-cw_dir = 'condor_wrapper_files' #This is not currently used / needed, but included for completenents
+cw_dir = 'condor_wrapper_files/' #This is not currently used / needed, but included for completenents
 
-import os
+import os #I would like to do this part differently, but dont have the time to do this right now.
+#I would like to remove dirname entirely, and have everything run relatively, but right now this works.
 dirname = os.path.dirname(__file__)
-#if dirname == '': dirname = '.' #Need this because if running in this file's directory, dirname is blank
 
-#This specifies a folder where all submission files live (runscripts, gcards,etc)
+#Specify the location of where all submission files live (runscripts, gcards,etc)
 sub_files_path = dirname+'/../../submission_files/'
-temp_location = dirname + "/../templates/"
-#Specify DB relative location (This will get changed when moving to SQL RDBMS)
-DB_rel_location = "/../../database/"
-#Specify scard location and file name
-scard_rel_location = dirname+"/../../"
-scard_name = 'scard.txt'
-db_path = dirname+DB_rel_location+DBname
+#Specify the location of all template files
+template_files_path = dirname + "/../templates/"
+#Specify the location of the DB relative to here (This will get changed when moving to SQL RDBMS)
+DB_path = dirname+"/../../database/"
+DB_path_src = dirname+"/../../database/"
+#Specify the location of the scard
+scard_path = dirname+"/../../"
+
 """*****************************************************************************
 ------------------------ Submission File Specifications ------------------------
 *****************************************************************************"""

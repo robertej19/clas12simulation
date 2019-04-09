@@ -20,7 +20,7 @@ def command_writer(user,email):
 #then the prompt will come up at the command line asking for a new user
 # IF the username that is returned already exists in the command line, another error will be returned and program will quit.
 try:
-  conn = sqlite3.connect(file_struct.db_path)
+  conn = sqlite3.connect(file_struct.DB_path + file_struct.DBname)
   c = conn.cursor()
   c.execute('PRAGMA foreign_keys = ON;')
   strn = command_writer(file_struct.default_user,file_struct.default_email)
@@ -36,7 +36,7 @@ except sqlite3.IntegrityError:
     print("Default user '{0}' is already in Users table. Please enter a new, unique user".format(file_struct.default_user))
     user, email = manual_data()
     strn = command_writer(user,email)
-    utils.sql3_exec(file_struct.DBname,strn)
+    utils.sql3_exec(strn)
     print("Record added to DB for User")
   except sqlite3.IntegrityError:
     print("User {0} also already exists in the Users table. Please run the program again, and enter a UNIQUE user".format(user))
