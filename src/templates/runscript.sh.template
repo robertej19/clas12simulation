@@ -49,13 +49,12 @@ echo starting files
 ls -l
 set generator_start  = `date`
 genExecutable_scard --trig nevents_scard --docker genOptions_scard
-#dvcsgen --trig 71 --docker
 
 echo after generator
 echo test finish
 ls -l
 set gemc_start = `date`
-gemc -USE_GUI=0 -N=nevents_scard -INPUT_GEN_FILE="lund, genOutput_scard"LUMIOPTION_scard gcards_scard
+gemc -USE_GUI=0 -N=nevents_scard -INPUT_GEN_FILE="lund, genOutput_scard"LUMIOPTION_scard gcards_gcard
 
 echo after gemc
 ls -l

@@ -16,10 +16,10 @@ echo "-------------"
 cat condor_exec.exe
 echo "-------------"
 echo "-------------"
-cat runscript.sh
+cat runscript.overwrite
 echo "-------------"
 echo "-------------"
 
-#runscript=`cat runscript.sh`
+#runscript=`cat runscript.overwrite`
 
-./condor_wrapper /tmp/runscript.sh
+./condor_wrapper /tmp/.runscript.overwrite
