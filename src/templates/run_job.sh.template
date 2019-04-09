@@ -22,4 +22,4 @@ echo "-------------"
 
 #runscript=`cat runscript.overwrite`
 
-./condor_wrapper /tmp/runscript.overwrite
+./condor_wrapper /tmp/.runscript.overwrite

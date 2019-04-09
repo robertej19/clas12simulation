@@ -13,8 +13,8 @@ def overwrite_file(template_file,newfile,old_vals,new_vals): #template_file = st
 def grab_DB_data(table,dictionary,BatchID): #DBName, table = str, dictionary = dict
     oldvals, newvals = [],[]
     for key in dictionary:
-      strn = "SELECT {0} FROM {1} Where BatchID = {2};".format(dictionary[key],table,BatchID)#This just grabs the most recent DB entry.
-      value = sql3_grab(strn)
+      strn = "SELECT {0} FROM {1} Where BatchID = {2};".format(dictionary[key],table,BatchID)
+      value = sql3_grab(strn)[0][0]#Grabs value from list of tuples
       oldvals.append(key)
       newvals.append(value)
     return oldvals, newvals
@@ -23,7 +23,7 @@ def grab_DB_data(table,dictionary,BatchID): #DBName, table = str, dictionary = d
 def add_field(tablename,field_name,field_type):
   strn = "ALTER TABLE {0} ADD COLUMN {1} {2}".format(tablename,field_name, field_type)
   sql3_exec(strn)
-  print('In database {0}, table {1} has succesfully added field {2}'.format(tablename,field_name))
+  print('In database {0}, table {1} has succesfully added field {2}'.format(file_struct.DBname,tablename,field_name))
 
 #Create a table in a database
 def create_table(tablename,PKname,FKargs):

@@ -40,4 +40,4 @@ except sqlite3.IntegrityError:
     print("Record added to DB for User")
   except sqlite3.IntegrityError:
     print("User {0} also already exists in the Users table. Please run the program again, and enter a UNIQUE user".format(user))
-    print("To see users already in DB, execute 'sqlite3 {}', 'SELECT * FROM Users'".format(file_struct.DBname))
+    print("To see users already in DB, execute 'sqlite3 {}', 'SELECT * FROM Users;'".format(file_struct.DBname))

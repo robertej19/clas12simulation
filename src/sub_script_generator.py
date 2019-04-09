@@ -25,24 +25,23 @@ def grab_gcards(BatchID):
 
 #This function writes a file from a file object (see file_struct file). This is currently not done consicely and should be improved for code readability
 def write_files(sub_file_obj,params):
-  run_script_loc = ''
   sf = sub_file_obj
   p = params
   if sf.name != file_struct.run_job_obj.name:
     old_vals, new_vals = utils.grab_DB_data(p['table'],sf.overwrite_vals,p['BatchID'])
   else:
-    old_vals, new_vals = sf.overwrite_vals.keys(), (run_script_loc,)
-  print("Writing submission file '{0}' based off of specifications of BatchID = {1}, GcardID = {2}".format(sf.filebase,
+    old_vals, new_vals = sf.overwrite_vals.keys(), (file_struct.run_job_obj.overwrite_vals['runscript.overwrite'],)
+  print("Writing submission file '{0}' based off of specifications of BatchID = {1}, GcardID = {2}".format(sf.file_base,
         p['BatchID'],p['GcardID']))
   extension = "_gcard_{}_batch_{}".format(p['GcardID'],p['BatchID'])
-  newfile = sf.file_path+sf.filebase+extension+sf.file_end
-  out_strn = utils.overwrite_file(p['temp_location']+sf.filebase+sf.file_end+".template",newfile,old_vals,new_vals)
-  if sf.filebase == 'runscript':
+  newfile = sf.file_path+sf.file_base+extension+sf.file_end
+  out_strn = utils.overwrite_file(p['temp_location']+sf.file_base+sf.file_end+".template",newfile,old_vals,new_vals)
+  if sf.file_base == 'runscript':
     out_strn = utils.overwrite_file(newfile,newfile,['gcards_gcard',],[p['gfile'],])#Need to pass arrays to overwrite_file function
-    run_script_loc = newfile
+    file_struct.run_job_obj.overwrite_vals['runscript.overwrite'] = newfile #this is needed for run_job.sh since we do not go through the database
   str_script_db = out_strn.replace('"',"'") #I can't figure out a way to write "" into a sqlite field without errors
   #For now, we can replace " with ', which works ok, but IDK how it will run if the scripts were submitted to HTCondor
-  for field, value in ((sf.field_loc,str_script_db),(sf.script_name,newfile)):
+  for field, value in ((sf.file_text_fieldname,str_script_db),(sf.file_name_fieldname,newfile)):
     strn = 'UPDATE Submissions SET {0} = "{1}" WHERE GcardID = {2};'.format(field,value,p['GcardID'])
     utils.sql3_exec(strn)
 

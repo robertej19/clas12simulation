@@ -1,4 +1,7 @@
 # This file is the central location for this software information. It includes:
+# - Submission file specifications, including:
+#        - submission file class definition
+#        - submission file objects for all submission files needed for Tier 2 submission
 # - database schema, including:
 #        - database name
 #        - tables & table fields
@@ -6,9 +9,53 @@
 # - scard and running scripts specifications, including:
 #        - all fields that are necessary and sufficient to define a valid scard
 #        - all values that will be overwritten in creating run scripts
+# - relative directory mapping, including:
+#        - layout of expected directory structure
+#        - relative path variable names
 # - other specifications, including:
 #      - mapping between scard generator keyword and genOutput & genExecutable
 
+"""*****************************************************************************
+------------------------ Submission File Specifications ------------------------
+*****************************************************************************"""
+#Create a class for all submission files. There are other ways to store this information
+#But a class seemed like a reasonable way to go, so if we want to add more
+#submission files we can just create a new submission file object.
+#We don't need to decalre any fields in the class constructor but it helps code readability
+class sub_file():
+  def __init__(self,name):
+    self.name = name
+    self.file_path = -1
+    self.file_base = -1
+    self.file_end = -1
+    self.overwrite_vals = -1
+    self.file_text_fieldname = -1
+    self.file_name_fieldname = -1
+
+#There might be a more succient way to create these objects, but for now this works
+runscript_file_obj = sub_file('runscript')
+runscript_file_obj.file_base = 'runscript'
+runscript_file_obj.file_end = '.sh'
+runscript_file_obj.file_text_fieldname = 'runscript_text'
+runscript_file_obj.file_name_fieldname = 'runscript_name'
+
+condor_file_obj = sub_file('clas12_condor')
+condor_file_obj.file_base = 'clas12'
+condor_file_obj.file_end = '.condor'
+condor_file_obj.file_text_fieldname = 'clas12_condor_text'
+condor_file_obj.file_name_fieldname = 'clas12_condor_name'
+
+run_job_obj = sub_file('run_job')
+run_job_obj.file_base = 'run_job'
+run_job_obj.file_end = '.sh'
+run_job_obj.file_text_fieldname = 'run_job_text'
+run_job_obj.file_name_fieldname = 'run_job_name'
+
+cw_obj = sub_file('condor_wrapper')
+cw_obj.file_base = 'condor_wrapper'
+cw_obj.file_end = ''
+cw_obj.file_text_fieldname = 'condor_wrapper_text'
+cw_obj.file_name_fieldname = 'condor_wrapper_name'
 
 """*****************************************************************************
 -------------------------  DB Schema Specification -----------------------------
@@ -21,10 +68,6 @@ PKs = ['UserID','BatchID','ScardID','GcardID','SubmissionID','JobID']
 users_fields = (('Email','TEXT'),('JoinDateStamp','INT'),('Total_Batches','INT'),
                 ('Total_Jobs','INT'),('Total_Events','INT'),('Most_Recent_Active_Date','INT'))
 
-runscript_field = 'runscript' #This is a crutch until a better and more general data structure is established
-condor_field = 'condor_script' #This is a crutch until a better and more general data structure is established
-run_job_field = 'run_job_script'
-cw_field = 'condor_wrapper_script'
 
 batches_fields = (('timestamp','FLOAT'),('scard','VARCHAR'))
 
@@ -40,10 +83,10 @@ scards_fields = (('group_name','TEXT'),('Nevents','INT'),
 gcards_fields = (('gcard_text','VARCHAR'),)
 
 submissions_fields = (('submission_pool','TEXT'),#submission pool is not yet used
-                      ('runscript_name','TEXT'),(runscript_field,'VARCHAR'),
-                      ('condor_script_name','TEXT'),(condor_field,'VARCHAR'),
-                      ('run_job_name','TEXT'),(run_job_field,'VARCHAR'),
-                      ('cw_name','TEXT'),(cw_field,'VARCHAR'))
+                      (runscript_file_obj.file_name_fieldname,'TEXT'),(runscript_file_obj.file_text_fieldname,'VARCHAR'),
+                      (condor_file_obj.file_name_fieldname,'TEXT'),(condor_file_obj.file_text_fieldname,'VARCHAR'),
+                      (run_job_obj.file_name_fieldname,'TEXT'),(run_job_obj.file_text_fieldname,'VARCHAR'),
+                      (cw_obj.file_name_fieldname,'TEXT'),(cw_obj.file_text_fieldname,'VARCHAR'))
 
 joblogs_fields = (('Job_Submission_Datestamp','INT'),
                   ('Job_Completion_Datestamp','TEXT'),('Output_file_directory','TEXT'),
@@ -53,7 +96,7 @@ table_fields = [users_fields,batches_fields, scards_fields, gcards_fields, submi
 
 #Below defines foreign key relations. There is a more succinet way to do this but as we have
 #only a few relations, I did not spend the time to modifiy this code.
-users_special_relations = """, User TEXT NOT NULL UNIQUE"""
+users_special_relations = """, User TEXT NOT NULL UNIQUE""" #Makes User field be UNIQUE, so we can use as FK
 batches_foreign_keys = """, User TEXT,
                       FOREIGN KEY(User) REFERENCES Users(User)"""
 scards_foreign_keys = """, User TEXT, BatchID INTEGER,
@@ -82,18 +125,21 @@ scard_key = ('group','user','nevents','generator',
             'luminosity', 'tcurrent',  'pcurrent','cores_req','mem_req')
 
 #This defines the variables that will be written out to submission scripts and maps to DB values
-SCTable_CondOverwrite = {'project_scard':'project','jobs_scard':'jobs',
+condor_file_obj.overwrite_vals = {'project_scard':'project','jobs_scard':'jobs',
                           'cores_req_scard':'cores_req','mem_req_scard':'mem_req','nevents_scard': 'nevents'}
 
-SCTable_RSOverwrite = {'gcards_scard': 'gcards', 'genOutput_scard': 'genOutput',
+runscript_file_obj.overwrite_vals = {'gcards_scard': 'gcards', 'genOutput_scard': 'genOutput',
                         'user_scard': 'user','nevents_scard': 'nevents',
                         'pcurrent_scard': 'pcurrent', 'tcurrent_scard': 'tcurrent',
                         'genOptions_scard': 'genOptions', 'genExecutable_scard': 'genExecutable',
                         'LUMIOPTION_scard':'luminosity','group_scard': 'group_name'}
 
-SCTable_RunJobOverwrite = {'runscript.overwrite': 'rs_overwrite_unused'}
+#This does not go through the database, but instead just replaces runscript.overwrite with the file location
+#Note that the value here is unimportant, as the overwrite value that is used is generated in sub_script_generator.py
+run_job_obj.overwrite_vals  = {'runscript.overwrite': 'rs_overwrite_unused'}
 
-SCTable_CWOverwrite = {'gcards_scard': 'gcards'} #This is unused currently
+#This is unused currently as the condor_wrapper does not need any unique filenames
+cw_obj.overwrite_vals = {}
 
 """*****************************************************************************
 ------------------------- File Path Specifications -----------------------------
@@ -122,17 +168,6 @@ clas12simulation(s)
         scard_helper.py
         utils.py
 """
-#Specifiy Database name:
-DBname = 'CLAS12_OCRDB.db'
-#Specify scard name
-scard_name = 'scard.txt'
-#Specify the directory names of all submission files
-gcards_dir = 'gcards/'
-condor_dir = 'condor_files/'
-runscript_dir = 'runscript_files/'
-run_job_dir = 'run_job_files/'
-cw_dir = 'condor_wrapper_files/' #This is not currently used / needed, but included for completenents
-
 import os #I would like to do this part differently, but dont have the time to do this right now.
 #I would like to remove dirname entirely, and have everything run relatively, but right now this works.
 dirname = os.path.dirname(__file__)
@@ -147,51 +182,16 @@ DB_path_src = dirname+"/../../database/"
 #Specify the location of the scard
 scard_path = dirname+"/../../"
 
-"""*****************************************************************************
------------------------- Submission File Specifications ------------------------
-*****************************************************************************"""
-
-class sub_file():
-  def __init__(self,name):
-    self.name = name
-    self.file_path = 0
-    self.filebase = 0
-    self.file_end = 0
-    self.overwrite_vals = 0
-    self.field_loc = 0
-    self.script_name = 0
-
-runscript_file_obj = sub_file('runscript')
-runscript_file_obj.file_path = sub_files_path+runscript_dir
-runscript_file_obj.filebase = 'runscript'
-runscript_file_obj.file_end = '.sh'
-runscript_file_obj.overwrite_vals = SCTable_RSOverwrite
-runscript_file_obj.field_loc = runscript_field
-runscript_file_obj.script_name = 'runscript_name'
-
-condor_file_obj = sub_file('clas12_condor')
-condor_file_obj.file_path = sub_files_path+condor_dir
-condor_file_obj.filebase = 'clas12'
-condor_file_obj.file_end = '.condor'
-condor_file_obj.overwrite_vals = SCTable_CondOverwrite
-condor_file_obj.field_loc = condor_field
-condor_file_obj.script_name = 'condor_script_name'
-
-run_job_obj = sub_file('run_job')
-run_job_obj.file_path = sub_files_path+run_job_dir
-run_job_obj.filebase = 'run_job'
-run_job_obj.file_end = '.sh'
-run_job_obj.overwrite_vals = SCTable_RunJobOverwrite
-run_job_obj.field_loc = run_job_field
-run_job_obj.script_name = 'run_job_name'
-
-cw_obj = sub_file('condor_wrapper')
-cw_obj.file_path = sub_files_path+cw_dir
-cw_obj.filebase = 'condor_wrapper'
-cw_obj.file_end = ''
-cw_obj.overwrite_vals = SCTable_CWOverwrite
-cw_obj.field_loc = cw_field
-cw_obj.script_name = 'cw_name'
+#Specifiy Database name:
+DBname = 'CLAS12_OCRDB.db'
+#Specify scard name
+scard_name = 'scard.txt'
+#Specify the directory names of all submission files
+gcards_dir = 'gcards/'
+condor_file_obj.file_path = sub_files_path+'condor_files/'
+runscript_file_obj.file_path = sub_files_path+'runscript_files/'
+run_job_obj.file_path = sub_files_path+'run_job_files/'
+cw_obj.file_path = sub_files_path+'condor_wrapper_files/' #This is not currently used / needed, but included for completeness
 
 """*****************************************************************************
 ---------------------------- Other Specifications ------------------------------
