@@ -1,12 +1,15 @@
 from __future__ import print_function
 from utils import utils, file_struct
-import sqlite3, os, shutil, argparse
+import sqlite3, os, argparse
 
 #This allows a user to specifiy which batch to use to generate files using a specific BatchID
 argparser = argparse.ArgumentParser()
 argparser.add_argument('-b','--batchID', default='none', help = 'Enter the ID# of the batch you want to submit (e.g. -b 23)')
+argparser.add_argument(file_struct.debug_short,file_struct.debug_longdash,
+                      default = file_struct.debug_default,help = file_struct.debug_help)
 args = argparser.parse_args()
 
+file_struct.DEBUG = getattr(args,file_struct.debug_long)
 #This uses the argument passed from command line, if no args, grab most recent DB entry
 def grab_batchID(args):
   if args.batchID != 'none':
@@ -31,7 +34,7 @@ def write_files(sub_file_obj,params):
     old_vals, new_vals = utils.grab_DB_data(p['table'],sf.overwrite_vals,p['BatchID'])
   else:
     old_vals, new_vals = sf.overwrite_vals.keys(), (file_struct.run_job_obj.overwrite_vals['runscript.overwrite'],)
-  print("Writing submission file '{0}' based off of specifications of BatchID = {1}, GcardID = {2}".format(sf.file_base,
+  utils.printer("Writing submission file '{0}' based off of specifications of BatchID = {1}, GcardID = {2}".format(sf.file_base,
         p['BatchID'],p['GcardID']))
   extension = "_gcard_{}_batch_{}".format(p['GcardID'],p['BatchID'])
   newfile = sf.file_path+sf.file_base+extension+sf.file_end

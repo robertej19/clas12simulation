@@ -25,9 +25,6 @@ printf "\n\n Writing submission scripts  \n\n"
 python2 src/sub_script_generator.py
 
 
-#mv src/runscript.sh .
-#mv src/clas12.condor .
-
 #chmod +x runscript.sh
 
 #condor_submit clas12.condor

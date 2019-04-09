@@ -1,6 +1,12 @@
 from __future__ import print_function
 import utils, file_struct
-import sqlite3
+import sqlite3, argparse
+
+argparser = argparse.ArgumentParser()
+argparser.add_argument(file_struct.debug_short,file_struct.debug_longdash,
+                      default = file_struct.debug_default,help = file_struct.debug_help)
+args = argparser.parse_args()
+file_struct.DEBUG = getattr(args,file_struct.debug_long)
 
 #Create tables in the database
 for i in range(0,len(file_struct.tables)):

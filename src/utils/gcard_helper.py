@@ -10,6 +10,8 @@ def GCard_Entry(BatchID,unixtimestamp,url_dir):
   for url_ending in gcard_urls:
     response = urllib2.urlopen(url_dir+'/'+url_ending)
     gcard_text = response.read()
+    if int(file_struct.DEBUG) ==2:
+      utils.printer('HTML from gcard link is: {}'.format(gcard_text))
     gcard_text_db = gcard_text.replace('"',"'")
     db_gcard_write(BatchID,unixtimestamp,gcard_text_db)
 
@@ -18,13 +20,15 @@ def db_gcard_write(BatchID,timestamp,gcard_text):
     utils.sql3_exec(strn)
     strn = """UPDATE Gcards SET {0} = "{1}" WHERE BatchID = {2};""".format('gcard_text',gcard_text,BatchID)
     utils.sql3_exec(strn)
-    print("GCard added to database corresponding to BatchID {}".format(BatchID))
+    utils.printer("GCard added to database corresponding to BatchID {}".format(BatchID))
 
 
 def Gather_Gcard_urls(url_dir):
   gcard_urls = []
   response = urllib2.urlopen(url_dir)
   html = response.read().split(' ')
+  if int(file_struct.DEBUG) ==2:
+    utils.printer('HTML from webpage is: {}'.format(html))
   matching_text = ".gcard"
   second_qualifier = ">"
   """Do something like 'if href = XXX' with XXX contiaing .gcard, then download location"""

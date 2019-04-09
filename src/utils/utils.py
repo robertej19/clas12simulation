@@ -1,6 +1,10 @@
 from __future__ import print_function
 import file_struct, sqlite3, os
 
+def printer(strn): # Can't call the function print because it already exists in python
+  if (int(file_struct.DEBUG) == 1) or (int(file_struct.DEBUG) == 2):
+    print(strn)
+
 #Takes in a .template file, a list of values to replace (old_vals) and a list of what to replace them with (new_vals)
 def overwrite_file(template_file,newfile,old_vals,new_vals): #template_file = str, old_vals, new_vals = LIST
     with open(template_file,"r") as tmp: str_script = tmp.read()
@@ -23,13 +27,13 @@ def grab_DB_data(table,dictionary,BatchID): #DBName, table = str, dictionary = d
 def add_field(tablename,field_name,field_type):
   strn = "ALTER TABLE {0} ADD COLUMN {1} {2}".format(tablename,field_name, field_type)
   sql3_exec(strn)
-  print('In database {0}, table {1} has succesfully added field {2}'.format(file_struct.DBname,tablename,field_name))
+  printer('In database {0}, table {1} has succesfully added field {2}'.format(file_struct.DBname,tablename,field_name))
 
 #Create a table in a database
 def create_table(tablename,PKname,FKargs):
   strn = "CREATE TABLE IF NOT EXISTS {0}({1} integer primary key autoincrement {2})".format(tablename,PKname,FKargs)
   sql3_exec(strn)
-  print('In database {0}, table {1} has succesfully been created with primary key {2}'.format(file_struct.DBname,
+  printer('In database {0}, table {1} has succesfully been created with primary key {2}'.format(file_struct.DBname,
         tablename,PKname))
 
 #Executes writing commands to DB. To return data from DB, use sql3_grab(), defined below
@@ -37,7 +41,8 @@ def sql3_exec(strn):
   conn = sqlite3.connect(file_struct.DB_path+file_struct.DBname)
   c = conn.cursor()
   c.execute('PRAGMA foreign_keys = ON;')
-  #print('Executing SQL Command: {}'.format(strn)) #Turn this on for explict printing of all DB write commands
+  if int(file_struct.DEBUG) == 2:
+    printer('Executing SQL Command: {}'.format(strn)) #Turn this on for explict printing of all DB write commands
   c.execute(strn)
   conn.commit()
   c.close()
@@ -47,7 +52,8 @@ def sql3_exec(strn):
 def sql3_grab(strn):
   conn = sqlite3.connect(file_struct.DB_path+file_struct.DBname)
   c = conn.cursor()
-  #print('Executing SQL Command: {}'.format(strn)) #Turn this on for explict printing of all DB write commands
+  if int(file_struct.DEBUG) == 2:
+    printer('Executing SQL Command: {}'.format(strn)) #Turn this on for explict printing of all DB write commands
   c.execute(strn)
   return_array = c.fetchall()
   c.close()
