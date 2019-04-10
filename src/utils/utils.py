@@ -5,6 +5,10 @@ def printer(strn): # Can't call the function print because it already exists in 
   if (int(file_struct.DEBUG) == 1) or (int(file_struct.DEBUG) == 2):
     print(strn)
 
+def printer2(strn): # Can't call the function print because it already exists in python
+  if (int(file_struct.DEBUG) == 2):
+    print(strn)
+
 #Takes in a .template file, a list of values to replace (old_vals) and a list of what to replace them with (new_vals)
 def overwrite_file(template_file,newfile,old_vals,new_vals): #template_file = str, old_vals, new_vals = LIST
     with open(template_file,"r") as tmp: str_script = tmp.read()
@@ -41,8 +45,7 @@ def sql3_exec(strn):
   conn = sqlite3.connect(file_struct.DB_path+file_struct.DBname)
   c = conn.cursor()
   c.execute('PRAGMA foreign_keys = ON;')
-  if int(file_struct.DEBUG) == 2:
-    printer('Executing SQL Command: {}'.format(strn)) #Turn this on for explict printing of all DB write commands
+  printer2('Executing SQL Command: {}'.format(strn)) #Turn this on for explict printing of all DB write commands
   c.execute(strn)
   conn.commit()
   c.close()
@@ -52,8 +55,7 @@ def sql3_exec(strn):
 def sql3_grab(strn):
   conn = sqlite3.connect(file_struct.DB_path+file_struct.DBname)
   c = conn.cursor()
-  if int(file_struct.DEBUG) == 2:
-    printer('Executing SQL Command: {}'.format(strn)) #Turn this on for explict printing of all DB write commands
+  printer2('Executing SQL Command: {}'.format(strn)) #Turn this on for explict printing of all DB write commands
   c.execute(strn)
   return_array = c.fetchall()
   c.close()
