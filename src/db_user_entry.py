@@ -1,6 +1,23 @@
+#****************************************************************
+"""
+# This file enters in users to the Users table of the database
+# if the script is called, it will try to enter in the file_struct.default_user
+# if that user already exists in the DB, it will query the command line for a user
+# if that user also already exists, the script will display an error message and quit
+# In the future, this file will query the scard for the user, and if does not already exist,
+# it will enter that name into the DB, and the host OS name instead of the email
+"""
+#****************************************************************
+
 from __future__ import print_function
 from utils import utils, file_struct, scard_helper
-import sqlite3, time, os
+import sqlite3, time, os, argparse
+
+argparser = argparse.ArgumentParser()
+argparser.add_argument(file_struct.debug_short,file_struct.debug_longdash,
+                      default = file_struct.debug_default,help = file_struct.debug_help)
+args = argparser.parse_args()
+file_struct.DEBUG = getattr(args,file_struct.debug_long)
 
 #This function prompts the user to enter in information. In the future this will not run out of the command line, so this will change
 def manual_data():
@@ -25,19 +42,21 @@ try:
   c.execute('PRAGMA foreign_keys = ON;')
   strn = command_writer(file_struct.default_user,file_struct.default_email)
   c.execute(strn)
+  if int(file_struct.DEBUG) == 2:
+    utils.printer('Executing SQL Command: {}'.format(strn)) #Turn this on for explict printing of all DB write commands
   conn.commit()
   c.close()
   conn.close()
-  print("Record added to DB for User")
+  utils.printer("Record added to DB for User")
 except sqlite3.IntegrityError:
   try:
     c.close()
     conn.close()
-    print("Default user '{0}' is already in Users table. Please enter a new, unique user".format(file_struct.default_user))
+    utils.printer("Default user '{0}' is already in Users table. Please enter a new, unique user".format(file_struct.default_user))
     user, email = manual_data()
     strn = command_writer(user,email)
     utils.sql3_exec(strn)
-    print("Record added to DB for User")
+    utils.printer("Record added to DB for User")
   except sqlite3.IntegrityError:
-    print("User {0} also already exists in the Users table. Please run the program again, and enter a UNIQUE user".format(user))
-    print("To see users already in DB, execute 'sqlite3 {}', 'SELECT * FROM Users;'".format(file_struct.DBname))
+    utils.printer("User {0} also already exists in the Users table. Please run the program again, and enter a UNIQUE user".format(user))
+    utils.printer("To see users already in DB, execute 'sqlite3 {}', 'SELECT * FROM Users;'".format(file_struct.DBname))

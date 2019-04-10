@@ -7,9 +7,8 @@
 *.gcard
 /submission_files/gcards/*.gcard
 /submission_files/condor_files/*.condor
-/submission_files/runscript_files/*.sh
 /submission_files/run_job_files/*.sh
-runscript*
+/submission_files/runscript_files/*.sh
 runscript_osg.sh
 run_job.sh
 condor_wrapper

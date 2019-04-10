@@ -1,6 +1,21 @@
-from __future__ import print_function
+#****************************************************************
+"""
+# This file facilitates the construction of the database. In a perfect world, once everything is
+#up and running, it will only be run once. However, it was clear from the beginning of the project
+#that for testing purposes, the DB will have to be made many many times as the schema and goals change.
+#This takes in the database structure as specified in file_struct and passes the structure
+#as arguements to create_table and add_field functions defined in utils
+"""
+#****************************************************************
+
 import utils, file_struct
-import sqlite3
+import sqlite3, argparse
+
+argparser = argparse.ArgumentParser()
+argparser.add_argument(file_struct.debug_short,file_struct.debug_longdash,
+                      default = file_struct.debug_default,help = file_struct.debug_help)
+args = argparser.parse_args()
+file_struct.DEBUG = getattr(args,file_struct.debug_long)
 
 #Create tables in the database
 for i in range(0,len(file_struct.tables)):

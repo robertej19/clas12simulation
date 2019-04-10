@@ -1,3 +1,5 @@
+#****************************************************************
+"""
 # This file is the central location for this software information. It includes:
 # - Submission file specifications, including:
 #        - submission file class definition
@@ -14,6 +16,8 @@
 #        - relative path variable names
 # - other specifications, including:
 #      - mapping between scard generator keyword and genOutput & genExecutable
+"""
+#****************************************************************
 
 """*****************************************************************************
 ------------------------ Submission File Specifications ------------------------
@@ -198,9 +202,21 @@ cw_obj.file_path = sub_files_path+'condor_wrapper_files/' #This is not currently
 *****************************************************************************"""
 
 # This defines a mapping between 'generator' in scard and the genOutput and genExecutable literals to be invoked
+# the key 'dvcs' should be changed to dvcsgen
 genOutput= {'clasdis': 'sidis.dat', 'dvcs': 'dvcs.dat','disrad':'dis-rad.dat'}
 genExecutable =  {'clasdis': 'clasdis', 'dvcs': 'dvcsgen','disrad':'generate-dis'}
 
 #This is for creating a default user in the database
 default_user = 'mungaro'
 default_email = 'mungaro@example.com'
+
+#This is the debug variable for print statments - 0 = no messages, 1 = some, 2 = all messages. Initalized to 1
+DEBUG = 0
+debug_short = '-d'
+debug_long = 'debug'
+debug_longdash ='--'+debug_long
+debug_default = DEBUG
+debug_help = help = """0 (default) - no messages,1 - general messages,
+                    2 - all messages, all reads and writes into and out of the database"""
+
+gcard_identifying_text = '.gcard' #For use in gcard_helper.py
