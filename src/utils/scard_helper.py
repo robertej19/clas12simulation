@@ -1,3 +1,12 @@
+#****************************************************************
+"""
+#This file reads the text of the scard, validates the information,
+# and writes it into the scard table in the database.
+# Some effort should be developed to sanitize the scard to prevent
+# against sql injection attacks
+"""
+#****************************************************************
+
 from __future__ import print_function
 import sqlite3, time
 import utils, file_struct

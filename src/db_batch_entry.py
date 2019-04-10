@@ -1,3 +1,10 @@
+#****************************************************************
+"""
+# Takes in an scard, then calls gcard_helper and scard_helper to populate the
+# database based off the batchID.
+"""
+#****************************************************************
+
 from __future__ import print_function
 from utils import utils, file_struct, scard_helper, gcard_helper
 import sqlite3, time, argparse

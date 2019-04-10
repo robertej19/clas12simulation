@@ -1,3 +1,14 @@
+#****************************************************************
+"""
+# This file will query the command line to see what BatchID it should use,
+# or if no arguement is given on the CL, the most recent BatchID will be used
+# This BatchID is used to identify the proper scard and gcards, and then submission
+# files corresponding to each gcard are generated and stored in the database, as
+# well as written out to a file with a unique name. This latter part will be passed
+# to the server side in the near future.
+"""
+#****************************************************************
+
 from __future__ import print_function
 from utils import utils, file_struct
 import sqlite3, os, argparse

@@ -1,15 +1,23 @@
 #****************************************************************
-""" This replaces a previous version of gcard_helper.py by using the HTMLParser class
-This allows for more robust parsing of the html mother directory to find gcard files
-Even better would be to use BeautifulSoup, which would allow for the code to be condensed as:
-```import requests
-from bs4 import BeautifulSoup
-page = requests.get('http://www.website.com')
-bs = BeautifulSoup(page.content, features='lxml')
-for link in bs.findAll('a'):
-    print(link.get('href'))```
-Unfortunately, this module must be imported and cannot be gaurannted that it will be on whatever
-server this software will live on, so it is safer to instead use HTMLParser which is more common"""
+"""
+#This replaces a previous version of gcard_helper.py by using the HTMLParser class
+#This allows for more robust parsing of the html mother directory to find gcard files
+#Even better would be to use BeautifulSoup, which would allow for the code to be condensed as:
+#```import requests
+#from bs4 import BeautifulSoup
+#page = requests.get('http://www.website.com')
+#bs = BeautifulSoup(page.content, features='lxml')
+#for link in bs.findAll('a'):
+#    print(link.get('href'))```
+#Unfortunately, this module must be imported and cannot be gaurannted that it will be on whatever
+#server this software will live on, so it is safer to instead use HTMLParser which is more common
+####
+#This file takes in a BatchID, unixtimestamp, and gcard url from db_batch_entry and passes it through
+#a few functions to download the gcards from the specified location and to enter them into the
+#appropriate gcard table in the database.
+# Some effort should be developed to sanitize the gcard files to prevent
+# against sql injection attacks
+"""
 #***************************************************************
 from __future__ import print_function
 import utils, file_struct

@@ -1,3 +1,14 @@
+#****************************************************************
+"""
+# This file enters in users to the Users table of the database
+# if the script is called, it will try to enter in the file_struct.default_user
+# if that user already exists in the DB, it will query the command line for a user
+# if that user also already exists, the script will display an error message and quit
+# In the future, this file will query the scard for the user, and if does not already exist,
+# it will enter that name into the DB, and the host OS name instead of the email
+"""
+#****************************************************************
+
 from __future__ import print_function
 from utils import utils, file_struct, scard_helper
 import sqlite3, time, os, argparse

@@ -1,3 +1,5 @@
+#****************************************************************
+"""
 # This file is the central location for this software information. It includes:
 # - Submission file specifications, including:
 #        - submission file class definition
@@ -14,6 +16,8 @@
 #        - relative path variable names
 # - other specifications, including:
 #      - mapping between scard generator keyword and genOutput & genExecutable
+"""
+#****************************************************************
 
 """*****************************************************************************
 ------------------------ Submission File Specifications ------------------------

@@ -1,3 +1,17 @@
+#****************************************************************
+"""
+# This is the second most important file behind file_struct to understanding
+# the flow of this software. Commonly used functions are defined here and
+# reference in most parts of the code. The functions are:
+# printer and printer2 - prints strings depending on value of DEBUG variable
+# overwrite_file - overwrites a template file to a newfile based off old and new value lists
+# (this will be replaced in the future with functions to generate scripts directly)
+# grab_DB_data - creates lists by grabbing values from the DB based on a dictionary
+# add_field  and create_table - functions to create the SQLite DB, used by create_database.py
+# sql3_exec and sql3_grab - functions to write and read information to/from the DB
+"""
+#****************************************************************
+
 from __future__ import print_function
 import file_struct, sqlite3, os
 

@@ -1,4 +1,13 @@
-from __future__ import print_function
+#****************************************************************
+"""
+# This file facilitates the construction of the database. In a perfect world, once everything is
+#up and running, it will only be run once. However, it was clear from the beginning of the project
+#that for testing purposes, the DB will have to be made many many times as the schema and goals change.
+#This takes in the database structure as specified in file_struct and passes the structure
+#as arguements to create_table and add_field functions defined in utils
+"""
+#****************************************************************
+
 import utils, file_struct
 import sqlite3, argparse
 
