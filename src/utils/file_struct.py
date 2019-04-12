@@ -69,7 +69,7 @@ tables = ['Users','Batches','Scards','Gcards','Submissions','JobsLog']
 #Primary Key definitions:
 PKs = ['UserID','BatchID','ScardID','GcardID','SubmissionID','JobID']
 
-users_fields = (('Email','TEXT'),('JoinDateStamp','INT'),('Total_Batches','INT'),
+users_fields = (('hostname','TEXT'),('JoinDateStamp','INT'),('Total_Batches','INT'),
                 ('Total_Jobs','INT'),('Total_Events','INT'),('Most_Recent_Active_Date','INT'))
 
 
@@ -207,8 +207,8 @@ genOutput= {'clasdis': 'sidis.dat', 'dvcs': 'dvcs.dat','disrad':'dis-rad.dat'}
 genExecutable =  {'clasdis': 'clasdis', 'dvcs': 'dvcsgen','disrad':'generate-dis'}
 
 #This is for creating a default user in the database
-default_user = 'mungaro'
-default_email = 'mungaro@example.com'
+default_user = 'admin'
+default_hostname = 'admin.org'
 
 #This is the debug variable for print statments - 0 = no messages, 1 = some, 2 = all messages. Initalized to 1
 DEBUG = 0

@@ -27,8 +27,8 @@ if dirname == '': dirname = '.'
 if not os.path.isfile(file_struct.DB_path+file_struct.DBname):
   print("CLAS12 Off Campus Resources Database not found, creating!")
   subprocess.call(['python2',dirname+'/utils/create_database.py','-d',str(args.debug)])
-  print("Creating example user [needed for testing purposes]")
-  subprocess.call(['python2',dirname+'/db_user_entry.py','-d',str(args.debug)])
+  #print("Creating example user [needed for testing purposes]")
+  #subprocess.call(['python2',dirname+'/db_user_entry.py','-d',str(args.debug)])
 
 
 subprocess.call(['python2',dirname+'/db_batch_entry.py','-d',str(args.debug),'-s',str(args.scard)])

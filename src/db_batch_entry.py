@@ -5,7 +5,7 @@
 """
 #****************************************************************
 from __future__ import print_function
-from utils import utils, file_struct, scard_helper #See below as gcard_helper is also imported
+from utils import utils, file_struct, scard_helper, user_validation #See below as gcard_helper is also imported
 import sqlite3, time, os, argparse
 from utils import gcard_helper #There is a bug with gcard_helper argparser interfering
 #with the argparser in this script.I had to include the scard flag in the argparser in gcard_helper
@@ -36,10 +36,13 @@ def Batch_Entry(timestamp,scard_file):
     BatchID = utils.sql3_grab(strn)[0][0]#The [0][0]  is needed because sql3_grab returns a list of tuples, we need the value
     utils.printer("Batch specifications written to database with BatchID {}".format(BatchID))
 
-    #Write scard into scard table fields (This will not be needed in the future)
-    print("\n Reading in information from {0}".format(scard_file))
-    utils.printer("Writing SCard to Database")
+    #See if user exists already in database; if not, add them
     scard_fields = scard_helper.scard_class(scard_file)
+    user_validation.user_validation(scard_fields.data['user'])
+
+    #Write scard into scard table fields (This will not be needed in the future)
+    print("\nReading in information from {0}".format(scard_file))
+    utils.printer("Writing SCard to Database")
     scard_fields.data['group_name'] = scard_fields.data.pop('group') #'group' is a protected word in SQL so we can't use the field title "group"
     # For more information on protected words in SQL, see https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=RSQL_reservedwords
     scard_fields.data['genExecutable'] = file_struct.genExecutable.get(scard_fields.data.get('generator'))
