@@ -15,7 +15,8 @@ import sqlite3, os, argparse, subprocess
 
 #This allows a user to specifiy which batch to use to generate files using a specific BatchID
 argparser = argparse.ArgumentParser()
-argparser.add_argument('-s','--scard', default='scard.txt', help = 'name of the scard you want to submit') #This is not yet active!
+argparser.add_argument('-s','--scard', default=file_struct.scard_path+file_struct.scard_name,
+                      help = 'relative path and name scard you want to submit, e.g. ../scard.txt')
 argparser.add_argument(file_struct.debug_short,file_struct.debug_longdash,
                       default = file_struct.debug_default,help = file_struct.debug_help)
 args = argparser.parse_args()
@@ -29,8 +30,8 @@ if not os.path.isfile(file_struct.DB_path+file_struct.DBname):
   print("Creating example user [needed for testing purposes]")
   subprocess.call(['python2',dirname+'/db_user_entry.py','-d',str(args.debug)])
 
-print("Reading scard & other information into database")
-subprocess.call(['python2',dirname+'/db_batch_entry.py','-d',str(args.debug)])
 
-print("Writing submission scripts")
+subprocess.call(['python2',dirname+'/db_batch_entry.py','-d',str(args.debug),'-s',str(args.scard)])
+
+print("\n Generating submission files from database")
 subprocess.call(['python2',dirname+'/sub_script_generator.py','-d',str(args.debug)])

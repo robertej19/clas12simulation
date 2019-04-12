@@ -76,3 +76,4 @@ for gcard in gcards:
   write_files(file_struct.condor_file_obj,params)
   write_files(file_struct.runscript_file_obj,params)
   write_files(file_struct.run_job_obj,params)
+print("\t Successfully generated submission files for Batch {0} \n".format(BatchID))

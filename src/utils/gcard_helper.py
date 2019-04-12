@@ -24,15 +24,18 @@ import utils, file_struct
 from HTMLParser import HTMLParser
 import urllib2, argparse
 
-argparser = argparse.ArgumentParser()
-argparser.add_argument(file_struct.debug_short,file_struct.debug_longdash,
+argparser_gch = argparse.ArgumentParser()
+argparser_gch.add_argument(file_struct.debug_short,file_struct.debug_longdash,
                       default = file_struct.debug_default,help = file_struct.debug_help)
-args = argparser.parse_args()
-file_struct.DEBUG = getattr(args,file_struct.debug_long)
+argparser_gch.add_argument('-s','--scard', default=file_struct.scard_path+file_struct.scard_name,
+                      help = 'relative path and name scard you want to submit, e.g. ../scard.txt')
+args_gch = argparser_gch.parse_args()
+file_struct.DEBUG = getattr(args_gch,file_struct.debug_long)
 
-gcard_urls = []
+
 # create a subclass and override the handler methods
 # from https://docs.python.org/2/library/htmlparser.html
+gcard_urls = []
 class MyHTMLParser(HTMLParser):
     def handle_starttag(self, tag, attrs):
         utils.printer2("Encountered a start tag: {}".format(tag))
@@ -57,6 +60,7 @@ def db_gcard_write(BatchID,timestamp,gcard_text):
     utils.printer("GCard added to database corresponding to BatchID {}".format(BatchID))
 
 def GCard_Entry(BatchID,unixtimestamp,url_dir):
+  print("Gathering gcards from {} ".format(url_dir))
   Gather_Gcard_urls(url_dir)
   for url_ending in gcard_urls:
     utils.printer('Gcard URL name is: '+url_ending)
@@ -64,4 +68,5 @@ def GCard_Entry(BatchID,unixtimestamp,url_dir):
     gcard_text = response.read()
     utils.printer2('HTML from gcard link is: {}'.format(gcard_text))
     gcard_text_db = gcard_text.replace('"',"'")
+    print("\t Gathered gcard '{}'".format(url_ending))
     db_gcard_write(BatchID,unixtimestamp,gcard_text_db)
