@@ -45,7 +45,7 @@ def write_files(sub_file_obj,params):
     old_vals, new_vals = utils.grab_DB_data(p['table'],sf.overwrite_vals,p['BatchID'])
   else:
     old_vals, new_vals = sf.overwrite_vals.keys(), (file_struct.run_job_obj.overwrite_vals['runscript.overwrite'],)
-  utils.printer("Writing submission file '{0}' based off of specifications of BatchID = {1}, GcardID = {2}".format(sf.file_base,
+  utils.printer("\tWriting submission file '{0}' based off of specifications of BatchID = {1}, GcardID = {2}".format(sf.file_base,
         p['BatchID'],p['GcardID']))
   extension = "_gcard_{}_batch_{}".format(p['GcardID'],p['BatchID'])
   newfile = sf.file_path+sf.file_base+extension+sf.file_end
@@ -79,7 +79,7 @@ def generate_scripts(args):
     write_files(file_struct.condor_file_obj,params)
     write_files(file_struct.runscript_file_obj,params)
     write_files(file_struct.run_job_obj,params)
-  print("\t Successfully generated submission files for Batch {0} \n".format(BatchID))
+  print("\tSuccessfully generated submission files for Batch {0} \n".format(BatchID))
 
 
 if __name__ == "__main__":

@@ -27,10 +27,10 @@ dirname = os.path.dirname(__file__)
 if dirname == '': dirname = '.'
 
 if not os.path.isfile(file_struct.DB_path+file_struct.DBname):
-  print("CLAS12 Off Campus Resources Database not found, creating!")
+  print("\nCLAS12 Off Campus Resources Database not found, creating!")
   create_database.create_database(args)
-  
+
 db_batch_entry.Batch_Entry(args.scard)
 
-print("\n Generating submission files from database")
+print("\nGenerating submission files from database")
 sub_script_generator.generate_scripts(args)
