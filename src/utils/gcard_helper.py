@@ -24,33 +24,26 @@ import utils, file_struct
 from HTMLParser import HTMLParser
 import urllib2, argparse
 
-argparser_gch = argparse.ArgumentParser()
-argparser_gch.add_argument(file_struct.debug_short,file_struct.debug_longdash,
-                      default = file_struct.debug_default,help = file_struct.debug_help)
-argparser_gch.add_argument('-s','--scard', default=file_struct.scard_path+file_struct.scard_name,
-                      help = 'relative path and name scard you want to submit, e.g. ../scard.txt')
-args_gch = argparser_gch.parse_args()
-file_struct.DEBUG = getattr(args_gch,file_struct.debug_long)
-
-
-# create a subclass and override the handler methods
-# from https://docs.python.org/2/library/htmlparser.html
-gcard_urls = []
-class MyHTMLParser(HTMLParser):
-    def handle_starttag(self, tag, attrs):
-        utils.printer2("Encountered a start tag: {}".format(tag))
-    def handle_endtag(self, tag):
-        utils.printer2("Encountered an end tag: {}".format(tag))
-    def handle_data(self, data):
-        utils.printer2("Encountered some data  : {}".format(data))
-        if file_struct.gcard_identifying_text in data:
-          gcard_urls.append(data)
-
 def Gather_Gcard_urls(url_dir):
+  # create a subclass and override the handler methods
+  # from https://docs.python.org/2/library/htmlparser.html
+  gcard_urls = []
+  class MyHTMLParser(HTMLParser):
+      def handle_starttag(self, tag, attrs):
+          utils.printer2("Encountered a start tag: {}".format(tag))
+      def handle_endtag(self, tag):
+          utils.printer2("Encountered an end tag: {}".format(tag))
+      def handle_data(self, data):
+          utils.printer2("Encountered some data  : {}".format(data))
+          if file_struct.gcard_identifying_text in data:
+            gcard_urls.append(data)
+
   response = urllib2.urlopen(url_dir)
   html = response.read()
   parser = MyHTMLParser()
   parser.feed(html)
+
+  return gcard_urls
 
 def db_gcard_write(BatchID,timestamp,gcard_text):
     strn = "INSERT INTO Gcards(BatchID) VALUES ({0});".format(BatchID)
@@ -61,7 +54,7 @@ def db_gcard_write(BatchID,timestamp,gcard_text):
 
 def GCard_Entry(BatchID,unixtimestamp,url_dir):
   print("Gathering gcards from {} ".format(url_dir))
-  Gather_Gcard_urls(url_dir)
+  gcard_urls = Gather_Gcard_urls(url_dir)
   for url_ending in gcard_urls:
     utils.printer('Gcard URL name is: '+url_ending)
     response = urllib2.urlopen(url_dir+'/'+url_ending)

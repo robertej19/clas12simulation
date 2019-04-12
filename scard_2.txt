@@ -1,5 +1,5 @@
 group:  rgaDIS                   # project description
-user:  mungaro                   # username
+user:  robertej                   # username
 nevents:  10                     # number of events each job
 generator: clasdis               # one of clasdis, dvcs, disrad
 genOptions:  --t 20 25           # generator option

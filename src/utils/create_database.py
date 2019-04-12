@@ -11,19 +11,24 @@
 import utils, file_struct
 import sqlite3, argparse
 
-argparser = argparse.ArgumentParser()
-argparser.add_argument(file_struct.debug_short,file_struct.debug_longdash,
+
+def create_database(args):
+  file_struct.DEBUG = getattr(args,file_struct.debug_long)
+  #Create tables in the database
+  for i in range(0,len(file_struct.tables)):
+    utils.create_table(file_struct.tables[i],
+                      file_struct.PKs[i],file_struct.foreign_key_relations[i])
+
+  #Add fields to each table in the database
+  for j in range(0,len(file_struct.tables)):
+    for i in range(0,(len(file_struct.table_fields[j]))):
+      utils.add_field(file_struct.tables[j],
+                      file_struct.table_fields[j][i][0],file_struct.table_fields[j][i][1])
+
+if __name__ == "__main__":
+  argparser = argparse.ArgumentParser()
+  argparser.add_argument(file_struct.debug_short,file_struct.debug_longdash,
                       default = file_struct.debug_default,help = file_struct.debug_help)
-args = argparser.parse_args()
-file_struct.DEBUG = getattr(args,file_struct.debug_long)
+  args = argparser.parse_args()
 
-#Create tables in the database
-for i in range(0,len(file_struct.tables)):
-  utils.create_table(file_struct.tables[i],
-                    file_struct.PKs[i],file_struct.foreign_key_relations[i])
-
-#Add fields to each table in the database
-for j in range(0,len(file_struct.tables)):
-  for i in range(0,(len(file_struct.table_fields[j]))):
-    utils.add_field(file_struct.tables[j],
-                    file_struct.table_fields[j][i][0],file_struct.table_fields[j][i][1])
+  create_database(args)

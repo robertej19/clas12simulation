@@ -13,14 +13,6 @@ from __future__ import print_function
 from utils import utils, file_struct
 import sqlite3, os, argparse
 
-#This allows a user to specifiy which batch to use to generate files using a specific BatchID
-argparser = argparse.ArgumentParser()
-argparser.add_argument('-b','--batchID', default='none', help = 'Enter the ID# of the batch you want to submit (e.g. -b 23)')
-argparser.add_argument(file_struct.debug_short,file_struct.debug_longdash,
-                      default = file_struct.debug_default,help = file_struct.debug_help)
-args = argparser.parse_args()
-
-file_struct.DEBUG = getattr(args,file_struct.debug_long)
 #This uses the argument passed from command line, if no args, grab most recent DB entry
 def grab_batchID(args):
   if args.batchID != 'none':
@@ -59,21 +51,36 @@ def write_files(sub_file_obj,params):
   strn = 'UPDATE Submissions SET {0} = "{1}" WHERE GcardID = {2};'.format(sf.file_text_fieldname,str_script_db,p['GcardID'])
   utils.sql3_exec(strn)
 
-#Grabs batch and gcards as described in respective files
-BatchID = grab_batchID(args)
-gcards = grab_gcards(BatchID)
 
-#Create a set of submission files for each gcard in the batch
-for gcard in gcards:
-  GcardID = gcard[0]
-  newfile = "gcard_{}_batch_{}.gcard".format(GcardID,BatchID)
-  gfile= file_struct.sub_files_path+file_struct.gcards_dir+newfile
-  with open(gfile,"w") as file: file.write(gcard[1])
-  strn = "INSERT INTO Submissions(BatchID,GcardID) VALUES ({0},{1});".format(BatchID,GcardID)
-  utils.sql3_exec(strn)
-  params = {'table':'Scards','BatchID':BatchID,'GcardID':GcardID,
-            'gfile':gfile,'temp_location':file_struct.template_files_path}
-  write_files(file_struct.condor_file_obj,params)
-  write_files(file_struct.runscript_file_obj,params)
-  write_files(file_struct.run_job_obj,params)
-print("\t Successfully generated submission files for Batch {0} \n".format(BatchID))
+def generate_scripts(args):
+  file_struct.DEBUG = getattr(args,file_struct.debug_long)
+  #Grabs batch and gcards as described in respective files
+  BatchID = grab_batchID(args)
+  gcards = grab_gcards(BatchID)
+
+  #Create a set of submission files for each gcard in the batch
+  for gcard in gcards:
+    GcardID = gcard[0]
+    newfile = "gcard_{}_batch_{}.gcard".format(GcardID,BatchID)
+    gfile= file_struct.sub_files_path+file_struct.gcards_dir+newfile
+    with open(gfile,"w") as file: file.write(gcard[1])
+    strn = "INSERT INTO Submissions(BatchID,GcardID) VALUES ({0},{1});".format(BatchID,GcardID)
+    utils.sql3_exec(strn)
+    params = {'table':'Scards','BatchID':BatchID,'GcardID':GcardID,
+              'gfile':gfile,'temp_location':file_struct.template_files_path}
+    write_files(file_struct.condor_file_obj,params)
+    write_files(file_struct.runscript_file_obj,params)
+    write_files(file_struct.run_job_obj,params)
+  print("\t Successfully generated submission files for Batch {0} \n".format(BatchID))
+
+
+if __name__ == "__main__":
+  #This allows a user to specifiy which batch to use to generate files using a specific BatchID
+  argparser = argparse.ArgumentParser()
+  argparser.add_argument('-b','--batchID', default='none', help = 'Enter the ID# of the batch you want to submit (e.g. -b 23)')
+  argparser.add_argument(file_struct.debug_short,file_struct.debug_longdash,
+                      default = file_struct.debug_default,help = file_struct.debug_help)
+  args = argparser.parse_args()
+  file_struct.DEBUG = getattr(args,file_struct.debug_long)
+
+  generate_scripts(args)
