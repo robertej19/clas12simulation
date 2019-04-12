@@ -13,7 +13,12 @@
 #****************************************************************
 
 from __future__ import print_function
-import file_struct, sqlite3, os
+import file_struct, sqlite3, os, time
+
+def timeconvert(timestamp_in):
+  desired_format = "%Y-%m-%d-%H-%M-%S"
+  timestamp_out = time.strftime(desired_format, time.localtime(timestamp_in))
+  return str(timestamp_out)
 
 def printer(strn): # Can't call the function print because it already exists in python
   if (int(file_struct.DEBUG) == 1) or (int(file_struct.DEBUG) == 2):

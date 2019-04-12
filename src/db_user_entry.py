@@ -32,7 +32,7 @@ def command_writer(user,email):
   strn = """INSERT INTO Users(User, hostname, JoinDateStamp, Total_Batches,
           Total_Jobs, Total_Events, Most_Recent_Active_Date)
           VALUES ("{0}","{1}","{2}","{3}","{4}","{5}","{6}");""".format(
-          user,hostname,int(time.time()),0,0,0,"Null")
+          user,hostname,utils.timestamp(time.time()),0,0,0,"Null")
   return strn
 
 #The code will try to submit a defualt user to the DB. If the default user already exists,

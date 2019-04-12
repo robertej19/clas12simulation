@@ -14,22 +14,24 @@ from utils import gcard_helper #There is a bug with gcard_helper argparser inter
 def Batch_Entry(scard_file):
     unixtimestamp = int(time.time()) # Can modify this if need 10ths of seconds or more resolution
     #Assign a user and a timestamp for a given batch
-    strn = "INSERT INTO Batches(timestamp) VALUES ({0});".format(unixtimestamp)
-    utils.sql3_exec(strn)
-
-    #Write the text contained in scard.txt to a field in the Batches table
-    with open(scard_file, 'r') as file: scard = file.read()
-    strn = "UPDATE Batches SET {0} = '{1}' WHERE timestamp = {2};".format('scard',scard,unixtimestamp)
+    print(str(utils.timeconvert(unixtimestamp)))
+    strn = "INSERT INTO Batches(timestamp) VALUES ({0});".format(utils.timeconvert(unixtimestamp))
     utils.sql3_exec(strn)
 
     #Grab BatchID to pass to scard table (probably not needed in future)
-    strn = "SELECT {0} FROM {1} WHERE timestamp = {2};".format('BatchID','Batches',unixtimestamp)
+    strn = "SELECT {0} FROM {1} WHERE timestamp = {2};".format('BatchID','Batches',utils.timeconvert(unixtimestamp))
     BatchID = utils.sql3_grab(strn)[0][0]#The [0][0]  is needed because sql3_grab returns a list of tuples, we need the value
     utils.printer("Batch specifications written to database with BatchID {}".format(BatchID))
 
+    #Write the text contained in scard.txt to a field in the Batches table
+    with open(scard_file, 'r') as file: scard = file.read()
+    strn = "UPDATE Batches SET {0} = '{1}' WHERE BatchID = {2};".format('scard',scard,BatchID)
+    utils.sql3_exec(strn)
+
+
     #See if user exists already in database; if not, add them
     scard_fields = scard_helper.scard_class(scard_file)
-    user_validation.user_validation(scard_fields.data['user'])
+    user_validation.user_validation()
 
     #Write scard into scard table fields (This will not be needed in the future)
     print("\nReading in information from {0}".format(scard_file))
@@ -40,14 +42,16 @@ def Batch_Entry(scard_file):
     scard_fields.data['genOutput'] = file_struct.genOutput.get(scard_fields.data.get('generator'))
     scard_helper.SCard_Entry(BatchID,unixtimestamp,scard_fields.data)
     print('\t Your scard has been read into the database with BatchID = {0} at {1} \n'.format(BatchID,
-                                          time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(unixtimestamp))))
+                                          utils.timeconvert(unixtimestamp)))
 
+    """
     #Write gcards into gcards table
     utils.printer("Writing GCards to Database")
     gcard_helper.GCard_Entry(BatchID,unixtimestamp,scard_fields.data['gcards'])
     print("Successfully added gcards to database")
     strn = "UPDATE Batches SET {0} = '{1}' WHERE BatchID = {2};".format('User',scard_fields.data['user'],BatchID)
     utils.sql3_exec(strn)
+    """
 
     return 0
 
@@ -58,6 +62,7 @@ if __name__ == "__main__":
   argparser.add_argument(file_struct.debug_short,file_struct.debug_longdash,
                       default = file_struct.debug_default,help = file_struct.debug_help)
   args = argparser.parse_args()
+
 
 
   file_struct.DEBUG = getattr(args,file_struct.debug_long)
