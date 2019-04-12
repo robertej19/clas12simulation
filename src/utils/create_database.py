@@ -11,7 +11,6 @@
 import utils, file_struct
 import sqlite3, argparse
 
-
 def create_database(args):
   file_struct.DEBUG = getattr(args,file_struct.debug_long)
   #Create tables in the database

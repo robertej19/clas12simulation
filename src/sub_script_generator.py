@@ -15,8 +15,16 @@ import sqlite3, os, argparse
 
 #This uses the argument passed from command line, if no args, grab most recent DB entry
 def grab_batchID(args):
+  Batches = []
+  strn = "SELECT BatchID FROM Batches;"
+  Batches_array = utils.sql3_grab(strn)
+  for i in Batches_array: Batches.append(i[0])
   if args.batchID != 'none':
-    BatchID = args.batchID
+    if not int(args.batchID) in Batches:
+      print("The selected batch (BatchID = {0}) does not exist, exiting".format(args.batchID))
+      exit()
+    else:
+      BatchID = args.batchID
   else:
     strn = "SELECT BatchID FROM Batches;"
     Batches = utils.sql3_grab(strn)
