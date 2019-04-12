@@ -55,9 +55,9 @@ def write_files(sub_file_obj,params):
     file_struct.run_job_obj.overwrite_vals['runscript.overwrite'] = newfile #this is needed for run_job.sh since we do not go through the database
   str_script_db = out_strn.replace('"',"'") #I can't figure out a way to write "" into a sqlite field without errors
   #For now, we can replace " with ', which works ok, but IDK how it will run if the scripts were submitted to HTCondor
-  for field, value in ((sf.file_text_fieldname,str_script_db),(sf.file_name_fieldname,newfile)):
-    strn = 'UPDATE Submissions SET {0} = "{1}" WHERE GcardID = {2};'.format(field,value,p['GcardID'])
-    utils.sql3_exec(strn)
+  #for field, value in (sf.file_text_fieldname,str_script_db):
+  strn = 'UPDATE Submissions SET {0} = "{1}" WHERE GcardID = {2};'.format(sf.file_text_fieldname,str_script_db,p['GcardID'])
+  utils.sql3_exec(strn)
 
 #Grabs batch and gcards as described in respective files
 BatchID = grab_batchID(args)

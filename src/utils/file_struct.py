@@ -34,32 +34,28 @@ class sub_file():
     self.file_end = -1
     self.overwrite_vals = -1
     self.file_text_fieldname = -1
-    self.file_name_fieldname = -1
 
 #There might be a more succient way to create these objects, but for now this works
 runscript_file_obj = sub_file('runscript')
 runscript_file_obj.file_base = 'runscript'
 runscript_file_obj.file_end = '.sh'
 runscript_file_obj.file_text_fieldname = 'runscript_text'
-runscript_file_obj.file_name_fieldname = 'runscript_name'
 
 condor_file_obj = sub_file('clas12_condor')
 condor_file_obj.file_base = 'clas12'
 condor_file_obj.file_end = '.condor'
 condor_file_obj.file_text_fieldname = 'clas12_condor_text'
-condor_file_obj.file_name_fieldname = 'clas12_condor_name'
 
 run_job_obj = sub_file('run_job')
 run_job_obj.file_base = 'run_job'
 run_job_obj.file_end = '.sh'
 run_job_obj.file_text_fieldname = 'run_job_text'
-run_job_obj.file_name_fieldname = 'run_job_name'
 
 cw_obj = sub_file('condor_wrapper')
 cw_obj.file_base = 'condor_wrapper'
 cw_obj.file_end = ''
 cw_obj.file_text_fieldname = 'condor_wrapper_text'
-cw_obj.file_name_fieldname = 'condor_wrapper_name'
+
 
 """*****************************************************************************
 -------------------------  DB Schema Specification -----------------------------
@@ -86,11 +82,12 @@ scards_fields = (('group_name','TEXT'),('Nevents','INT'),
 
 gcards_fields = (('gcard_text','VARCHAR'),)
 
-submissions_fields = (('submission_pool','TEXT'),#submission pool is not yet used
-                      (runscript_file_obj.file_name_fieldname,'TEXT'),(runscript_file_obj.file_text_fieldname,'VARCHAR'),
-                      (condor_file_obj.file_name_fieldname,'TEXT'),(condor_file_obj.file_text_fieldname,'VARCHAR'),
-                      (run_job_obj.file_name_fieldname,'TEXT'),(run_job_obj.file_text_fieldname,'VARCHAR'),
-                      (cw_obj.file_name_fieldname,'TEXT'),(cw_obj.file_text_fieldname,'VARCHAR'))
+submissions_fields = (('submission_pool','TEXT'),('submission_timestamp','INT'),
+                      ('run_status','TEXT'),('completion_timestamp','INT'),
+                      (runscript_file_obj.file_text_fieldname,'VARCHAR'),
+                      (condor_file_obj.file_text_fieldname,'VARCHAR'),
+                      (run_job_obj.file_text_fieldname,'VARCHAR'),
+                      (cw_obj.file_text_fieldname,'VARCHAR'))
 
 joblogs_fields = (('Job_Submission_Datestamp','INT'),
                   ('Job_Completion_Datestamp','TEXT'),('Output_file_directory','TEXT'),
