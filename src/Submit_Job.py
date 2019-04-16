@@ -16,11 +16,11 @@ import sub_script_generator, db_batch_entry
 
 #This allows a user to specifiy which batch to use to generate files using a specific BatchID
 argparser = argparse.ArgumentParser()
-argparser.add_argument('-s','--scard', default=file_struct.scard_path+file_struct.scard_name,
-                      help = 'relative path and name scard you want to submit, e.g. ../scard.txt')
 argparser.add_argument(file_struct.debug_short,file_struct.debug_longdash,
                       default = file_struct.debug_default,help = file_struct.debug_help)
 argparser.add_argument('-b','--batchID', default='none', help = 'Enter the ID# of the batch you want to submit (e.g. -b 23)')
+argparser.add_argument('scard',default=file_struct.scard_path+file_struct.scard_name,nargs='?',
+                        help = 'relative path and name scard you want to submit, e.g. ../scard.txt')
 args = argparser.parse_args()
 
 dirname = os.path.dirname(__file__)

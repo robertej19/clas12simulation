@@ -5,11 +5,9 @@
 """
 #****************************************************************
 from __future__ import print_function
-from utils import utils, file_struct, scard_helper, user_validation #See below as gcard_helper is also imported
+from utils import utils, file_struct, scard_helper, user_validation, gcard_helper
 import sqlite3, time, os, argparse
-from utils import gcard_helper #There is a bug with gcard_helper argparser interfering
-#with the argparser in this script.I had to include the scard flag in the argparser in gcard_helper
-#Or else this file won't include the -s --scard flags as useable
+
 
 def Batch_Entry(scard_file):
     timestamp = utils.gettime() # Can modify this if need 10ths of seconds or more resolution
