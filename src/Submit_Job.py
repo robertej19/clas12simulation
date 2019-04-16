@@ -30,7 +30,8 @@ if not os.path.isfile(file_struct.DB_path+file_struct.DBname):
   print("\nCLAS12 Off Campus Resources Database not found, creating!")
   create_database.create_database(args)
 
-db_batch_entry.Batch_Entry(args.scard)
+if args.batchID == 'none':
+  db_batch_entry.Batch_Entry(args.scard)
 
 print("\nGenerating submission files from database")
 sub_script_generator.generate_scripts(args)
