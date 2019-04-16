@@ -15,17 +15,12 @@ def Batch_Entry(scard_file):
     timestamp = utils.gettime() # Can modify this if need 10ths of seconds or more resolution
     #Assign a user and a timestamp for a given batch
     strn = """INSERT INTO Batches(timestamp) VALUES ("{0}");""".format(timestamp)
-    bid = utils.sql3_exec(strn)
-    print(bid)
+    BatchID = utils.sql3_exec(strn)
 
     #Write the text contained in scard.txt to a field in the Batches table
     with open(scard_file, 'r') as file: scard = file.read()
-    strn = """UPDATE Batches SET {0} = '{1}' WHERE timestamp = "{2}";""".format('scard',scard,timestamp)
+    strn = """UPDATE Batches SET {0} = '{1}' WHERE BatchID = "{2}";""".format('scard',scard,BatchID)
     utils.sql3_exec(strn)
-
-    #Grab BatchID to pass to scard table (probably not needed in future)
-    strn = """SELECT {0} FROM {1} WHERE timestamp = "{2}";""".format('BatchID','Batches',timestamp)
-    BatchID = utils.sql3_grab(strn)[0][0]#The [0][0]  is needed because sql3_grab returns a list of tuples, we need the value
     utils.printer("Batch specifications written to database with BatchID {}".format(BatchID))
 
     #See if user exists already in database; if not, add them
