@@ -13,7 +13,11 @@
 #****************************************************************
 
 from __future__ import print_function
-import file_struct, sqlite3, os
+import file_struct, sqlite3, os, datetime
+
+def gettime():
+  return datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
 
 def printer(strn): # Can't call the function print because it already exists in python
   if (int(file_struct.DEBUG) == 1) or (int(file_struct.DEBUG) == 2):
@@ -61,9 +65,11 @@ def sql3_exec(strn):
   c.execute('PRAGMA foreign_keys = ON;')
   printer2('Executing SQL Command: {}'.format(strn)) #Turn this on for explict printing of all DB write commands
   c.execute(strn)
+  insertion_id = c.lastrowid
   conn.commit()
   c.close()
   conn.close()
+  return insertion_id
 
 #Executes reading commands to DB. Cannot currently be used to return data from DB
 def sql3_grab(strn):

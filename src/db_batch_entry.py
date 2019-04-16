@@ -12,18 +12,19 @@ from utils import gcard_helper #There is a bug with gcard_helper argparser inter
 #Or else this file won't include the -s --scard flags as useable
 
 def Batch_Entry(scard_file):
-    unixtimestamp = int(time.time()) # Can modify this if need 10ths of seconds or more resolution
+    timestamp = utils.gettime() # Can modify this if need 10ths of seconds or more resolution
     #Assign a user and a timestamp for a given batch
-    strn = "INSERT INTO Batches(timestamp) VALUES ({0});".format(unixtimestamp)
-    utils.sql3_exec(strn)
+    strn = """INSERT INTO Batches(timestamp) VALUES ("{0}");""".format(timestamp)
+    bid = utils.sql3_exec(strn)
+    print(bid)
 
     #Write the text contained in scard.txt to a field in the Batches table
     with open(scard_file, 'r') as file: scard = file.read()
-    strn = "UPDATE Batches SET {0} = '{1}' WHERE timestamp = {2};".format('scard',scard,unixtimestamp)
+    strn = """UPDATE Batches SET {0} = '{1}' WHERE timestamp = "{2}";""".format('scard',scard,timestamp)
     utils.sql3_exec(strn)
 
     #Grab BatchID to pass to scard table (probably not needed in future)
-    strn = "SELECT {0} FROM {1} WHERE timestamp = {2};".format('BatchID','Batches',unixtimestamp)
+    strn = """SELECT {0} FROM {1} WHERE timestamp = "{2}";""".format('BatchID','Batches',timestamp)
     BatchID = utils.sql3_grab(strn)[0][0]#The [0][0]  is needed because sql3_grab returns a list of tuples, we need the value
     utils.printer("Batch specifications written to database with BatchID {}".format(BatchID))
 
@@ -38,13 +39,12 @@ def Batch_Entry(scard_file):
     # For more information on protected words in SQL, see https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=RSQL_reservedwords
     scard_fields.data['genExecutable'] = file_struct.genExecutable.get(scard_fields.data.get('generator'))
     scard_fields.data['genOutput'] = file_struct.genOutput.get(scard_fields.data.get('generator'))
-    scard_helper.SCard_Entry(BatchID,unixtimestamp,scard_fields.data)
-    print('\t Your scard has been read into the database with BatchID = {0} at {1} \n'.format(BatchID,
-                                          time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(unixtimestamp))))
+    scard_helper.SCard_Entry(BatchID,timestamp,scard_fields.data)
+    print('\t Your scard has been read into the database with BatchID = {0} at {1} \n'.format(BatchID,timestamp))
 
     #Write gcards into gcards table
     utils.printer("Writing GCards to Database")
-    gcard_helper.GCard_Entry(BatchID,unixtimestamp,scard_fields.data['gcards'])
+    gcard_helper.GCard_Entry(BatchID,timestamp,scard_fields.data['gcards'])
     print("Successfully added gcards to database")
     strn = "UPDATE Batches SET {0} = '{1}' WHERE BatchID = {2};".format('User',username,BatchID)
     utils.sql3_exec(strn)
