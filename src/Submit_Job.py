@@ -10,35 +10,27 @@ based off the value found in the scard
 #****************************************************************
 
 from __future__ import print_function
-from utils import utils, file_struct
+from utils import utils, file_struct, create_database
 import sqlite3, os, argparse, subprocess
+import sub_script_generator, db_batch_entry
 
 #This allows a user to specifiy which batch to use to generate files using a specific BatchID
 argparser = argparse.ArgumentParser()
-<<<<<<< HEAD
 argparser.add_argument(file_struct.debug_short,file_struct.debug_longdash,
                       default = file_struct.debug_default,help = file_struct.debug_help)
 argparser.add_argument('-b','--batchID', default='none', help = 'Enter the ID# of the batch you want to submit (e.g. -b 23)')
 argparser.add_argument('scard',default=file_struct.scard_path+file_struct.scard_name,nargs='?',
                         help = 'relative path and name scard you want to submit, e.g. ../scard.txt')
-=======
-argparser.add_argument('-s','--scard', default='scard.txt', help = 'name of the scard you want to submit') #This is not yet active!
-argparser.add_argument(file_struct.debug_short,file_struct.debug_longdash,
-                      default = file_struct.debug_default,help = file_struct.debug_help)
->>>>>>> parent of 93b42f7... Merge pull request #42 from robertej19/master
 args = argparser.parse_args()
 
 dirname = os.path.dirname(__file__)
 if dirname == '': dirname = '.'
 
 if not os.path.isfile(file_struct.DB_path+file_struct.DBname):
-  print("CLAS12 Off Campus Resources Database not found, creating!")
-  subprocess.call(['python2',dirname+'/utils/create_database.py','-d',str(args.debug)])
-  print("Creating example user [needed for testing purposes]")
-  subprocess.call(['python2',dirname+'/db_user_entry.py','-d',str(args.debug)])
+  print("\nCLAS12 Off Campus Resources Database not found, creating!")
+  create_database.create_database(args)
 
-print("Reading scard & other information into database")
-subprocess.call(['python2',dirname+'/db_batch_entry.py','-d',str(args.debug)])
+db_batch_entry.Batch_Entry(args.scard)
 
-print("Writing submission scripts")
-subprocess.call(['python2',dirname+'/sub_script_generator.py','-d',str(args.debug)])
+print("\nGenerating submission files from database")
+sub_script_generator.generate_scripts(args)

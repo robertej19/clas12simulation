@@ -1,9 +1,5 @@
 group:  rgaDIS                   # project description
-<<<<<<< HEAD
 farm_name:  ifarm                # computer pool for job to run on
-=======
-user:  mungaro                   # username
->>>>>>> parent of 93b42f7... Merge pull request #42 from robertej19/master
 nevents:  10                     # number of events each job
 generator: clasdis               # one of clasdis, dvcs, disrad
 genOptions:  --t 20 25           # generator option

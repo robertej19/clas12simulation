@@ -13,18 +13,18 @@ from __future__ import print_function
 from utils import utils, file_struct
 import sqlite3, os, argparse
 
-#This allows a user to specifiy which batch to use to generate files using a specific BatchID
-argparser = argparse.ArgumentParser()
-argparser.add_argument('-b','--batchID', default='none', help = 'Enter the ID# of the batch you want to submit (e.g. -b 23)')
-argparser.add_argument(file_struct.debug_short,file_struct.debug_longdash,
-                      default = file_struct.debug_default,help = file_struct.debug_help)
-args = argparser.parse_args()
-
-file_struct.DEBUG = getattr(args,file_struct.debug_long)
 #This uses the argument passed from command line, if no args, grab most recent DB entry
 def grab_batchID(args):
+  Batches = []
+  strn = "SELECT BatchID FROM Batches;"
+  Batches_array = utils.sql3_grab(strn)
+  for i in Batches_array: Batches.append(i[0])
   if args.batchID != 'none':
-    BatchID = args.batchID
+    if not int(args.batchID) in Batches:
+      print("The selected batch (BatchID = {0}) does not exist, exiting".format(args.batchID))
+      exit()
+    else:
+      BatchID = args.batchID
   else:
     strn = "SELECT BatchID FROM Batches;"
     Batches = utils.sql3_grab(strn)
@@ -45,7 +45,7 @@ def write_files(sub_file_obj,params):
     old_vals, new_vals = utils.grab_DB_data(p['table'],sf.overwrite_vals,p['BatchID'])
   else:
     old_vals, new_vals = sf.overwrite_vals.keys(), (file_struct.run_job_obj.overwrite_vals['runscript.overwrite'],)
-  utils.printer("Writing submission file '{0}' based off of specifications of BatchID = {1}, GcardID = {2}".format(sf.file_base,
+  utils.printer("\tWriting submission file '{0}' based off of specifications of BatchID = {1}, GcardID = {2}".format(sf.file_base,
         p['BatchID'],p['GcardID']))
   extension = "_gcard_{}_batch_{}".format(p['GcardID'],p['BatchID'])
   newfile = sf.file_path+sf.file_base+extension+sf.file_end
@@ -55,7 +55,6 @@ def write_files(sub_file_obj,params):
     file_struct.run_job_obj.overwrite_vals['runscript.overwrite'] = newfile #this is needed for run_job.sh since we do not go through the database
   str_script_db = out_strn.replace('"',"'") #I can't figure out a way to write "" into a sqlite field without errors
   #For now, we can replace " with ', which works ok, but IDK how it will run if the scripts were submitted to HTCondor
-<<<<<<< HEAD
   #for field, value in (sf.file_text_fieldname,str_script_db):
   strn = 'UPDATE Submissions SET {0} = "{1}" WHERE GcardID = {2};'.format(sf.file_text_fieldname,str_script_db,p['GcardID'])
   utils.sql3_exec(strn)
@@ -87,26 +86,14 @@ def generate_scripts(args):
     utils.sql3_exec(strn)
   print("\tSuccessfully generated submission files for Batch {0} \n".format(BatchID))
 
-=======
-  for field, value in ((sf.file_text_fieldname,str_script_db),(sf.file_name_fieldname,newfile)):
-    strn = 'UPDATE Submissions SET {0} = "{1}" WHERE GcardID = {2};'.format(field,value,p['GcardID'])
-    utils.sql3_exec(strn)
->>>>>>> parent of 93b42f7... Merge pull request #42 from robertej19/master
 
-#Grabs batch and gcards as described in respective files
-BatchID = grab_batchID(args)
-gcards = grab_gcards(BatchID)
+if __name__ == "__main__":
+  #This allows a user to specifiy which batch to use to generate files using a specific BatchID
+  argparser = argparse.ArgumentParser()
+  argparser.add_argument('-b','--batchID', default='none', help = 'Enter the ID# of the batch you want to submit (e.g. -b 23)')
+  argparser.add_argument(file_struct.debug_short,file_struct.debug_longdash,
+                      default = file_struct.debug_default,help = file_struct.debug_help)
+  args = argparser.parse_args()
+  file_struct.DEBUG = getattr(args,file_struct.debug_long)
 
-#Create a set of submission files for each gcard in the batch
-for gcard in gcards:
-  GcardID = gcard[0]
-  newfile = "gcard_{}_batch_{}.gcard".format(GcardID,BatchID)
-  gfile= file_struct.sub_files_path+file_struct.gcards_dir+newfile
-  with open(gfile,"w") as file: file.write(gcard[1])
-  strn = "INSERT INTO Submissions(BatchID,GcardID) VALUES ({0},{1});".format(BatchID,GcardID)
-  utils.sql3_exec(strn)
-  params = {'table':'Scards','BatchID':BatchID,'GcardID':GcardID,
-            'gfile':gfile,'temp_location':file_struct.template_files_path}
-  write_files(file_struct.condor_file_obj,params)
-  write_files(file_struct.runscript_file_obj,params)
-  write_files(file_struct.run_job_obj,params)
+  generate_scripts(args)
