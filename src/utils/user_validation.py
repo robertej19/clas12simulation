@@ -20,15 +20,17 @@ args_gch = argparser_gch.parse_args()
 file_struct.DEBUG = getattr(args_gch,file_struct.debug_long)
 """
 def user_validation():
-  username = (subprocess.check_output('whoami'))
-  strn = "SELECT 1 FROM Users WHERE EXISTS (SELECT 1 FROM Users WHERE User ='{0}')".format(username)
-  user_exists = utils.sql3_grab(strn)
-  if not user_exists:
-    print('\nThis is the first time {0} has submitted jobs. Adding user to database'.format(str(username)))
+  username = (subprocess.check_output('whoami'))[:-1]
+  hostname = socket.gethostname()
+  strn = """SELECT 1 FROM Users WHERE EXISTS (SELECT 1 FROM Users WHERE User ='{0}'
+          AND hostname = '{1}')""".format(username,hostname)
+  user_already_exists = utils.sql3_grab(strn)
+  if not user_already_exists:
+    print("""\nThis is the first time {0} from {1} has submitted jobs. Adding user to database""".format(str(username),hostname))
     strn = """INSERT INTO Users(User, hostname, JoinDateStamp, Total_Batches,
               Total_Jobs, Total_Events, Most_Recent_Active_Date)
               VALUES ("{0}","{1}","{2}","{3}","{4}","{5}","{6}");""".format(
-              username,socket.gethostname(),int(time.time()),0,0,0,"Null")
+              username,hostname,int(time.time()),0,0,0,"Null")
     utils.sql3_exec(strn)
 
   return username
