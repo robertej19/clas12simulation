@@ -84,6 +84,8 @@ def generate_scripts(args):
     write_files(file_struct.run_job_obj,params)
     strn = "UPDATE Submissions SET submission_pool = '{0}' WHERE GcardID = '{1}';".format(computer_pool,GcardID)
     utils.sql3_exec(strn)
+    strn = "UPDATE Submissions SET run_status = 'not yet in pool' WHERE GcardID = '{0}';".format(GcardID)
+    utils.sql3_exec(strn)
   print("\tSuccessfully generated submission files for Batch {0} \n".format(BatchID))
 
 
