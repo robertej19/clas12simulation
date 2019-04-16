@@ -74,7 +74,7 @@ batches_fields = (('timestamp','FLOAT'),('scard','VARCHAR'))
 #Since there is only 1 scard / batch, in princple this entire scard table should be deleted
 #The submission scripts can be completely written using just the text in the VARCHAR 'scard' field in the Batches table
 #Importantly, this is not yet implemented. It should be straightforward to do so, but time consuming
-scards_fields = (('group_name','TEXT'),('Nevents','INT'),
+scards_fields = (('group_name','TEXT'),('farm_name','TEXT'),('Nevents','INT'),
                 ('Generator','TEXT'),('genExecutable','TEXT'),('genOutput','TEXT'),
                 ('GenOptions','TEXT'),('Gcards','TEXT'),('Jobs','INT'),
                 ('Project','TEXT'),('Luminosity','INT'),('Tcurrent','INT'),('Pcurrent','INT'),
@@ -100,8 +100,7 @@ table_fields = [users_fields,batches_fields, scards_fields, gcards_fields, submi
 users_special_relations = """, User TEXT NOT NULL UNIQUE""" #Makes User field be UNIQUE, so we can use as FK
 batches_foreign_keys = """, User TEXT,
                       FOREIGN KEY(User) REFERENCES Users(User)"""
-scards_foreign_keys = """, User TEXT, BatchID INTEGER,
-                      FOREIGN KEY(User) REFERENCES Users(User)
+scards_foreign_keys = """, BatchID INTEGER,
                       FOREIGN KEY(BatchID) REFERENCES Batches(BatchID)"""
 gcards_foreign_keys = """, BatchID INTEGER,
                       FOREIGN KEY(BatchID) REFERENCES Batches(BatchID)"""
@@ -121,7 +120,7 @@ foreign_key_relations = [users_special_relations, batches_foreign_keys,
 -------------------- Scard and Runscripts Specifications -----------------------
 *****************************************************************************"""
 #This defines the ordering and items that need to be in scard.txt
-scard_key = ('group','user','nevents','generator',
+scard_key = ('group','farm_name','nevents','generator',
             'genOptions',  'gcards', 'jobs',  'project',
             'luminosity', 'tcurrent',  'pcurrent','cores_req','mem_req')
 
@@ -130,7 +129,7 @@ condor_file_obj.overwrite_vals = {'project_scard':'project','jobs_scard':'jobs',
                           'cores_req_scard':'cores_req','mem_req_scard':'mem_req','nevents_scard': 'nevents'}
 
 runscript_file_obj.overwrite_vals = {'gcards_scard': 'gcards', 'genOutput_scard': 'genOutput',
-                        'user_scard': 'user','nevents_scard': 'nevents',
+                        'nevents_scard': 'nevents',
                         'pcurrent_scard': 'pcurrent', 'tcurrent_scard': 'tcurrent',
                         'genOptions_scard': 'genOptions', 'genExecutable_scard': 'genExecutable',
                         'LUMIOPTION_scard':'luminosity','group_scard': 'group_name'}

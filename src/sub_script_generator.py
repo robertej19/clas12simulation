@@ -60,11 +60,14 @@ def write_files(sub_file_obj,params):
   utils.sql3_exec(strn)
 
 
+
 def generate_scripts(args):
   file_struct.DEBUG = getattr(args,file_struct.debug_long)
   #Grabs batch and gcards as described in respective files
   BatchID = grab_batchID(args)
   gcards = grab_gcards(BatchID)
+  strn = "SELECT farm_name FROM Scards WHERE BatchID ='{0}'".format(BatchID)
+  computer_pool = utils.sql3_grab(strn)[0][0]
 
   #Create a set of submission files for each gcard in the batch
   for gcard in gcards:
@@ -79,6 +82,8 @@ def generate_scripts(args):
     write_files(file_struct.condor_file_obj,params)
     write_files(file_struct.runscript_file_obj,params)
     write_files(file_struct.run_job_obj,params)
+    strn = "UPDATE Submissions SET submission_pool = '{0}' WHERE GcardID = '{1}';".format(computer_pool,GcardID)
+    utils.sql3_exec(strn)
   print("\tSuccessfully generated submission files for Batch {0} \n".format(BatchID))
 
 

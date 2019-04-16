@@ -29,7 +29,7 @@ def Batch_Entry(scard_file):
 
     #See if user exists already in database; if not, add them
     scard_fields = scard_helper.scard_class(scard_file)
-    user_validation.user_validation(scard_fields.data['user'])
+    username = user_validation.user_validation()
 
     #Write scard into scard table fields (This will not be needed in the future)
     print("\nReading in information from {0}".format(scard_file))
@@ -46,7 +46,7 @@ def Batch_Entry(scard_file):
     utils.printer("Writing GCards to Database")
     gcard_helper.GCard_Entry(BatchID,unixtimestamp,scard_fields.data['gcards'])
     print("Successfully added gcards to database")
-    strn = "UPDATE Batches SET {0} = '{1}' WHERE BatchID = {2};".format('User',scard_fields.data['user'],BatchID)
+    strn = "UPDATE Batches SET {0} = '{1}' WHERE BatchID = {2};".format('User',username,BatchID)
     utils.sql3_exec(strn)
 
     return 0
