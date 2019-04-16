@@ -1,5 +1,5 @@
 # SQLite DB Schema
-https://dbdiagram.io/d/5c9b829bf7c5bb70c72f6c34
+See https://dbdiagram.io/d/5c9b829bf7c5bb70c72f6c34
 
 # scard.txt
 
