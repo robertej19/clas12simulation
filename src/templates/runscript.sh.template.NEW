@@ -49,7 +49,6 @@ echo starting files
 ls -l
 set generator_start  = `date`
 genExecutable_scard --trig nevents_scard --docker genOptions_scard
-#dvcsgen --trig 71 --docker
 
 echo after generator
 echo test finish
