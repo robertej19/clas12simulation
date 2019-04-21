@@ -1,14 +1,12 @@
+# SQLite DB Schema
+See https://dbdiagram.io/d/5c9b829bf7c5bb70c72f6c34
+
 # scard.txt
 
 The first row 'project' was changed to 'group' because there is one more project at scard. If scard is in different format, parser.py will print ERROR and halt.
 
-# parser.py
-parser.py is a module (like a header file in C) that parse scard.
-Every information from parser should be stored in a class scard_parser
-
-# submit.py
-submit.py is a main python script that calls parser.py.
-It overwrites clas12.condor and runscript.sh. The .condor and .sh scripts should contain the info from scard.txt
+# Submit_Job.py
+Executing `python src/Submit_Job.py` from the main directory will run all core functions, this can be used for testing purposes. Run `python src/Submit_Job.py -h` to see options that can be passed. Importantly, -d 1 will turn on some debugging messages, and -d 2 will turn on all debugging messages. 
  
 # clas12.condor
 condor_submit clas12.condor will submit a job.
