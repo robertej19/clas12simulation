@@ -22,7 +22,8 @@ def Batch_Entry(scard_file):
     utils.printer("Batch specifications written to database with BatchID {}".format(BatchID))
 
     #See if user exists already in database; if not, add them
-    scard_fields = scard_helper.scard_class(scard_file)
+    with open(scard_file, 'r') as file: scard_text = file.read()
+    scard_fields = scard_helper.scard_class(scard_text)
     username = user_validation.user_validation()
 
     #Write scard into scard table fields (This will not be needed in the future)

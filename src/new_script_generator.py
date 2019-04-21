@@ -9,7 +9,13 @@ def grabber(scard_file):
   fname = ('startup','initialization','run_gemc','run_evio2hipo','run_cooking','file_mover')
   funcs_condor = (condor_startup,condor_1,condor_2)
   fname_condor = ('condor_startup','condor_1','condor_2')
-  scard = scard_helper.scard_class(scard_file)
+
+
+  BatchID = 1
+  strn = "SELECT scard FROM Batches WHERE BatchID = {};".format(BatchID)
+  scard_text = utils.sql3_grab(strn)[0][0]
+#  print(scard_text)
+  scard = scard_helper.scard_class(scard_text)
   username = user_validation.user_validation()
 
   #Write scard into scard table fields (This will not be needed in the future)
@@ -38,12 +44,21 @@ def grabber(scard_file):
     generated_text = getattr(f,fname_condor[count])(scard)
     with open(newfile,"a") as file: file.write(generated_text)
 
+
+
 """
     with open(scard_file, 'r') as file: scard = file.read()
     strn = "UPDATE Batches SET {0} = '{1}' WHERE BatchID = "{2}";"""""".format('scard',scard,BatchID)
     utils.sql3_exec(strn)
 """
 """
+
+def grab_gcards(BatchID):
+  strn = "SELECT GcardID, gcard_text FROM GCards WHERE BatchID = {};".format(BatchID)
+  gcards = utils.sql3_grab(strn)
+  return gcards
+
+
 
 
 """

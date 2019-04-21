@@ -18,8 +18,14 @@ class scard_class:
             self.parse_scard(scard_filename)
 
     def parse_scard(self, filename):
-        scard=open(filename, "r")
-        for linenum, line in enumerate(scard):
+        scard = filename
+        scard_lines = scard.split("\n")
+        for linenum, line in enumerate(scard_lines):
+            if not line:
+              print("reached end of scard")
+              break
+            print('lineis',linenum)
+            print('line is actually',line)
             pos_delimeter_colon = line.find(":")
             pos_delimeter_hash = line.find("#")
             key =   line[:pos_delimeter_colon].strip()
@@ -28,7 +34,7 @@ class scard_class:
               utils.printer("ERROR: Line {0} of the steering card has the key '{1}''.".format(linenum+1,key))
               utils.printer("That line must have the key '{0}'.".format(file_struct.scard_key[linenum]))
             self.data[key] = value
-        
+
     def validate_scard_line(self, linenum, line):
         if line.count("#") ==0:
             utils.printer("Warning: No comment in line {0}.".format(linenum+1))
