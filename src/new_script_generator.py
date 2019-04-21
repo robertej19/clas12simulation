@@ -2,12 +2,13 @@ from __future__ import print_function
 import subprocess, sqlite3, time, os, argparse
 from script_generators import startup,initialization,run_gemc,run_evio2hipo,run_cooking,file_mover
 from utils import utils, file_struct, scard_helper, user_validation, gcard_helper
-
+from condor_scripts import condor_startup, condor_1, condor_2
 
 def grabber(scard_file):
   funcs = (startup,initialization,run_gemc,run_evio2hipo,run_cooking,file_mover)
   fname = ('startup','initialization','run_gemc','run_evio2hipo','run_cooking','file_mover')
-
+  funcs_condor = (condor_startup,condor_1,condor_2)
+  fname_condor = ('condor_startup','condor_1','condor_2')
   scard = scard_helper.scard_class(scard_file)
   username = user_validation.user_validation()
 
@@ -27,6 +28,14 @@ def grabber(scard_file):
     subprocess.call(['rm',newfile])
   for count, f in enumerate(funcs):
     generated_text = getattr(f,fname[count])(scard)
+    with open(newfile,"a") as file: file.write(generated_text)
+
+
+  newfile = "clas12.condor"
+  if os.path.isfile(newfile):
+    subprocess.call(['rm',newfile])
+  for count, f in enumerate(funcs_condor):
+    generated_text = getattr(f,fname_condor[count])(scard)
     with open(newfile,"a") as file: file.write(generated_text)
 
 """

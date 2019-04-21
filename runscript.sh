@@ -51,7 +51,7 @@ echo after generator
 
 ls -l
 set gemc_start = `date`
-gemc -USE_GUI=0 -N=10 -INPUT_GEN_FILE="lund, sidis.dat"0 scard.data['gcards']
+gemc -USE_GUI=0 -N=10 -INPUT_GEN_FILE="lund, sidis.dat" 0 scard.data['gcards']
 echo after gemc
 
 ls -l

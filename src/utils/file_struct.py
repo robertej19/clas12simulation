@@ -81,8 +81,6 @@ scards_fields = (('group_name','TEXT'),('farm_name','TEXT'),('Nevents','INT'),
                 ('Cores_Req','INT'),('Mem_Req','INT'),('timestamp','FLOAT'))
 
 
-
-
 gcards_fields = (('gcard_text','VARCHAR'),)
 
 submissions_fields = (('submission_pool','TEXT'),('submission_timestamp','INT'),
