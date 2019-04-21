@@ -46,12 +46,12 @@ echo
 echo starting files
 ls -l
 set generator_start  = `date`
-clasdis --trig 10 --docker --t 20 25
+dvcsgen --trig 100 --docker --t 20 25
 echo after generator
 
 ls -l
 set gemc_start = `date`
-gemc -USE_GUI=0 -N=10 -INPUT_GEN_FILE="lund, sidis.dat" 0 scard.data['gcards']
+gemc -USE_GUI=0 -N=100 -INPUT_GEN_FILE="lund, dvcs.dat" 0 scard.data['gcards']
 echo after gemc
 
 ls -l
@@ -68,9 +68,9 @@ echo Moving file
 echo $ClusterId
 mv out.ev out.$ProcId.ev
 mv gemc.hipo gemc.$ProcId.hipo
-mv sidis.dat sidis.dat.$ProcId
+mv dvcs.dat dvcs.dat.$ProcId
 echo File moved
-echo `basename sidis.dat.$ProcId`
+echo `basename dvcs.dat.$ProcId`
 echo `basename out.$ProcId.ev`
 echo `basename gemc.$ProcId.hipo`
 echo `basename out_gemc.$ProcId.hipo` 
@@ -78,17 +78,17 @@ echo `basename out_gemc.$ProcId.hipo`
 
 echo creating directory
 
-mkdir out_`basename $ClusterId`_n10
+mkdir out_`basename $ClusterId`_n100
 echo moving file
-mv sidis.dat.$ProcId out_`basename $ClusterId`_n10
-mv out.$ProcId.ev out_`basename $ClusterId`_n10
-mv gemc.$ProcId.hipo out_`basename $ClusterId`_n10
+mv dvcs.dat.$ProcId out_`basename $ClusterId`_n100
+mv out.$ProcId.ev out_`basename $ClusterId`_n100
+mv gemc.$ProcId.hipo out_`basename $ClusterId`_n100
 mv out_gemc.hipo out_gemc.$ProcId.hipo
-mv out_gemc.$ProcId.hipo out_`basename $ClusterId`_n10
+mv out_gemc.$ProcId.hipo out_`basename $ClusterId`_n100
 
 echo copying gcard and scard
-cp https://userweb.jlab.org/~ungaro/tmp/gcards/ out_`basename $ClusterId`_n10
-cp scard_name out_`basename $ClusterId`_n10
+cp /jlab/work/clas12.gcard out_`basename $ClusterId`_n100
+cp scard_name out_`basename $ClusterId`_n100
 
 #final job log
 printf "Job finished time: "; /bin/date

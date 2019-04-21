@@ -36,7 +36,7 @@ class sub_file():
     self.file_text_fieldname = -1
 
 #There might be a more succient way to create these objects, but for now this works
-runscript_file_obj = sub_file('runscript')
+runscript_file_obj = sub_file('runscript.sh')
 runscript_file_obj.file_base = 'runscript'
 runscript_file_obj.file_end = '.sh'
 runscript_file_obj.file_text_fieldname = 'runscript_text'

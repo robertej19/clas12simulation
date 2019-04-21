@@ -27,13 +27,14 @@ def printer2(strn): # Can't call the function print because it already exists in
   if (int(file_struct.DEBUG) == 2):
     print(strn)
 
+""" The below function is probably no longer needed"""
 #Takes in a .template file, a list of values to replace (old_vals) and a list of what to replace them with (new_vals)
-def overwrite_file(template_file,newfile,old_vals,new_vals): #template_file = str, old_vals, new_vals = LIST
-    with open(template_file,"r") as tmp: str_script = tmp.read()
-    for i in range(0,len(old_vals)):
-      str_script = str_script.replace(old_vals[i],str(new_vals[i]))
-    with open(newfile,"w") as file: file.write(str_script)
-    return str_script
+#def overwrite_file(template_file,newfile,old_vals,new_vals): #template_file = str, old_vals, new_vals = LIST
+#    with open(template_file,"r") as tmp: str_script = tmp.read()
+#    for i in range(0,len(old_vals)):
+#      str_script = str_script.replace(old_vals[i],str(new_vals[i]))
+#    with open(newfile,"w") as file: file.write(str_script)
+#    return str_script
 
 #Takes a dictionary, retuns 2 lists: key (oldvals) and value (newvals) from table in DBName
 def grab_DB_data(table,dictionary,BatchID): #DBName, table = str, dictionary = dict
