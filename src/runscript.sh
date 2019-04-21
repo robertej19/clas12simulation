@@ -7,7 +7,7 @@ set script_start  = `date`
 echo "XXXXXXXXXXXX"
 #cat $PWD/.job.ad
 echo "XXXXXXXXXXXX"
-echo "Submitted by user_scard, group_scard"
+echo Submitted by scard.user, scard.group
 
 uname -a
 
@@ -26,15 +26,13 @@ env
 source /etc/profile.d/environmentB.csh
 cd /tmp
 
-#set ClusterId = `sed -n '0,/ClusterId = "\([^"]*\)"/\1/p' $PWD/.job.ad`
+#set ClusterId = `sed -n '0,/ClusterId = "\([^"]*\)"//p' $PWD/.job.ad`
 
 set ClusterId = ` awk -F '=' '/^ClusterId/ {print $2}' $PWD/.job.ad`
 echo ClusterId $ClusterId
 
-
 set ProcId = ` awk -F '=' '/^ProcId/ {print $2}' $PWD/.job.ad`
 echo ProcId $ProcId
-
 
 printf "Start time: "; /bin/date
 printf "Job is running on node: "; /bin/hostname
@@ -48,31 +46,23 @@ echo
 echo starting files
 ls -l
 set generator_start  = `date`
-genExecutable_scard --trig nevents_scard --docker genOptions_scard
-#dvcsgen --trig 71 --docker
-
+scard.genExecutable --trig scard.nevents --docker scard.genOption
 echo after generator
-echo test finish
+
 ls -l
 set gemc_start = `date`
-gemc -USE_GUI=0 -N=nevents_scard -INPUT_GEN_FILE="lund, genOutput_scard"LUMIOPTION_scard gcards_scard
-
+gemc -USE_GUI=0 -N=scard.nevents -INPUT_GEN_FILE="lund, scard.gcard"scard.gevent scard.other
 echo after gemc
+
 ls -l
-
-
 set evio2hipo_start = `date`
-evio2hipo -r 11 -t tcurrent_scard -s pcurrent_scard -i out.ev -o gemc.hipo
-
+evio2hipo -r 11 -t scard.tcurrent -s scard.pcurrent -i out.ev -o gemc.hipo
 echo after decoder
-ls -l
 
+ls -l
 set notsouseful_start = `date`
 notsouseful-util -i gemc.hipo -o out_gemc.hipo -c 2
-
-echo after cooking
-ls -l
-
+echo after cookingls -l 
 
 echo Moving file
 echo $ClusterId
@@ -83,8 +73,8 @@ echo File moved
 echo `basename genOutput_scard.$ProcId`
 echo `basename out.$ProcId.ev`
 echo `basename gemc.$ProcId.hipo`
-echo `basename out_gemc.$ProcId.hipo`
-
+echo `basename out_gemc.$ProcId.hipo` 
+ 
 
 echo creating directory
 mkdir out_`basename $ClusterId`_nnevents_scard

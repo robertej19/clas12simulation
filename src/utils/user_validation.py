@@ -13,7 +13,8 @@ import datetime
 
 def user_validation():
   username = (subprocess.check_output('whoami'))[:-1]#The [:-1] is so we drop the implicit \n from the string
-  hostname = socket.gethostname()
+  hostname = subprocess.check_output(['hostname','-d'])#socket.getfqdn()  #socket.gethostname()
+  print('hostname is {}'.format(hostname))
   strn = """SELECT 1 FROM Users WHERE EXISTS (SELECT 1 FROM Users WHERE User ='{0}'
           AND hostname = '{1}')""".format(username,hostname)
   user_already_exists = utils.sql3_grab(strn)

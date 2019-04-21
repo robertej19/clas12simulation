@@ -7,7 +7,7 @@ set script_start  = `date`
 echo "XXXXXXXXXXXX"
 #cat $PWD/.job.ad
 echo "XXXXXXXXXXXX"
-echo "Submitted by user_scard, group_scard"
+echo Submitted by scard.data['user'], rgaDIS
 
 uname -a
 
@@ -26,15 +26,13 @@ env
 source /etc/profile.d/environmentB.csh
 cd /tmp
 
-#set ClusterId = `sed -n '0,/ClusterId = "\([^"]*\)"/\1/p' $PWD/.job.ad`
+#set ClusterId = `sed -n '0,/ClusterId = "\([^"]*\)"//p' $PWD/.job.ad`
 
 set ClusterId = ` awk -F '=' '/^ClusterId/ {print $2}' $PWD/.job.ad`
 echo ClusterId $ClusterId
 
-
 set ProcId = ` awk -F '=' '/^ProcId/ {print $2}' $PWD/.job.ad`
 echo ProcId $ProcId
-
 
 printf "Start time: "; /bin/date
 printf "Job is running on node: "; /bin/hostname
@@ -48,55 +46,49 @@ echo
 echo starting files
 ls -l
 set generator_start  = `date`
-genExecutable_scard --trig nevents_scard --docker genOptions_scard
-
+clasdis --trig 10 --docker --t 20 25
 echo after generator
-echo test finish
+
 ls -l
 set gemc_start = `date`
-gemc -USE_GUI=0 -N=nevents_scard -INPUT_GEN_FILE="lund, genOutput_scard"LUMIOPTION_scard gcards_gcard
-
+gemc -USE_GUI=0 -N=10 -INPUT_GEN_FILE="lund, sidis.dat" 0 scard.data['gcards']
 echo after gemc
+
 ls -l
-
-
 set evio2hipo_start = `date`
-evio2hipo -r 11 -t tcurrent_scard -s pcurrent_scard -i out.ev -o gemc.hipo
-
+evio2hipo -r 11 -t -100 -s -100 -i out.ev -o gemc.hipo
 echo after decoder
-ls -l
 
+ls -l
 set notsouseful_start = `date`
 notsouseful-util -i gemc.hipo -o out_gemc.hipo -c 2
-
-echo after cooking
-ls -l
-
+echo after cookingls -l 
 
 echo Moving file
 echo $ClusterId
 mv out.ev out.$ProcId.ev
 mv gemc.hipo gemc.$ProcId.hipo
-mv genOutput_scard genOutput_scard.$ProcId
+mv sidis.dat sidis.dat.$ProcId
 echo File moved
-echo `basename genOutput_scard.$ProcId`
+echo `basename sidis.dat.$ProcId`
 echo `basename out.$ProcId.ev`
 echo `basename gemc.$ProcId.hipo`
-echo `basename out_gemc.$ProcId.hipo`
-
+echo `basename out_gemc.$ProcId.hipo` 
+ 
 
 echo creating directory
-mkdir out_`basename $ClusterId`_nnevents_scard
+
+mkdir out_`basename $ClusterId`_n10
 echo moving file
-mv genOutput_scard.$ProcId out_`basename $ClusterId`_nnevents_scard
-mv out.$ProcId.ev out_`basename $ClusterId`_nnevents_scard
-mv gemc.$ProcId.hipo out_`basename $ClusterId`_nnevents_scard
+mv sidis.dat.$ProcId out_`basename $ClusterId`_n10
+mv out.$ProcId.ev out_`basename $ClusterId`_n10
+mv gemc.$ProcId.hipo out_`basename $ClusterId`_n10
 mv out_gemc.hipo out_gemc.$ProcId.hipo
-mv out_gemc.$ProcId.hipo out_`basename $ClusterId`_nnevents_scard
+mv out_gemc.$ProcId.hipo out_`basename $ClusterId`_n10
 
 echo copying gcard and scard
-cp gcards_scard out_`basename $ClusterId`_nnevents_scard
-cp scard_name out_`basename $ClusterId`_nnevents_scard
+cp https://userweb.jlab.org/~ungaro/tmp/gcards/ out_`basename $ClusterId`_n10
+cp scard_name out_`basename $ClusterId`_n10
 
 #final job log
 printf "Job finished time: "; /bin/date

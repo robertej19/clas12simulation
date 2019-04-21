@@ -80,6 +80,7 @@ scards_fields = (('group_name','TEXT'),('farm_name','TEXT'),('Nevents','INT'),
                 ('Project','TEXT'),('Luminosity','INT'),('Tcurrent','INT'),('Pcurrent','INT'),
                 ('Cores_Req','INT'),('Mem_Req','INT'),('timestamp','FLOAT'))
 
+
 gcards_fields = (('gcard_text','VARCHAR'),)
 
 submissions_fields = (('submission_pool','TEXT'),('submission_timestamp','INT'),
@@ -120,6 +121,12 @@ foreign_key_relations = [users_special_relations, batches_foreign_keys,
 -------------------- Scard and Runscripts Specifications -----------------------
 *****************************************************************************"""
 #This defines the ordering and items that need to be in scard.txt
+scards_fields = (('group_name','TEXT'),('farm_name','TEXT'),('Nevents','INT'),
+                ('Generator','TEXT'),('genExecutable','TEXT'),('genOutput','TEXT'),
+                ('GenOptions','TEXT'),('Gcards','TEXT'),('Jobs','INT'),
+                ('Project','TEXT'),('Luminosity','INT'),('Tcurrent','INT'),('Pcurrent','INT'),
+                ('Cores_Req','INT'),('Mem_Req','INT'),('timestamp','FLOAT'))
+
 scard_key = ('group','farm_name','nevents','generator',
             'genOptions',  'gcards', 'jobs',  'project',
             'luminosity', 'tcurrent',  'pcurrent','cores_req','mem_req')
@@ -127,12 +134,6 @@ scard_key = ('group','farm_name','nevents','generator',
 #This defines the variables that will be written out to submission scripts and maps to DB values
 condor_file_obj.overwrite_vals = {'project_scard':'project','jobs_scard':'jobs',
                           'cores_req_scard':'cores_req','mem_req_scard':'mem_req','nevents_scard': 'nevents'}
-
-runscript_file_obj.overwrite_vals = {'gcards_scard': 'gcards', 'genOutput_scard': 'genOutput',
-                        'nevents_scard': 'nevents',
-                        'pcurrent_scard': 'pcurrent', 'tcurrent_scard': 'tcurrent',
-                        'genOptions_scard': 'genOptions', 'genExecutable_scard': 'genExecutable',
-                        'LUMIOPTION_scard':'luminosity','group_scard': 'group_name'}
 
 #This does not go through the database, but instead just replaces runscript.overwrite with the file location
 #Note that the value here is unimportant, as the overwrite value that is used is generated in sub_script_generator.py
