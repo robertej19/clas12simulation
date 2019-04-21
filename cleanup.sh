@@ -1,6 +1,1 @@
-rm *.pyc
-cd src/
-rm *.pyc
-cd utils/
-rm *.pyc
-cd ../../
+find . -name '*.pyc' -type f -delete
