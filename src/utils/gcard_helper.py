@@ -22,8 +22,6 @@
 #***************************************************************
 from __future__ import print_function
 import utils, file_struct, html_reader
-from HTMLParser import HTMLParser
-import urllib2, argparse
 
 def db_gcard_write(BatchID,timestamp,gcard_text):
     strn = "INSERT INTO Gcards(BatchID) VALUES ({0});".format(BatchID)
@@ -40,11 +38,10 @@ def GCard_Entry(BatchID,unixtimestamp,url_dir):
     db_gcard_write(BatchID,unixtimestamp,gcard_text_db)
   elif 'https://' in url_dir:
     utils.printer('Trying to download gcards from online repository')
-    gcard_urls = html_reader.html_reader(url_dir)
+    raw_html, gcard_urls = html_reader.html_reader(url_dir,file_struct.gcard_identifying_text)
     for url_ending in gcard_urls:
       utils.printer('Gcard URL name is: '+url_ending)
-      response = urllib2.urlopen(url_dir+'/'+url_ending)
-      gcard_text = response.read()
+      gcard_text = html_reader.html_reader(url_dir+'/'+url_ending,'')[0]#This returns a tuple, we need the contents of the tuple
       utils.printer2('HTML from gcard link is: {}'.format(gcard_text))
       gcard_text_db = gcard_text.replace('"',"'")
       print("\t Gathered gcard '{}'".format(url_ending))
