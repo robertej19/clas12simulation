@@ -3,7 +3,7 @@ farm_name:  ifarm                                     # computer pool for job to
 nevents:  100                                         # number of events each job
 generator: dvcs                                       # one of clasdis, dvcs, disrad
 genOptions:  --t 20 25                                # generator option
-gcards: https://userweb.jlab.org/~ungaro/tmp/gcards/  # gcard gemc option
+gcards: /jlab/work/clas12.gcard                       # gcard gemc option
 jobs: 3                                               # number of jobs
 project:  osg.clas12MC                                # OSG project
 luminosity:  0                                        # percent of 10^35 luminosity from 0 to 100

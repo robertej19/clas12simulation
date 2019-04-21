@@ -1,5 +1,6 @@
 #****************************************************************
 """
+### THE BELOW TEXT IS OUTDATED and needs to be updated
 #This replaces a previous version of gcard_helper.py by using the HTMLParser class
 #This allows for more robust parsing of the html mother directory to find gcard files
 #Even better would be to use BeautifulSoup, which would allow for the code to be condensed as:
@@ -20,30 +21,9 @@
 """
 #***************************************************************
 from __future__ import print_function
-import utils, file_struct
+import utils, file_struct, html_reader
 from HTMLParser import HTMLParser
 import urllib2, argparse
-
-def Gather_Gcard_urls(url_dir):
-  # create a subclass and override the handler methods
-  # from https://docs.python.org/2/library/htmlparser.html
-  gcard_urls = []
-  class MyHTMLParser(HTMLParser):
-      def handle_starttag(self, tag, attrs):
-          utils.printer2("Encountered a start tag: {}".format(tag))
-      def handle_endtag(self, tag):
-          utils.printer2("Encountered an end tag: {}".format(tag))
-      def handle_data(self, data):
-          utils.printer2("Encountered some data  : {}".format(data))
-          if file_struct.gcard_identifying_text in data:
-            gcard_urls.append(data)
-
-  response = urllib2.urlopen(url_dir)
-  html = response.read()
-  parser = MyHTMLParser()
-  parser.feed(html)
-
-  return gcard_urls
 
 def db_gcard_write(BatchID,timestamp,gcard_text):
     strn = "INSERT INTO Gcards(BatchID) VALUES ({0});".format(BatchID)
@@ -54,12 +34,21 @@ def db_gcard_write(BatchID,timestamp,gcard_text):
 
 def GCard_Entry(BatchID,unixtimestamp,url_dir):
   print("Gathering gcards from {} ".format(url_dir))
-  gcard_urls = Gather_Gcard_urls(url_dir)
-  for url_ending in gcard_urls:
-    utils.printer('Gcard URL name is: '+url_ending)
-    response = urllib2.urlopen(url_dir+'/'+url_ending)
-    gcard_text = response.read()
-    utils.printer2('HTML from gcard link is: {}'.format(gcard_text))
-    gcard_text_db = gcard_text.replace('"',"'")
-    print("\t Gathered gcard '{}'".format(url_ending))
+  if url_dir == file_struct.gcard_default:
+    utils.printer('Using gcard from /jlab/work')
+    gcard_text_db = url_dir
     db_gcard_write(BatchID,unixtimestamp,gcard_text_db)
+  elif 'https://' in url_dir:
+    utils.printer('Trying to download gcards from online repository')
+    gcard_urls = html_reader.html_reader(url_dir)
+    for url_ending in gcard_urls:
+      utils.printer('Gcard URL name is: '+url_ending)
+      response = urllib2.urlopen(url_dir+'/'+url_ending)
+      gcard_text = response.read()
+      utils.printer2('HTML from gcard link is: {}'.format(gcard_text))
+      gcard_text_db = gcard_text.replace('"',"'")
+      print("\t Gathered gcard '{}'".format(url_ending))
+      db_gcard_write(BatchID,unixtimestamp,gcard_text_db)
+  else:
+    print('gcard not recognized as default option or online repository, please inspect scard')
+    exit()

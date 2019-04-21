@@ -217,3 +217,4 @@ debug_help = help = """0 (default) - no messages,1 - general messages,
                     2 - all messages, all reads and writes into and out of the database"""
 
 gcard_identifying_text = '.gcard' #For use in gcard_helper.py
+gcard_default = '/jlab/work/clas12.gcard'
