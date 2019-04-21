@@ -1,6 +1,7 @@
 def condor_startup(scard,**kwargs):
   #CHANGE THIS ONCE FUNCTION IS PROPERLY IMPLEMENTED
-  farm_name = 'osg'
+  farm_name = scard.data.get('farm_name')
+  print(farm_name)
   strn_osg = """# The UNIVERSE defines an execution environment. You will almost always use vanilla.
 Universe = vanilla\n
 # singularity image
@@ -20,7 +21,7 @@ Requirements  = (GLIDEIN_Site == "MIT_CampusFactory" && BOSCOGroup == "bosco_lns
 """
   if farm_name == 'osg':
     return strn_osg
-  elif farm_name == 'submit':
+  elif farm_name == 'MIT_Tier2' or farm_name == 'ifarm':
     return strn_submit
   else:
     return "farm could not be found, inspect scard"

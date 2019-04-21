@@ -41,7 +41,7 @@ runscript_file_obj.file_base = 'runscript'
 runscript_file_obj.file_end = '.sh'
 runscript_file_obj.file_text_fieldname = 'runscript_text'
 
-condor_file_obj = sub_file('clas12_condor')
+condor_file_obj = sub_file('clas12.condor')
 condor_file_obj.file_base = 'clas12'
 condor_file_obj.file_end = '.condor'
 condor_file_obj.file_text_fieldname = 'clas12_condor_text'

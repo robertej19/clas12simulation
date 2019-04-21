@@ -12,20 +12,17 @@ import sqlite3, time
 import utils, file_struct
 
 class scard_class:
-    def __init__(self, scard_filename=None):
+    def __init__(self,scard_text):
+        self.name = 'scard.txt'
         self.data = {}
-        if scard_filename != None:
-            self.parse_scard(scard_filename)
+        self.parse_scard(scard_text)
 
-    def parse_scard(self, filename):
-        scard = filename
-        scard_lines = scard.split("\n")
+    def parse_scard(self, scard_text):
+        scard_lines = scard_text.split("\n")
         for linenum, line in enumerate(scard_lines):
             if not line:
-              print("reached end of scard")
+              print("Reached end of scard")
               break
-            print('lineis',linenum)
-            print('line is actually',line)
             pos_delimeter_colon = line.find(":")
             pos_delimeter_hash = line.find("#")
             key =   line[:pos_delimeter_colon].strip()
