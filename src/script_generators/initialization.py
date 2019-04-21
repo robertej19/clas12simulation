@@ -10,5 +10,5 @@ echo starting files
 ls -l
 set generator_start  = `date`
 {0} --trig {1} --docker {2}
-echo after generator""".format('scard.genExecutable','scard.nevents','scard.genOption')
+echo after generator""".format(scard.data['genExecutable'],scard.data['nevents'],scard.data['genOptions'])
   return strn

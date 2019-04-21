@@ -1,4 +1,4 @@
-def startup(scard):
+def startup(scard,**kwargs):
 
   strn1 = """set ClusterId = ` awk -F '=' '/^ClusterId/ {print $2}' $PWD/.job.ad`"""
   strn2 = """set ProcId = ` awk -F '=' '/^ProcId/ {print $2}' $PWD/.job.ad`"""
@@ -25,5 +25,5 @@ cd /tmp\n
 {2}
 echo ClusterId $ClusterId\n
 {3}
-echo ProcId $ProcId\n""".format('scard.user','scard.group',strn1,strn2)
+echo ProcId $ProcId\n""".format("scard.data['user']",scard.data['group'],strn1,strn2)
   return strn
