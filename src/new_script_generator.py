@@ -105,6 +105,7 @@ def submission_script_maker(args):
     script_factory(file_struct.runscript_file_obj,funcs_rs,fname_rs,scard,params)
     script_factory(file_struct.condor_file_obj,funcs_condor,fname_condor,scard,params)
   print("\tSuccessfully generated submission files for Batch {0} \n".format(BatchID))
+  return(GcardID)
 
 if __name__ == "__main__":
   argparser = argparse.ArgumentParser()

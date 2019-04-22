@@ -84,6 +84,7 @@ scards_fields = (('group_name','TEXT'),('farm_name','TEXT'),('Nevents','INT'),
 gcards_fields = (('gcard_text','VARCHAR'),)
 
 submissions_fields = (('submission_pool','TEXT'),('submission_timestamp','INT'),
+                      ('pool_node','TEXT'),
                       ('run_status','TEXT'),('completion_timestamp','INT'),
                       (runscript_file_obj.file_text_fieldname,'VARCHAR'),
                       (condor_file_obj.file_text_fieldname,'VARCHAR'),
