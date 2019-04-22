@@ -25,5 +25,5 @@ cd /tmp\n
 {2}
 echo ClusterId $ClusterId\n
 {3}
-echo ProcId $ProcId\n""".format("scard.data['user']",scard.data['group'],strn1,strn2)
+echo ProcId $ProcId\n""".format(kwargs['username'],scard.data['group'],strn1,strn2)
   return strn

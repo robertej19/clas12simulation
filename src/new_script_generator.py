@@ -52,7 +52,7 @@ def script_factory(script_obj,gen_funcs,func_names,scard,params):
   if os.path.isfile(script_obj.name):
     subprocess.call(['rm',script_obj.name])
   for count, f in enumerate(gen_funcs):
-    generated_text = getattr(f,func_names[count])(scard)
+    generated_text = getattr(f,func_names[count])(scard,username=params['username'],gcard_loc=params['gcard_loc'])
     with open(script_obj.name,"a") as file: file.write(generated_text)
     script_text += generated_text
   str_script_db = script_text.replace('"',"'") #I can't figure out a way to write "" into a sqlite field without errors
@@ -99,8 +99,9 @@ def submission_script_maker(args):
     gfile= file_struct.sub_files_path+file_struct.gcards_dir+newfile
     with open(gfile,"w") as file: file.write(gcard[1])
     """
+    gcard_loc = scard.data['gcards']
     params = {'table':'Scards','BatchID':BatchID,'GcardID':GcardID,
-              'gfile':'gfile'}
+              'gfile':'gfile','username':username[0][0],'gcard_loc':gcard_loc}
     script_factory(file_struct.runscript_file_obj,funcs_rs,fname_rs,scard,params)
     script_factory(file_struct.condor_file_obj,funcs_condor,fname_condor,scard,params)
   print("\tSuccessfully generated submission files for Batch {0} \n".format(BatchID))

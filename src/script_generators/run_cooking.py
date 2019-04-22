@@ -1,4 +1,4 @@
-def run_cooking(scard):
+def run_cooking(scard,**kwargs):
   strn = """\nls -l
 set notsouseful_start = `date`
 notsouseful-util -i gemc.hipo -o out_gemc.hipo -c 2

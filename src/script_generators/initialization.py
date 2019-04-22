@@ -1,4 +1,4 @@
-def initialization(scard):
+def initialization(scard,**kwargs):
   strn = """\nprintf "Start time: "; /bin/date
 printf "Job is running on node: "; /bin/hostname
 printf "Job running as user: "; /usr/bin/id

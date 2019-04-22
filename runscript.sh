@@ -7,7 +7,7 @@ set script_start  = `date`
 echo "XXXXXXXXXXXX"
 #cat $PWD/.job.ad
 echo "XXXXXXXXXXXX"
-echo Submitted by scard.data['user'], rgaDIS
+echo Submitted by bobby, rgaDIS
 
 uname -a
 
@@ -46,17 +46,17 @@ echo
 echo starting files
 ls -l
 set generator_start  = `date`
-clasdis --trig 1000 --docker --t 20 25
+clasdis --trig 100 --docker --t 20 25
 echo after generator
 
 ls -l
 set gemc_start = `date`
-gemc -USE_GUI=0 -N=1000 -INPUT_GEN_FILE="lund, sidis.dat" 0 scard.data['gcards']
+gemc -USE_GUI=0 -N=100 -INPUT_GEN_FILE="lund, sidis.dat" 0 /jlab/work/clas12.gcard
 echo after gemc
 
 ls -l
 set evio2hipo_start = `date`
-evio2hipo -r 11 -t -50 -s -100 -i out.ev -o gemc.hipo
+evio2hipo -r 11 -t -100 -s -100 -i out.ev -o gemc.hipo
 echo after decoder
 
 ls -l
@@ -78,17 +78,17 @@ echo `basename out_gemc.$ProcId.hipo`
 
 echo creating directory
 
-mkdir out_`basename $ClusterId`_n1000
+mkdir out_`basename $ClusterId`_n100
 echo moving file
-mv sidis.dat.$ProcId out_`basename $ClusterId`_n1000
-mv out.$ProcId.ev out_`basename $ClusterId`_n1000
-mv gemc.$ProcId.hipo out_`basename $ClusterId`_n1000
+mv sidis.dat.$ProcId out_`basename $ClusterId`_n100
+mv out.$ProcId.ev out_`basename $ClusterId`_n100
+mv gemc.$ProcId.hipo out_`basename $ClusterId`_n100
 mv out_gemc.hipo out_gemc.$ProcId.hipo
-mv out_gemc.$ProcId.hipo out_`basename $ClusterId`_n1000
+mv out_gemc.$ProcId.hipo out_`basename $ClusterId`_n100
 
 echo copying gcard and scard
-cp https://userweb.jlab.org/~ungaro/tmp/gcards/ out_`basename $ClusterId`_n1000
-cp scard_name out_`basename $ClusterId`_n1000
+cp /jlab/work/clas12.gcard out_`basename $ClusterId`_n100
+cp scard_name out_`basename $ClusterId`_n100
 
 #final job log
 printf "Job finished time: "; /bin/date

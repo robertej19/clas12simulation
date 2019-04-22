@@ -12,13 +12,13 @@ based off the value found in the scard
 from __future__ import print_function
 from utils import utils, file_struct, create_database
 import sqlite3, os, argparse, subprocess
-import sub_script_generator, db_batch_entry
+import new_script_generator, db_batch_entry
 
 #This allows a user to specifiy which batch to use to generate files using a specific BatchID
 argparser = argparse.ArgumentParser()
 argparser.add_argument(file_struct.debug_short,file_struct.debug_longdash,
                       default = file_struct.debug_default,help = file_struct.debug_help)
-argparser.add_argument('-b','--batchID', default='none', help = 'Enter the ID# of the batch you want to submit (e.g. -b 23)')
+argparser.add_argument('-b','--BatchID', default='none', help = 'Enter the ID# of the batch you want to submit (e.g. -b 23)')
 argparser.add_argument('scard',default=file_struct.scard_path+file_struct.scard_name,nargs='?',
                         help = 'relative path and name scard you want to submit, e.g. ../scard.txt')
 args = argparser.parse_args()
@@ -30,8 +30,8 @@ if not os.path.isfile(file_struct.DB_path+file_struct.DBname):
   print("\nCLAS12 Off Campus Resources Database not found, creating!")
   create_database.create_database(args)
 
-if args.batchID == 'none':
+if args.BatchID == 'none':
   db_batch_entry.Batch_Entry(args.scard)
 
 print("\nGenerating submission files from database")
-sub_script_generator.generate_scripts(args)
+new_script_generator.submission_script_maker(args)
