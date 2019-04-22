@@ -41,7 +41,7 @@ GcardID = new_script_generator.submission_script_maker(args)
 if args.run:
   """This entire section should be written into a dedicated function / script"""
   subprocess.call(['chmod','+x','runscript.sh'])
-  #submission = Popen(['condor_submit','clas12.condor'], stdout=PIPE).communicate()[0]
+  submission = Popen(['condor_submit','clas12.condor'], stdout=PIPE).communicate()[0]
   #The below is for testing purposes
   #submission = """Submitting job(s)...
 #3 job(s) submitted to cluster 7334290."""
