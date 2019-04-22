@@ -28,10 +28,10 @@ def db_gcard_write(BatchID,timestamp,gcard_text):
     utils.sql3_exec(strn)
     strn = """UPDATE Gcards SET {0} = "{1}" WHERE BatchID = {2};""".format('gcard_text',gcard_text,BatchID)
     utils.sql3_exec(strn)
-    utils.printer("GCard added to database corresponding to BatchID {}".format(BatchID))
+    utils.printer("GCard added to database corresponding to BatchID {0}".format(BatchID))
 
 def GCard_Entry(BatchID,unixtimestamp,url_dir):
-  print("Gathering gcards from {} ".format(url_dir))
+  print("Gathering gcards from {0} ".format(url_dir))
   if url_dir == file_struct.gcard_default:
     utils.printer('Using gcard from /jlab/work')
     gcard_text_db = url_dir
@@ -42,9 +42,9 @@ def GCard_Entry(BatchID,unixtimestamp,url_dir):
     for url_ending in gcard_urls:
       utils.printer('Gcard URL name is: '+url_ending)
       gcard_text = html_reader.html_reader(url_dir+'/'+url_ending,'')[0]#This returns a tuple, we need the contents of the tuple
-      utils.printer2('HTML from gcard link is: {}'.format(gcard_text))
+      utils.printer2('HTML from gcard link is: {0}'.format(gcard_text))
       gcard_text_db = gcard_text.replace('"',"'")
-      print("\t Gathered gcard '{}'".format(url_ending))
+      print("\t Gathered gcard '{0}'".format(url_ending))
       db_gcard_write(BatchID,unixtimestamp,gcard_text_db)
   else:
     print('gcard not recognized as default option or online repository, please inspect scard')

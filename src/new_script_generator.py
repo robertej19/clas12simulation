@@ -34,13 +34,13 @@ def grab_batchID(args):
 
 #Grabs all GCards from a corresponding Batch
 def grab_gcards(BatchID):
-  strn = "SELECT GcardID, gcard_text FROM GCards WHERE BatchID = {};".format(BatchID)
+  strn = "SELECT GcardID, gcard_text FROM GCards WHERE BatchID = {0};".format(BatchID)
   gcards = utils.sql3_grab(strn)
   return gcards
 
 #Grabs all GCards from a corresponding Batch
 def grab_username(BatchID):
-  strn = "SELECT user FROM Batches WHERE BatchID = {};".format(BatchID)
+  strn = "SELECT user FROM Batches WHERE BatchID = {0};".format(BatchID)
   username = utils.sql3_grab(strn)
   return username
 
@@ -75,7 +75,7 @@ def submission_script_maker(args):
   fname_condor = ('condor_startup','condor_1','condor_2')
   func_kwargs_condor = ('','','')
 
-  strn = "SELECT scard FROM Batches WHERE BatchID = {};".format(BatchID)
+  strn = "SELECT scard FROM Batches WHERE BatchID = {0};".format(BatchID)
   scard_text = utils.sql3_grab(strn)[0][0] #sql3_grab returns a list of tuples, we need the 0th element of the 0th element
   scard = scard_helper.scard_class(scard_text)
 
@@ -95,7 +95,7 @@ def submission_script_maker(args):
     """
     Need to have block of code for grabbing appropriate gcard. For now, just assume we grab
     the standard gcard so we don't have to worry about this
-    newfile = "gcard_{}_batch_{}.gcard".format(GcardID,BatchID)
+    newfile = "gcard_{0}_batch_{1}.gcard".format(GcardID,BatchID)
     gfile= file_struct.sub_files_path+file_struct.gcards_dir+newfile
     with open(gfile,"w") as file: file.write(gcard[1])
     """

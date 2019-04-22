@@ -14,11 +14,11 @@ def html_reader(url_dir,data_identifyier):
   urls = []
   class MyHTMLParser(HTMLParser):
       def handle_starttag(self, tag, attrs):
-          utils.printer2("Encountered a start tag: {}".format(tag))
+          utils.printer2("Encountered a start tag: {0}".format(tag))
       def handle_endtag(self, tag):
-          utils.printer2("Encountered an end tag: {}".format(tag))
+          utils.printer2("Encountered an end tag: {0}".format(tag))
       def handle_data(self, data):
-          utils.printer2("Encountered some data  : {}".format(data))
+          utils.printer2("Encountered some data  : {0}".format(data))
           if data_identifyier in data:
             urls.append(data)
 

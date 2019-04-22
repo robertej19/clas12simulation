@@ -19,7 +19,7 @@ def Batch_Entry(scard_file):
     with open(scard_file, 'r') as file: scard = file.read()
     strn = """UPDATE Batches SET {0} = '{1}' WHERE BatchID = "{2}";""".format('scard',scard,BatchID)
     utils.sql3_exec(strn)
-    utils.printer("Batch specifications written to database with BatchID {}".format(BatchID))
+    utils.printer("Batch specifications written to database with BatchID {0}".format(BatchID))
 
     #See if user exists already in database; if not, add them
     with open(scard_file, 'r') as file: scard_text = file.read()

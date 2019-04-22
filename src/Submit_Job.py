@@ -35,3 +35,8 @@ if args.BatchID == 'none':
 
 print("\nGenerating submission files from database")
 new_script_generator.submission_script_maker(args)
+
+#To actually submit:
+#submission = subprocess.check_output(['condor_submit','clas12.condor'])#socket.getfqdn()  #socket.gethostname()
+
+#print(submission)

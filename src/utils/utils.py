@@ -64,7 +64,7 @@ def sql3_exec(strn):
   conn = sqlite3.connect(file_struct.DB_path+file_struct.DBname)
   c = conn.cursor()
   c.execute('PRAGMA foreign_keys = ON;')
-  printer2('Executing SQL Command: {}'.format(strn)) #Turn this on for explict printing of all DB write commands
+  printer2('Executing SQL Command: {0}'.format(strn)) #Turn this on for explict printing of all DB write commands
   c.execute(strn)
   insertion_id = c.lastrowid
   conn.commit()
@@ -76,7 +76,7 @@ def sql3_exec(strn):
 def sql3_grab(strn):
   conn = sqlite3.connect(file_struct.DB_path+file_struct.DBname)
   c = conn.cursor()
-  printer2('Executing SQL Command: {}'.format(strn)) #Turn this on for explict printing of all DB write commands
+  printer2('Executing SQL Command: {0}'.format(strn)) #Turn this on for explict printing of all DB write commands
   c.execute(strn)
   return_array = c.fetchall()
   c.close()
