@@ -13,6 +13,7 @@ from __future__ import print_function
 from utils import utils, file_struct, create_database
 import sqlite3, os, argparse, subprocess
 import new_script_generator, db_batch_entry
+from subprocess import PIPE, Popen
 
 #This allows a user to specifiy which batch to use to generate files using a specific BatchID
 argparser = argparse.ArgumentParser()
@@ -37,6 +38,6 @@ print("\nGenerating submission files from database")
 new_script_generator.submission_script_maker(args)
 
 #To actually submit:
-#submission = subprocess.check_output(['condor_submit','clas12.condor'])#socket.getfqdn()  #socket.gethostname()
-
+#subprocess.call(['chmod','+x','runscript.sh'])
+#submission = Popen(['condor_submit','clas12.condor'], stdout=PIPE).communicate()[0].split()[0]
 #print(submission)

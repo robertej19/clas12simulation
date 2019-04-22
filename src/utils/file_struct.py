@@ -65,7 +65,7 @@ tables = ['Users','Batches','Scards','Gcards','Submissions','JobsLog']
 #Primary Key definitions:
 PKs = ['UserID','BatchID','ScardID','GcardID','SubmissionID','JobID']
 
-users_fields = (('hostname','TEXT'),('JoinDateStamp','INT'),('Total_Batches','INT'),
+users_fields = (('domain_name','TEXT'),('JoinDateStamp','INT'),('Total_Batches','INT'),
                 ('Total_Jobs','INT'),('Total_Events','INT'),('Most_Recent_Active_Date','INT'))
 
 
