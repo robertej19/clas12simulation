@@ -36,12 +36,12 @@ class sub_file():
     self.file_text_fieldname = -1
 
 #There might be a more succient way to create these objects, but for now this works
-runscript_file_obj = sub_file('runscript')
+runscript_file_obj = sub_file('runscript.sh')
 runscript_file_obj.file_base = 'runscript'
 runscript_file_obj.file_end = '.sh'
 runscript_file_obj.file_text_fieldname = 'runscript_text'
 
-condor_file_obj = sub_file('clas12_condor')
+condor_file_obj = sub_file('clas12.condor')
 condor_file_obj.file_base = 'clas12'
 condor_file_obj.file_end = '.condor'
 condor_file_obj.file_text_fieldname = 'clas12_condor_text'
@@ -65,7 +65,7 @@ tables = ['Users','Batches','Scards','Gcards','Submissions','JobsLog']
 #Primary Key definitions:
 PKs = ['UserID','BatchID','ScardID','GcardID','SubmissionID','JobID']
 
-users_fields = (('hostname','TEXT'),('JoinDateStamp','INT'),('Total_Batches','INT'),
+users_fields = (('domain_name','TEXT'),('JoinDateStamp','INT'),('Total_Batches','INT'),
                 ('Total_Jobs','INT'),('Total_Events','INT'),('Most_Recent_Active_Date','INT'))
 
 
@@ -80,9 +80,11 @@ scards_fields = (('group_name','TEXT'),('farm_name','TEXT'),('Nevents','INT'),
                 ('Project','TEXT'),('Luminosity','INT'),('Tcurrent','INT'),('Pcurrent','INT'),
                 ('Cores_Req','INT'),('Mem_Req','INT'),('timestamp','FLOAT'))
 
+
 gcards_fields = (('gcard_text','VARCHAR'),)
 
 submissions_fields = (('submission_pool','TEXT'),('submission_timestamp','INT'),
+                      ('pool_node','TEXT'),
                       ('run_status','TEXT'),('completion_timestamp','INT'),
                       (runscript_file_obj.file_text_fieldname,'VARCHAR'),
                       (condor_file_obj.file_text_fieldname,'VARCHAR'),
@@ -120,6 +122,12 @@ foreign_key_relations = [users_special_relations, batches_foreign_keys,
 -------------------- Scard and Runscripts Specifications -----------------------
 *****************************************************************************"""
 #This defines the ordering and items that need to be in scard.txt
+scards_fields = (('group_name','TEXT'),('farm_name','TEXT'),('Nevents','INT'),
+                ('Generator','TEXT'),('genExecutable','TEXT'),('genOutput','TEXT'),
+                ('GenOptions','TEXT'),('Gcards','TEXT'),('Jobs','INT'),
+                ('Project','TEXT'),('Luminosity','INT'),('Tcurrent','INT'),('Pcurrent','INT'),
+                ('Cores_Req','INT'),('Mem_Req','INT'),('timestamp','FLOAT'))
+
 scard_key = ('group','farm_name','nevents','generator',
             'genOptions',  'gcards', 'jobs',  'project',
             'luminosity', 'tcurrent',  'pcurrent','cores_req','mem_req')
@@ -127,12 +135,6 @@ scard_key = ('group','farm_name','nevents','generator',
 #This defines the variables that will be written out to submission scripts and maps to DB values
 condor_file_obj.overwrite_vals = {'project_scard':'project','jobs_scard':'jobs',
                           'cores_req_scard':'cores_req','mem_req_scard':'mem_req','nevents_scard': 'nevents'}
-
-runscript_file_obj.overwrite_vals = {'gcards_scard': 'gcards', 'genOutput_scard': 'genOutput',
-                        'nevents_scard': 'nevents',
-                        'pcurrent_scard': 'pcurrent', 'tcurrent_scard': 'tcurrent',
-                        'genOptions_scard': 'genOptions', 'genExecutable_scard': 'genExecutable',
-                        'LUMIOPTION_scard':'luminosity','group_scard': 'group_name'}
 
 #This does not go through the database, but instead just replaces runscript.overwrite with the file location
 #Note that the value here is unimportant, as the overwrite value that is used is generated in sub_script_generator.py
@@ -216,3 +218,4 @@ debug_help = help = """0 (default) - no messages,1 - general messages,
                     2 - all messages, all reads and writes into and out of the database"""
 
 gcard_identifying_text = '.gcard' #For use in gcard_helper.py
+gcard_default = '/jlab/work/clas12.gcard'
