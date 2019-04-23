@@ -1,3 +1,9 @@
+#****************************************************************
+"""
+# Commentary for this file does not yet exist
+"""
+#****************************************************************
+
 def condor_2(scard,**kwargs):
   strn = """#Input files. Do not add comments after the file list
   # transfer_input_files = cook.csh

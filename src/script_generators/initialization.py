@@ -1,3 +1,9 @@
+#****************************************************************
+"""
+# Commentary for this file does not yet exist
+"""
+#****************************************************************
+
 def initialization(scard,**kwargs):
   strn = """\nprintf "Start time: "; /bin/date
 printf "Job is running on node: "; /bin/hostname

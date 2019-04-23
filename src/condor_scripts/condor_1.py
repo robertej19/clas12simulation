@@ -1,3 +1,9 @@
+#****************************************************************
+"""
+# Commentary for this file does not yet exist
+"""
+#****************************************************************
+
 def condor_1(scard,**kwargs):
   strn = """request_cpus = {0}
 request_memory = {1} GB

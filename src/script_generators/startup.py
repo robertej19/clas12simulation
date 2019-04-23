@@ -1,3 +1,9 @@
+#****************************************************************
+"""
+# Commentary for this file does not yet exist
+"""
+#****************************************************************
+
 def startup(scard,**kwargs):
 
   strn1 = """set ClusterId = ` awk -F '=' '/^ClusterId/ {print $2}' $PWD/.job.ad`"""

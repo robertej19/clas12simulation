@@ -1,8 +1,10 @@
 #****************************************************************
 """
-#This description needs to be written
+# Commentary for this file does not yet exist
 """
-#***************************************************************
+#****************************************************************
+
+
 from __future__ import print_function
 import utils, file_struct
 from HTMLParser import HTMLParser
@@ -28,6 +30,3 @@ def html_reader(url_dir,data_identifyier):
   parser.feed(raw_html)
 
   return raw_html, urls
-
-#response = urllib2.urlopen(url_dir+'/'+url_ending)
-#gcard_text = response.read()

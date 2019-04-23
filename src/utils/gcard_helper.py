@@ -1,6 +1,7 @@
 #****************************************************************
 """
 ### THE BELOW TEXT IS OUTDATED and needs to be updated
+
 #This replaces a previous version of gcard_helper.py by using the HTMLParser class
 #This allows for more robust parsing of the html mother directory to find gcard files
 #Even better would be to use BeautifulSoup, which would allow for the code to be condensed as:

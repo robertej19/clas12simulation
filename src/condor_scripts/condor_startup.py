@@ -1,3 +1,9 @@
+#****************************************************************
+"""
+# Commentary for this file does not yet exist
+"""
+#****************************************************************
+
 def condor_startup(scard,**kwargs):
   #CHANGE THIS ONCE FUNCTION IS PROPERLY IMPLEMENTED
   farm_name = scard.data.get('farm_name')
