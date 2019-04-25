@@ -12,7 +12,7 @@ based off the value found in the scard
 from __future__ import print_function
 from utils import utils, file_struct, create_database
 import sqlite3, os, argparse, subprocess, time
-from src import db_batch_entry
+from src import submission_script_maker
 from subprocess import PIPE, Popen
 
 #This allows a user to specifiy which batch to use to generate files using a specific BatchID
@@ -20,7 +20,7 @@ argparser = argparse.ArgumentParser()
 argparser.add_argument(file_struct.debug_short,file_struct.debug_longdash,
                       default = file_struct.debug_default,help = file_struct.debug_help)
 argparser.add_argument('-b','--BatchID', default='none', help = 'Enter the ID# of the batch you want to submit (e.g. -b 23)')
-argparser.add_argument('-r','--run', help = 'Use this flag (no arguements) if you want to submit the job', action = 'store_true')
+argparser.add_argument('-s','--submit', help = 'Use this flag (no arguements) if you want to submit the job', action = 'store_true')
 argparser.add_argument('scard',default=file_struct.scard_path+file_struct.scard_name,nargs='?',
                         help = 'relative path and name scard you want to submit, e.g. ../scard.txt')
 args = argparser.parse_args()
@@ -28,18 +28,11 @@ args = argparser.parse_args()
 dirname = os.path.dirname(__file__)
 if dirname == '': dirname = '.'
 
-#This will obviously be removed when we are out of the testing stage
-if not os.path.isfile(file_struct.DB_path+file_struct.DBname):
-  print("\nCLAS12 Off Campus Resources Database not found, creating!")
-  create_database.create_database(args)
-
-if args.BatchID == 'none':
-  db_batch_entry.Batch_Entry(args.scard)
 
 print("\nGenerating submission files from database")
-GcardID = new_script_generator.submission_script_maker(args)
+GcardID = submission_script_maker.submission_script_maker(args)
 
-if args.run:
+if args.submit:
   """ if value in submission === not submitted"""
 
   """This entire section should be written into a dedicated function / script"""

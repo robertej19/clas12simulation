@@ -10,9 +10,9 @@
 #****************************************************************
 from __future__ import print_function
 import subprocess, sqlite3, time, os, argparse
-from script_generators import startup,initialization,run_gemc,run_evio2hipo,run_cooking,file_mover
+from runscript_generators import startup,initialization,run_gemc,run_evio2hipo,run_cooking,file_mover
 from utils import utils, file_struct, scard_helper, user_validation, gcard_helper
-from condor_scripts import condor_startup, condor_1, condor_2
+from clas12condor_generators import condor_startup, condor_1, condor_2
 
 #This uses the argument passed from command line, if no args, grab most recent DB entry
 def grab_batchID(args):
