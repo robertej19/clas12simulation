@@ -109,7 +109,7 @@ def submission_script_maker(args):
       print('gcard not recognized as default option or online repository, please inspect scard')
       exit()
 
-    file_extension = "_gcard_{}_batch_{}".format(GcardID,BatchID)
+    file_extension = "_gcard_{0}_batch_{1}".format(GcardID,BatchID)
 
     params = {'table':'Scards','BatchID':BatchID,'GcardID':GcardID,
               'gfile':'gfile','username':username[0][0],'gcard_loc':gcard_loc}
