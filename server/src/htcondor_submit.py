@@ -28,14 +28,16 @@ dirname = os.path.dirname(__file__)
 if dirname == '': dirname = '.'
 
 def htcondor_submit(args,GcardID,file_extension):
-  print('file_extension is', file_extension)
+
   """ if value in submission === not submitted"""
 
   runscript_file = file_struct.runscript_file_obj.file_base + file_extension + file_struct.runscript_file_obj.file_end
   clas12condor_file = file_struct.condor_file_obj.file_base + file_extension + file_struct.condor_file_obj.file_end
 
+  cf = 'submission_files/'+'condor_files/' + clas12condor_file
+  print(cf)
   subprocess.call(['chmod','+x',file_struct.runscript_file_obj.file_path + runscript_file])
-  submission = Popen(['condor_submit',file_struct.condor_file_obj.file_base + clas12condor_file], stdout=PIPE).communicate()[0]
+  submission = Popen(['condor_submit',cf], stdout=PIPE).communicate()[0]
   #The below is for testing purposes
   #submission = """Submitting job(s)...
   #3 job(s) submitted to cluster 7334290."""
