@@ -5,7 +5,7 @@
 *.err
 *.pyc
 *.gcard
-/submission_files/gcards/*.gcard
-/submission_files/condor_files/*.condor
-/submission_files/run_job_files/*.sh
-/submission_files/runscript_files/*.sh
+/server/submission_files/gcards/*.gcard
+/server/submission_files/condor_files/*.condor
+/server/submission_files/run_job_files/*.sh
+/server/submission_files/runscript_files/*.sh

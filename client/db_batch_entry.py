@@ -5,7 +5,7 @@
 """
 #****************************************************************
 from __future__ import print_function
-from utils import utils, file_struct, scard_helper, user_validation, gcard_helper
+from server.src.utils import utils, file_struct, scard_helper, user_validation, gcard_helper
 import sqlite3, time, os, argparse
 
 
