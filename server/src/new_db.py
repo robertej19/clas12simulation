@@ -1,6 +1,7 @@
 #****************************************************************
 """
-# write me
+# This create a new sqlite3 database by invoking the create_database()
+# function found in utils
 """
 #****************************************************************
 

@@ -12,7 +12,7 @@ def condor_startup(scard,**kwargs):
 Universe = vanilla\n
 # singularity image
 Requirements = HAS_SINGULARITY == TRUE
-+SingularityImage = "/cvmfs/singularity.opensciencegrid.org/maureeungaro/clas12simulations:production"
++SingularityImage = "/cvmfs/singularity.opensciencegrid.org/jeffersonlab/clas12simulations:production"
 +SingularityBindCVMFS = True
 """
 

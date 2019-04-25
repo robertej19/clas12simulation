@@ -1,11 +1,7 @@
 #****************************************************************
 """
-# This is an umbrella script which executes all scripts needed to generate
-submission files from an scard. It will create a DB and user if they do not yet
-exist. It then executes db_batch_entry.py and sub_script_generator.py to read the
-scard, download the gcards, and write the submission scripts. This script will change
-slightly when the db_user_entry script is redesigned to automatically create a user
-based off the value found in the scard
+# This is actually submits on a computer pool. Currently configured
+# To work on HTCondor, tested on a SubMIT node. Not working perfectly yet
 """
 #****************************************************************
 
