@@ -9,7 +9,7 @@ Universe = vanilla
 Requirements  = (GLIDEIN_Site == "MIT_CampusFactory" && BOSCOGroup == "bosco_lns")
 +SingularityImage = "/cvmfs/singularity.opensciencegrid.org/jeffersonlab/clas12simulations:production"
 +SingularityBindCVMFS = True
-request_cpus = 1
+request_cpus = 2
 request_memory = 2 GB
 
 # EXECUTABLE is the program your job will run It"s often useful
@@ -37,8 +37,8 @@ Log    = log/job.$(Cluster).$(Process).log
   should_transfer_files = YES
   when_to_transfer_output = ON_EXIT
   transfer_input_files=runscript.sh, condor_wrapper, scard.txt
-  transfer_output_files = out_$(Cluster)_n100
+  transfer_output_files = out_$(Cluster)_n1000
 
   # QUEUE is the "start button" - it launches any jobs that have been
   # specified thus far. 1 means launch only 1 job
-  Queue 3
+  Queue 15
