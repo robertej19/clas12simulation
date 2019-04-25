@@ -55,8 +55,8 @@ def script_factory(script_obj,gen_funcs,func_names,scard,params,file_extension):
     subprocess.call(['rm',filename])
   for count, f in enumerate(gen_funcs):
     generated_text = getattr(f,func_names[count])(scard,username=params['username'],gcard_loc=params['gcard_loc'],
-                            runscript_filename=file_struct.runscript_file_obj.file_base + file_extension + file_struct.runscript_file_obj.file_end,
-                            runjob_filename=file_struct.run_job_obj.file_base + file_extension + file_struct.run_job_obj.file_end,)
+                            runscript_filename=file_struct.runscript_file_obj.file_path+file_struct.runscript_file_obj.file_base + file_extension + file_struct.runscript_file_obj.file_end,
+                            runjob_filename=file_struct.run_job_obj.file_path+file_struct.run_job_obj.file_base + file_extension + file_struct.run_job_obj.file_end,)
     with open(filename,"a") as file: file.write(generated_text)
     script_text += generated_text
   str_script_db = script_text.replace('"',"'") #I can't figure out a way to write "" into a sqlite field without errors
