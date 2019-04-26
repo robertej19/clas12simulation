@@ -117,7 +117,7 @@ def submission_script_maker(args):
     script_factory(file_struct.runscript_file_obj,funcs_rs,fname_rs,scard,params,file_extension)
     script_factory(file_struct.condor_file_obj,funcs_condor,fname_condor,scard,params,file_extension)
     script_factory(file_struct.run_job_obj,funcs_runjob,fname_runjob,scard,params,file_extension)
-    print("\tSuccessfully generated submission files for Batch {0} \n".format(BatchID))
+    print("\tSuccessfully generated submission files for Batch {0} with GcardID {1}\n".format(BatchID,GcardID))
     if args.submit:
       print("\tSubmitting jobs to HTCondor \n")
       htcondor_submit.htcondor_submit(args,GcardID,file_extension)

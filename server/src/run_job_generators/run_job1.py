@@ -27,5 +27,5 @@ cat {0}
 echo "-------------"
 echo "-------------"
 
-./condor_wrapper /tmp/{0}""".format(kwargs['runscript_filename'])
+./condor_wrapper /tmp{0}""".format(kwargs['runscript_filename'])
   return strn
