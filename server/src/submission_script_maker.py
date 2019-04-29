@@ -10,10 +10,11 @@
 #****************************************************************
 from __future__ import print_function
 import subprocess, sqlite3, time, os, argparse
-from script_generators import startup,initialization,run_gemc,run_evio2hipo,run_cooking,file_mover
+from runscript_generators import startup,initialization,run_gemc,run_evio2hipo,run_cooking,file_mover
 from utils import utils, file_struct, scard_helper, user_validation, gcard_helper
-from condor_scripts import condor_startup, condor_1, condor_2
-
+from clas12condor_generators import condor_startup, condor_1, condor_2
+from run_job_generators import run_job1
+import htcondor_submit
 #This uses the argument passed from command line, if no args, grab most recent DB entry
 def grab_batchID(args):
   Batches = []
@@ -45,15 +46,18 @@ def grab_username(BatchID):
   return username
 
 #Generates a script by appending functions that output strings
-def script_factory(script_obj,gen_funcs,func_names,scard,params):
+def script_factory(script_obj,gen_funcs,func_names,scard,params,file_extension):
   script_text = ""
-  utils.printer("\tWriting submission file '{0}' based off of specifications of BatchID = {1}, GcardID = {2}".format(script_obj.name,
+  filename = script_obj.file_path+script_obj.file_base+file_extension+script_obj.file_end
+  utils.printer("\tWriting submission file '{0}' based off of specifications of BatchID = {1}, GcardID = {2}".format(filename,
       params['BatchID'],params['GcardID']))
-  if os.path.isfile(script_obj.name):
-    subprocess.call(['rm',script_obj.name])
+  if os.path.isfile(filename):
+    subprocess.call(['rm',filename])
   for count, f in enumerate(gen_funcs):
-    generated_text = getattr(f,func_names[count])(scard,username=params['username'],gcard_loc=params['gcard_loc'])
-    with open(script_obj.name,"a") as file: file.write(generated_text)
+    generated_text = getattr(f,func_names[count])(scard,username=params['username'],gcard_loc=params['gcard_loc'],
+                            runscript_filename=file_struct.runscript_file_obj.file_path+file_struct.runscript_file_obj.file_base + file_extension + file_struct.runscript_file_obj.file_end,
+                            runjob_filename=file_struct.run_job_obj.file_path+file_struct.run_job_obj.file_base + file_extension + file_struct.run_job_obj.file_end,)
+    with open(filename,"a") as file: file.write(generated_text)
     script_text += generated_text
   str_script_db = script_text.replace('"',"'") #I can't figure out a way to write "" into a sqlite field without errors
     #For now, we can replace " with ', which works ok, but IDK how it will run if the scripts were submitted to HTCondor
@@ -69,16 +73,17 @@ def submission_script_maker(args):
 
   funcs_rs = (startup,initialization,run_gemc,run_evio2hipo,run_cooking,file_mover)
   fname_rs = ('startup','initialization','run_gemc','run_evio2hipo','run_cooking','file_mover')
-  funcs_kwargs_rs = ('','','','','','')
 
   funcs_condor = (condor_startup,condor_1,condor_2)
   fname_condor = ('condor_startup','condor_1','condor_2')
-  func_kwargs_condor = ('','','')
+
+  funcs_runjob = (run_job1,)
+  fname_runjob = ('run_job1',)
+
 
   strn = "SELECT scard FROM Batches WHERE BatchID = {0};".format(BatchID)
   scard_text = utils.sql3_grab(strn)[0][0] #sql3_grab returns a list of tuples, we need the 0th element of the 0th element
   scard = scard_helper.scard_class(scard_text)
-
 
   scard.data['genExecutable'] = file_struct.genExecutable.get(scard.data.get('generator'))
   scard.data['genOutput'] = file_struct.genOutput.get(scard.data.get('generator'))
@@ -92,20 +97,30 @@ def submission_script_maker(args):
     strn = "UPDATE Submissions SET run_status = 'not yet in pool' WHERE GcardID = '{0}';".format(GcardID)
     utils.sql3_exec(strn)
 
-    """
-    Need to have block of code for grabbing appropriate gcard. For now, just assume we grab
-    the standard gcard so we don't have to worry about this
-    newfile = "gcard_{0}_batch_{1}.gcard".format(GcardID,BatchID)
-    gfile= file_struct.sub_files_path+file_struct.gcards_dir+newfile
-    with open(gfile,"w") as file: file.write(gcard[1])
-    """
-    gcard_loc = scard.data['gcards']
+    if scard.data['gcards'] == file_struct.gcard_default:
+      gcard_loc = scard.data['gcards']
+    elif 'https://' in  scard.data['gcards']:
+      utils.printer('Writing gcard to local file')
+      newfile = "gcard_{0}_batch_{1}.gcard".format(GcardID,BatchID)
+      gfile= file_struct.sub_files_path+file_struct.gcards_dir+newfile
+      with open(gfile,"w") as file: file.write(gcard[1])
+      gcard_loc = 'submission_files/gcards/'+newfile
+    else:
+      print('gcard not recognized as default option or online repository, please inspect scard')
+      exit()
+
+    file_extension = "_gcard_{0}_batch_{1}".format(GcardID,BatchID)
+
     params = {'table':'Scards','BatchID':BatchID,'GcardID':GcardID,
               'gfile':'gfile','username':username[0][0],'gcard_loc':gcard_loc}
-    script_factory(file_struct.runscript_file_obj,funcs_rs,fname_rs,scard,params)
-    script_factory(file_struct.condor_file_obj,funcs_condor,fname_condor,scard,params)
-  print("\tSuccessfully generated submission files for Batch {0} \n".format(BatchID))
-  return(GcardID)
+
+    script_factory(file_struct.runscript_file_obj,funcs_rs,fname_rs,scard,params,file_extension)
+    script_factory(file_struct.condor_file_obj,funcs_condor,fname_condor,scard,params,file_extension)
+    script_factory(file_struct.run_job_obj,funcs_runjob,fname_runjob,scard,params,file_extension)
+    print("\tSuccessfully generated submission files for Batch {0} with GcardID {1}\n".format(BatchID,GcardID))
+    if args.submit:
+      print("\tSubmitting jobs to HTCondor \n")
+      htcondor_submit.htcondor_submit(args,GcardID,file_extension)
 
 if __name__ == "__main__":
   argparser = argparse.ArgumentParser()

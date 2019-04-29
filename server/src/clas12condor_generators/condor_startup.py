@@ -7,12 +7,11 @@
 def condor_startup(scard,**kwargs):
   #CHANGE THIS ONCE FUNCTION IS PROPERLY IMPLEMENTED
   farm_name = scard.data.get('farm_name')
-  print(farm_name)
   strn_osg = """# The UNIVERSE defines an execution environment. You will almost always use vanilla.
 Universe = vanilla\n
 # singularity image
 Requirements = HAS_SINGULARITY == TRUE
-+SingularityImage = "/cvmfs/singularity.opensciencegrid.org/maureeungaro/clas12simulations:production"
++SingularityImage = "/cvmfs/singularity.opensciencegrid.org/jeffersonlab/clas12simulations:production"
 +SingularityBindCVMFS = True
 """
 

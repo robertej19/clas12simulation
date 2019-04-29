@@ -31,4 +31,3 @@ setenv PATH ${PATH}:${JAVA_HOME}/bin:${CLAS12_BIN}:${COATJAVA}/bin
 set autolist
 alias l ls -l
 alias lt ls -lt
-
