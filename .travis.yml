@@ -10,7 +10,7 @@ script:
 #  - rm database/CLAS12OCR_DB.db
   - python2 server/src/new_db.py
   - cd client
-#  - python2 src/SubMit.py
+  - python2 src/SubMit.py
   - cd ../server/src
   - python2 Submit_batch.py
 #to submit to HTCondor on Submit, for example, do the following:
