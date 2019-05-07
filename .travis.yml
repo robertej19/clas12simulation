@@ -5,7 +5,7 @@ python:
 # command to run tests
 script:
 #To run this from scratch, now do the following:
-# cd clas12simulations
+#cd clas12simulations
 #if a database file exists, remove it with
 #  - rm database/CLAS12OCR_DB.db
   - python2 server/src/new_db.py
@@ -13,5 +13,10 @@ script:
   - python2 src/SubMit.py
   - cd ../server/src
   - python2 Submit_batch.py
+  - cd ../../
+  - cat database/CLAS12_OCRDB.db
 #to submit to HTCondor on Submit, for example, do the following:
 #python2 Submit_batch.py -s
+addons:
+  hosts:
+    - travis.dev
