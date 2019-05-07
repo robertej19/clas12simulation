@@ -13,6 +13,7 @@ script:
   - python2 src/SubMit.py
   - cd ../server/src
   - python2 Submit_batch.py
+  - cat database/CLAS12_OCRDB.db 
 #to submit to HTCondor on Submit, for example, do the following:
 #python2 Submit_batch.py -s
 addons:
