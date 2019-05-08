@@ -14,7 +14,7 @@
 from __future__ import print_function
 import argparse, os, sqlite3, subprocess, sys, time
 from subprocess import PIPE, Popen
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))+'/../')
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))+'/../../')
 #Could also do the following, but then python has to search the
 #sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from utils import file_struct, gcard_helper, scard_helper, user_validation, utils
@@ -67,4 +67,11 @@ if __name__ == "__main__":
   if dirname == '': dirname = '.'
 
   file_struct.DEBUG = getattr(args,file_struct.debug_long)
-  Batch_Entry(args.scard)
+
+
+  exists = os.path.isfile(file_struct.DB_path+file_struct.DBname)
+  if exists:
+      Batch_Entry(args.scard)
+  else:
+      print('Could not find SQLite Database File. Are you sure it exists and lives in the proper location? Consult README for help')
+      exit()

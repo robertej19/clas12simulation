@@ -172,16 +172,14 @@ clas12simulation(s)
 """
 import os #I would like to do this part differently, but dont have the time to do this right now.
 #I would like to remove dirname entirely, and have everything run relatively, but right now this works.
-dirname = os.path.dirname(__file__)
+dirname = os.path.dirname(os.path.abspath(__file__))#os.path.dirname(__file__)
 
 #Specify the location of where all submission files live (runscripts, gcards,etc)
 sub_files_path = dirname+'/../../submission_files/'
-#Specify the location of all template files
-template_files_path = dirname + "/../templates/"
 #Specify the location of the DB relative to here (This will get changed when moving to SQL RDBMS)
-DB_path = dirname+"/../../database/"
+DB_path = dirname+"/../database/"
 #Specify the location of the scard
-scard_path = dirname+"/../"
+scard_path = dirname+"/../client/"
 
 #Specifiy Database name:
 DBname = 'CLAS12_OCRDB.db'
