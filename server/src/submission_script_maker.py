@@ -9,12 +9,18 @@
 """
 #****************************************************************
 from __future__ import print_function
-import subprocess, sqlite3, time, os, argparse
-from runscript_generators import startup,initialization,run_gemc,run_evio2hipo,run_cooking,file_mover
-from utils import utils, file_struct, scard_helper, user_validation, gcard_helper
-from clas12condor_generators import condor_startup, condor_1, condor_2
-from run_job_generators import run_job1
-import htcondor_submit
+import argparse, os, sqlite3, subprocess, sys, time
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))+'/../../utils')
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))+'/../submission_files')
+#Could also do the following, but then python has to search the
+#sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+import  htcondor_submit
+import utils, file_struct, scard_helper
+from script_generators.runscript_generators import startup,initialization,run_gemc,run_evio2hipo,run_cooking,file_mover
+from script_generators.clas12condor_generators import condor_startup, condor_1, condor_2
+from script_generators.run_job_generators import run_job1
+
+
 #This uses the argument passed from command line, if no args, grab most recent DB entry
 def grab_batchID(args):
   Batches = []
@@ -126,8 +132,8 @@ def submission_script_maker(args):
 if __name__ == "__main__":
   argparser = argparse.ArgumentParser()
   argparser.add_argument('-b','--BatchID', default='none', help = 'Enter the ID# of the batch you want to submit (e.g. -b 23)')
-  argparser.add_argument('-s','--scard', default=file_struct.scard_path+file_struct.scard_name,
-                      help = 'relative path and name scard you want to submit, e.g. ../scard.txt')
+  argparser.add_argument('-s','--submit', help = 'Use this flag (no arguements) if you want to submit the job', action = 'store_true')
+  args = argparser.parse_args()
   argparser.add_argument(file_struct.debug_short,file_struct.debug_longdash,
                       default = file_struct.debug_default,help = file_struct.debug_help)
   args = argparser.parse_args()

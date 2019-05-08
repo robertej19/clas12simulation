@@ -175,7 +175,7 @@ import os #I would like to do this part differently, but dont have the time to d
 dirname = os.path.dirname(os.path.abspath(__file__))#os.path.dirname(__file__)
 
 #Specify the location of where all submission files live (runscripts, gcards,etc)
-sub_files_path = dirname+'/../../submission_files/'
+sub_files_path = dirname+'/../server/submission_files/generated_files/'
 #Specify the location of the DB relative to here (This will get changed when moving to SQL RDBMS)
 DB_path = dirname+"/../database/"
 #Specify the location of the scard

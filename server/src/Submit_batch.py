@@ -2,15 +2,19 @@
 """
 # This is a sript which executes all scripts needed to generate
 submission files from an scard. It just invokes submission_script_maker, and
-passes arguements to it. 
+passes arguements to it.
 """
 #****************************************************************
 
 from __future__ import print_function
-from utils import utils, file_struct, create_database
-import sqlite3, os, argparse, subprocess, time
+import argparse, os, sqlite3, subprocess, sys, time
+#from subprocess import PIPE, Popen
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__))+'/../../utils')
+#Could also do the following, but then python has to search the
+#sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 import submission_script_maker, htcondor_submit
-from subprocess import PIPE, Popen
+import file_struct, utils
+
 
 #This allows a user to specifiy which batch to use to generate files using a specific BatchID
 argparser = argparse.ArgumentParser()
