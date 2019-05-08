@@ -53,6 +53,50 @@ def htcondor_submit(args,GcardID,file_extension):
   utils.sql3_exec(strn)
 
 
+
+
+
+
+
+def update_to_void():
+  conn = sqlite3.connect(database)
+  c = conn.cursor()
+  c.execute( "UPDATE Checks SET status = VOID WHERE Check# = 123;")
+  conn.commit()
+  c.close()
+  conn.close()
+
+
+
+checks_to_void = (123,124,125,126)
+
+for check in checks_to_void:
+  update_to_void()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 if __name__ == "__main__":
   argparser = argparse.ArgumentParser()
   argparser.add_argument('-b','--BatchID', default='none', help = 'Enter the ID# of the batch you want to submit (e.g. -b 23)')

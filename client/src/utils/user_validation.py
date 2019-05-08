@@ -16,7 +16,10 @@ def user_validation():
   #username = (subprocess.check_output('whoami'))[:-1]#The [:-1] is so we drop the implicit \n from the string
   #domain_name = subprocess.check_output(['hostname','-d'])#socket.getfqdn()  #socket.getdomain_name()
   username = Popen(['whoami'], stdout=PIPE).communicate()[0].split()[0]
-  domain_name = Popen(['hostname','-d'], stdout=PIPE).communicate()[0].split()[0]
+
+  #The following does not work on mac. This needs to get resolved, currently bridged over for testing
+  #domain_name = Popen(['hostname',''-d'], stdout=PIPE).communicate()[0].split()[0]
+  domain_name = "example_domain"
   strn = """SELECT 1 FROM Users WHERE EXISTS (SELECT 1 FROM Users WHERE User ="{0}"
           AND domain_name = "{1}")""".format(username,domain_name)
   user_already_exists = utils.sql3_grab(strn)
