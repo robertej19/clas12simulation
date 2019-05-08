@@ -33,6 +33,7 @@ def htcondor_submit(args,GcardID,file_extension):
   condorfile = 'submission_files/'+'condor_files/' + clas12condor_file
 
   subprocess.call(['chmod','+x',file_struct.runscript_file_obj.file_path + runscript_file])
+  subprocess.call(['chmod','+x',"condor_wrapper"])
   submission = Popen(['condor_submit',condorfile], stdout=PIPE).communicate()[0]
   #The below is for testing purposes
   #submission = """Submitting job(s)...

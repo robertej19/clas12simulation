@@ -23,9 +23,9 @@ echo "-------------"
 cat condor_exec.exe
 echo "-------------"
 echo "-------------"
-cat {0}
+cat runscript{0}.sh
 echo "-------------"
 echo "-------------"
 
-./condor_wrapper /tmp{0}""".format(kwargs['runscript_filename'])
+./condor_wrapper /tmp/runscript{0}.sh""".format(kwargs['file_extension'])
   return strn
